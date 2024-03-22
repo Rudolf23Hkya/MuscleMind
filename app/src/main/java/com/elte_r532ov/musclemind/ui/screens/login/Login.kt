@@ -25,11 +25,14 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.elte_r532ov.musclemind.myFontFamily
 
 @Composable
-@Preview
-fun LoginScreen() {
+fun LoginScreen(
+    //onNavigate -58:00
+    viewModel: LoginViewModel = hiltViewModel()
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,7 +41,9 @@ fun LoginScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 54.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 54.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
             Text("Login",
@@ -73,7 +78,9 @@ fun LoginScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
@@ -100,7 +107,9 @@ fun LoginScreen() {
 
         Button(
             onClick = { /* TODO */ },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 32.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 32.dp)
         ) {
             Text("LOGIN",
                 fontFamily = myFontFamily,
