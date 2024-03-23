@@ -15,6 +15,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,12 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.elte_r532ov.musclemind.myFontFamily
+import com.elte_r532ov.musclemind.util.UiEvent
 
 @Composable
 fun LoginScreen(
-    //onNavigate -58:00
+    //onNavigate: (UiEvent.Navigate) -> Unit,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
+    val emailState = remember { mutableStateOf("") }
+    val passwordState = remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -57,8 +63,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = emailState.value,
+            onValueChange = {emailState.value = it},
             label = { Text("Email", fontFamily = myFontFamily, fontWeight = FontWeight.Medium) },
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
@@ -67,8 +73,8 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         OutlinedTextField(
-            value = "",
-            onValueChange = {},
+            value = passwordState.value,
+            onValueChange = {passwordState.value = it},
             label = { Text("Password",fontFamily = myFontFamily, fontWeight = FontWeight.Medium) },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
@@ -106,7 +112,9 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* TODO */ },
+            onClick = {
+                viewModel.onEvent(LoginEvent.onLoginClicked(emailState.value,passwordState.value))
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 32.dp)
