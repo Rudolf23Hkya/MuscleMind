@@ -44,10 +44,10 @@ class LoginViewModel @Inject constructor(private val repository: MuscleMindRepos
                 }
             }
             is LoginEvent.onContinueWithGoogle -> {
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_DATA_PAGE))
+                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_GENDER))
             }
             is LoginEvent.onSignUpClicked -> {
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_DATA_PAGE))
+                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_GENDER))
             }
             is LoginEvent.onForgotPassword -> {
 

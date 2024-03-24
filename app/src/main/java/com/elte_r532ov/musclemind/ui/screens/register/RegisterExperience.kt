@@ -15,9 +15,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 
 @Composable
-fun ExperienceSelectionScreen() {
+fun ExperienceSelectionScreen(
+    onNavigate: NavHostController,
+    viewModel: SharedRegisterViewModel = hiltViewModel()
+) {
     val options = listOf("PROFESSIONAL", "EXPERIENCED", "INTERMEDIATE", "I'M NEW")
     var selectedOption by remember { mutableStateOf<String?>(null) }
 

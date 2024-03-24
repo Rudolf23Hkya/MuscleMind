@@ -13,9 +13,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 
 @Composable
-fun RegisterData() {
+fun RegisterData(
+    onNavigate: NavHostController,
+    viewModel: SharedRegisterViewModel = hiltViewModel()
+) {
     val nameState = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }

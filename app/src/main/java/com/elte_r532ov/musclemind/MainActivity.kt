@@ -11,8 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.elte_r532ov.musclemind.ui.screens.register.ExperienceSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterData
+import com.elte_r532ov.musclemind.ui.screens.register.RegisterFizData
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterGender
-import com.elte_r532ov.musclemind.ui.screens.register.UserInfoForm
+import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -30,21 +31,21 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
 
-            NavHost(navController = navController, startDestination = "userExperience") {
-                composable("login") {
+            NavHost(navController = navController, startDestination = Routes.LOGIN) {
+                composable(Routes.LOGIN) {
                     LoginScreen(navController)
                 }
-                composable("register"){
-                    RegisterData()
+                composable(Routes.REGISTER_ACCOUNT_DATA){
+                    RegisterData(navController)
                 }
-                composable("gender"){
-                    RegisterGender()
+                composable(Routes.REGISTER_GENDER){
+                    RegisterGender(navController)
                 }
-                composable("userFizData"){
-                    UserInfoForm()
+                composable(Routes.REGISTER_FIZ_DATA){
+                    RegisterFizData(navController)
                 }
-                composable("userExperience"){
-                    ExperienceSelectionScreen()
+                composable(Routes.REGISTER_EXP){
+                    ExperienceSelectionScreen(navController)
                 }
             }
         }

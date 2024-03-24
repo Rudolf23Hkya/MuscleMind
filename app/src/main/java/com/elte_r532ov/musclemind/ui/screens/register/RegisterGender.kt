@@ -23,6 +23,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.R
 import com.elte_r532ov.musclemind.data.Gender
 
@@ -117,11 +119,12 @@ fun GenderOption(
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
-
-// Usage
-@Preview
+//Main Screen
 @Composable
-fun RegisterGender() {
+fun RegisterGender(
+    onNavigate: NavHostController,
+    viewModel: SharedRegisterViewModel = hiltViewModel()
+) {
     // You would have to replace these with actual image resources from your project
     val maleImagePainter = painterResource(id = R.drawable.boy)
     val femaleImagePainter = painterResource(id = R.drawable.girl)

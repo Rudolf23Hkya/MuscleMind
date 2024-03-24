@@ -10,9 +10,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 
 @Composable
-fun UserInfoForm() {
+fun RegisterFizData(
+    onNavigate: NavHostController,
+    viewModel: SharedRegisterViewModel = hiltViewModel()
+) {
 
     Box(
         modifier = Modifier
