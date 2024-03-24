@@ -15,6 +15,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
+import com.elte_r532ov.musclemind.util.UiEvent
 
 @Composable
 fun LoginScreen(
@@ -37,6 +39,16 @@ fun LoginScreen(
 ) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
+
+    // This LaunchedEffect listens to the UI events and performs actions accordingly
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect() { event ->
+            when (event) {
+                is UiEvent.Navigate -> onNavigate.navigate(event.route)
+                is UiEvent.ShowSnackbar -> TODO()
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -134,7 +146,7 @@ fun LoginScreen(
         ) {
             Text("Don’t have an account?",fontFamily = myFontFamily, fontWeight = FontWeight.Medium)
             TextButton(
-                onClick = { /* TODO: Handle Sign Up */ }
+                onClick = { viewModel.onEvent(LoginEvent.onSignUpClicked) }
             ) {
                 Text("Sign Up",fontFamily = myFontFamily, fontWeight = FontWeight.SemiBold)
             }
@@ -156,7 +168,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
-            onClick = { /* TODO: Handle Google Sign-In */ },
+            onClick = { viewModel.onEvent(LoginEvent.onSignUpClicked) },
         ) {
             Text("Continue with Google",
                 fontFamily = myFontFamily,
