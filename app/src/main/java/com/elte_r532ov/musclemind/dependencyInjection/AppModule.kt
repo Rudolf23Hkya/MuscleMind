@@ -23,8 +23,8 @@ object AppModule {
         return Room.databaseBuilder(
             app.applicationContext,
             MuscleMindDB::class.java,
-            "muscle_mind_db" // Corrected the syntax here
-        ).build()
+            "muscle_mind_db"
+        ).fallbackToDestructiveMigration().build()
     }
 
     //Context not needed, only the database instance

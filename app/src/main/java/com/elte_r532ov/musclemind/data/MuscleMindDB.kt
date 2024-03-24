@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 @Database(
     entities = [UserData :: class],
-    version = 1
+    version = 2
 )
 abstract class MuscleMindDB : RoomDatabase(){
     abstract  val dao: UserDataDao

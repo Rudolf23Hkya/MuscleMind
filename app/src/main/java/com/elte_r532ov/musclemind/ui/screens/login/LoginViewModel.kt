@@ -36,12 +36,15 @@ class LoginViewModel @Inject constructor(private val repository: MuscleMindRepos
 
                     userData = repository.loginAttempt(event.eMail, event.password)
                 }
+                var msg = ""
                 if(userData != null){
-                    Log.d(event.eMail, "Hurray, you are logged in!")
+                    msg = "Hurray, you are logged in!"
                 }
                 else{
-                    Log.d(event.eMail, "No such e-mail in our Database")
+                    msg =  "No such e-mail in our Database"
                 }
+                Log.d(event.eMail, msg)
+                sendUiEvent(UiEvent.ShowSnackbar(event.eMail+": "+msg))
             }
             is LoginEvent.onContinueWithGoogle -> {
                 sendUiEvent(UiEvent.Navigate(Routes.REGISTER_GENDER))
