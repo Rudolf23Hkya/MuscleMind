@@ -13,6 +13,7 @@ import com.elte_r532ov.musclemind.ui.screens.register.ExperienceSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterData
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterFizData
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterGender
+import com.elte_r532ov.musclemind.ui.screens.workouts.active.ActiveWorkouts
 import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,6 +47,9 @@ class MainActivity : ComponentActivity() {
                 }
                 composable(Routes.REGISTER_EXP){
                     ExperienceSelectionScreen(navController)
+                }
+                composable(Routes.WORKOUTS_ACTIVE){
+                    ActiveWorkouts()
                 }
             }
         }

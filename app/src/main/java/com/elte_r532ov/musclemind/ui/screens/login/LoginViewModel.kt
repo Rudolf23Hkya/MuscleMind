@@ -8,7 +8,9 @@ import com.elte_r532ov.musclemind.data.UserData
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -36,15 +38,14 @@ class LoginViewModel @Inject constructor(private val repository: MuscleMindRepos
 
                     userData = repository.loginAttempt(event.eMail, event.password)
                 }
-                var msg = ""
                 if(userData != null){
-                    msg = "Hurray, you are logged in!"
+                    sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
                 }
                 else{
-                    msg =  "No such e-mail in our Database"
+                    val msg =  "No such e-mail in our Database"
+                    Log.d(event.eMail, msg)
+                    sendUiEvent(UiEvent.ShowSnackbar(event.eMail+": "+msg))
                 }
-                Log.d(event.eMail, msg)
-                sendUiEvent(UiEvent.ShowSnackbar(event.eMail+": "+msg))
             }
             is LoginEvent.onContinueWithGoogle -> {
                 sendUiEvent(UiEvent.Navigate(Routes.REGISTER_GENDER))
