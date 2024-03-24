@@ -1,10 +1,10 @@
 package com.elte_r532ov.musclemind.ui.screens.login
 
 import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.UserData
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,8 +17,9 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val repository: MuscleMindRepository) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+    var userData : UserData? = null
 
-    private var rememberMeClicked = false;
+    private var rememberMeClicked = false
 
    /* var eMail by mutableStateOf("")
         private set
@@ -29,8 +30,18 @@ class LoginViewModel @Inject constructor(private val repository: MuscleMindRepos
     fun onEvent(event : LoginEvent){
         when(event){
             is LoginEvent.onLoginClicked -> {
-                Log.d(event.eMail, "E-Mail")
-                Log.d(event.password, "Password")
+                viewModelScope.launch {
+                    Log.d(event.eMail, "E-Mail")
+                    Log.d(event.password, "Password")
+
+                    userData = repository.loginAttempt(event.eMail, event.password)
+                }
+                if(userData != null){
+                    Log.d(event.eMail, "Hurray, you are logged in!")
+                }
+                else{
+                    Log.d(event.eMail, "No such e-mail in our Database")
+                }
             }
             is LoginEvent.onContinueWithGoogle -> {
                 sendUiEvent(UiEvent.Navigate(Routes.REGISTER_DATA_PAGE))

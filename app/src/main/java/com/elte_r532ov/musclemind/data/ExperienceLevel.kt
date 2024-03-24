@@ -1,8 +1,7 @@
 package com.elte_r532ov.musclemind.data
 
 enum class ExperienceLevel {
-    NONE,
-    FEW_TIMES,
+    NEW,
     INTERMEDIATE,
     EXPERIENCED,
     PROFESSIONAL

@@ -12,7 +12,7 @@ class MuscleMindRepoImpl(
         dao.deleteUserData(ud)
     }
 
-    override suspend fun getUserDataById(id: Int): UserData? {
-        return dao.getUserDataById(id)
+    override suspend fun loginAttempt(email : String, password : String): UserData? {
+        return dao.loginAttempt(email,password)
     }
 }

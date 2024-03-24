@@ -7,5 +7,5 @@ interface MuscleMindRepository {
 
     suspend fun deleteUserData(ud :UserData)
 
-    suspend fun getUserDataById(id : Int): UserData?
+    suspend fun loginAttempt(email : String, password : String): UserData?
 }

@@ -86,6 +86,8 @@ dependencies {
     // Annotation processor
     kapt("androidx.lifecycle:lifecycle-compiler:2.7.0")
 
+    //Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")

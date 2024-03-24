@@ -9,7 +9,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.ui.screens.register.ExperienceSelectionScreen
+import com.elte_r532ov.musclemind.ui.screens.register.RegisterData
+import com.elte_r532ov.musclemind.ui.screens.register.RegisterGender
+import com.elte_r532ov.musclemind.ui.screens.register.UserInfoForm
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,18 +28,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            LoginScreen()
-            /*
             val navController = rememberNavController()
-            NavHost(navController =navController , startDestination =  Routes.LOGIN_PAGE){
-                composable(Routes.LOGIN_PAGE){
-                    LoginScreen(onNavigate = {
-                        navController.navigate(it.route)
-                        }
-                    )
+
+            NavHost(navController = navController, startDestination = "userExperience") {
+                composable("login") {
+                    LoginScreen(navController)
+                }
+                composable("register"){
+                    RegisterData()
+                }
+                composable("gender"){
+                    RegisterGender()
+                }
+                composable("userFizData"){
+                    UserInfoForm()
+                }
+                composable("userExperience"){
+                    ExperienceSelectionScreen()
                 }
             }
-            */
         }
     }
 }

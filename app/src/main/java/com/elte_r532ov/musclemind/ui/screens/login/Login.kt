@@ -24,16 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
-import com.elte_r532ov.musclemind.util.UiEvent
 
 @Composable
 fun LoginScreen(
-    //onNavigate: (UiEvent.Navigate) -> Unit,
+    onNavigate: NavHostController,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val emailState = remember { mutableStateOf("") }

@@ -15,19 +15,19 @@ data class UserData(
     @ColumnInfo(name = "email")val email: String,
     val password: String,
     val age: Int,
-    val sex: Sex,
+    val gender: Gender,
     val experienceLevel: ExperienceLevel,
     val weight: Double
 )
 
 class Converters {
     @TypeConverter
-    fun fromSex(sex: Sex): String {
-        return sex.name
+    fun fromSex(gender: Gender): String {
+        return gender.name
     }
     @TypeConverter
-    fun toSex(sex: String): Sex {
-        return Sex.valueOf(sex)
+    fun toSex(gender: String): Gender {
+        return Gender.valueOf(gender)
     }
     @TypeConverter
     fun fromExperienceLevel(exp: ExperienceLevel): String {

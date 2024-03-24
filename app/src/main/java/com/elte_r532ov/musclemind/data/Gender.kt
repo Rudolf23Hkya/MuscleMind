@@ -1,7 +1,6 @@
 package com.elte_r532ov.musclemind.data
 
-enum class Sex {
+enum class Gender {
     MALE,
-    FEMALE,
-    OTHER
+    FEMALE
 }
