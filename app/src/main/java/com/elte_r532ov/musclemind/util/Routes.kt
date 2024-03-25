@@ -10,4 +10,7 @@ object Routes {
     const val CALORIES_OVERVIEW = "calories_overview"
     const val SETTINGS_MAIN = "settings_main"
     const val WORKOUTS_ACTIVE = "workouts_active"
+
+    //Nested roots
+    const val REGISTRATION_ROUTE = "registration"
 }

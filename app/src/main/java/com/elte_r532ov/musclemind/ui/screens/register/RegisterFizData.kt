@@ -5,6 +5,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,15 +18,33 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.ui.screens.login.LoginEvent
+import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.util.UiEvent
 
 @Composable
 fun RegisterFizData(
     onNavigate: NavHostController,
-    viewModel: SharedRegisterViewModel = hiltViewModel()
+    viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
+    //Snack bar
+    var snackbarMessage by remember { mutableStateOf<String?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // This LaunchedEffect listens to the UI events and performs actions accordingly
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect() { event ->
+            when (event) {
+                is UiEvent.Navigate -> onNavigate.navigate(event.route)
+                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
+                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+            }
+        }
+    }
+
     var weight by remember { mutableStateOf("") }
     var age by remember { mutableStateOf("") }
     var height by remember { mutableStateOf("") }
+
 
     Box(
         modifier = Modifier

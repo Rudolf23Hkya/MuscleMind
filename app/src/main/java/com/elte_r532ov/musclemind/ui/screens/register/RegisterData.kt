@@ -15,11 +15,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.elte_r532ov.musclemind.util.Routes
 
 @Composable
 fun RegisterData(
     onNavigate: NavHostController,
-    viewModel: SharedRegisterViewModel = hiltViewModel()
+    viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
     val nameState = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }
@@ -94,7 +95,11 @@ fun RegisterData(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { /* Handle sign up */ },
+            onClick = { onNavigate.navigate(route = Routes.WORKOUTS_ACTIVE){
+                popUpTo("registration") {
+                    inclusive = true
+                }
+            } },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)

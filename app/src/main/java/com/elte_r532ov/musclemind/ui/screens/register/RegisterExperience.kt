@@ -17,11 +17,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.elte_r532ov.musclemind.util.Routes
 
 @Composable
 fun ExperienceSelectionScreen(
     onNavigate: NavHostController,
-    viewModel: SharedRegisterViewModel = hiltViewModel()
+    viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
     val options = listOf("PROFESSIONAL", "EXPERIENCED", "INTERMEDIATE", "I'M NEW")
     var selectedOption by remember { mutableStateOf<String?>(null) }

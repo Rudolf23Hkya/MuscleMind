@@ -2,6 +2,12 @@ package com.elte_r532ov.musclemind.ui.screens.register
 
 import android.util.Log
 import android.util.Patterns
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.ExperienceLevel
@@ -27,14 +33,17 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
     }
 
     //USER DATA COLLECTED
-    var name : String = ""
-    var email : String = ""
-    var password : String = ""
-    lateinit var gender : Gender
-    lateinit var experienceLevel : ExperienceLevel
-    var age : Int = 0
-    var weight : Double = 0.0
-    var height : Double = 0.0
+    var name by mutableStateOf("")
+    var email by mutableStateOf("")
+    var password by mutableStateOf("")
+    var gender by mutableStateOf<Gender?>(null)
+    var experienceLevel by mutableStateOf<ExperienceLevel?>(null)
+    var age by mutableIntStateOf(0)
+    var weight by mutableDoubleStateOf(0.0)
+    var height by mutableDoubleStateOf(0.0)
+
+    //UserData(0,"","","",
+    //        Gender.MALE,ExperienceLevel.NEW,0,0.0,0.0)
     fun onEvent(event : RegisterEvent){
         when(event){
             //Back Navs - TODO
@@ -52,7 +61,13 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
             }
             //Setters and Navs
             is RegisterEvent.onGenderChosen -> {
-                this.gender = event.gender
+                if(event.gender == Gender.MALE){
+                    this.gender = Gender.MALE
+                }
+                else{
+                    this.gender = Gender.FEMALE
+                }
+
                 Log.d("MyActivity", this.gender.toString())
                 sendUiEvent(UiEvent.Navigate(Routes.REGISTER_FIZ_DATA))
             }
@@ -71,9 +86,6 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
                         this.height = eHeight
 
                         sendUiEvent(UiEvent.Navigate(Routes.REGISTER_EXP))
-                        Log.d("GENDER: ", this.gender.toString())
-                        Log.d("FIZ_DATA", this.weight.toString()+", "
-                                +this.height.toString()+", "+this.age.toString())
                     }
                     else{
                         sendUiEvent(UiEvent.ErrorOccured("Invalid values!"))

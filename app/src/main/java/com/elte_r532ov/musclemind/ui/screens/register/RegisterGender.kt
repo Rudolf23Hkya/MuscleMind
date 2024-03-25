@@ -35,13 +35,33 @@ import com.elte_r532ov.musclemind.R
 import com.elte_r532ov.musclemind.data.Gender
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.ui.input.pointer.pointerInput
+import com.elte_r532ov.musclemind.util.Routes
+
 
 @Composable
-fun GenderSelectionScreen(
-    maleImagePainter: Painter,
-    femaleImagePainter: Painter,
-    viewModel: SharedRegisterViewModel
+fun RegisterGender(
+    onNavigate: NavHostController,
+    viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
+    //Snack bar
+    var snackbarMessage by remember { mutableStateOf<String?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // This LaunchedEffect listens to the UI events and performs actions accordingly
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect() { event ->
+            when (event) {
+                is UiEvent.Navigate -> onNavigate.navigate(event.route)
+                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
+                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+            }
+        }
+    }
+
+    val maleImagePainter = painterResource(id = R.drawable.boy)
+    val femaleImagePainter = painterResource(id = R.drawable.girl)
+
+
     val selectedGender = remember { mutableStateOf<Gender?>(null) }
 
     Column(
@@ -101,6 +121,8 @@ fun GenderSelectionScreen(
             Text(text = "Next", fontSize = 18.sp)
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
+    SnackbarHost(hostState = snackbarHostState)
 }
 
 @Composable
@@ -145,37 +167,6 @@ fun GenderOption(
         Text(text = label, fontSize = 16.sp)
         Spacer(modifier = Modifier.height(16.dp))
     }
-}
-//Main Screen
-@Composable
-fun RegisterGender(
-    onNavigate: NavHostController,
-    viewModel: SharedRegisterViewModel = hiltViewModel()
-) {
-    val maleImagePainter = painterResource(id = R.drawable.boy)
-    val femaleImagePainter = painterResource(id = R.drawable.girl)
-
-    //Snack bar
-    var snackbarMessage by remember { mutableStateOf<String?>(null) }
-    val snackbarHostState = remember { SnackbarHostState() }
-
-    // This LaunchedEffect listens to the UI events and performs actions accordingly
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect() { event ->
-            when (event) {
-                is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
-                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
-            }
-        }
-    }
-    GenderSelectionScreen(
-        maleImagePainter = maleImagePainter,
-        femaleImagePainter = femaleImagePainter,
-        viewModel = viewModel
-    )
-    Spacer(modifier = Modifier.height(10.dp))
-    SnackbarHost(hostState = snackbarHostState)
 }
 
 
