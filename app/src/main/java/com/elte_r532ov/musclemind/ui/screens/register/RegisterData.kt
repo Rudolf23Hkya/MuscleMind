@@ -42,7 +42,7 @@ fun RegisterData(
         OutlinedTextField(
             value = nameState.value,
             onValueChange = { nameState.value = it },
-            label = { Text("Name") },
+            label = { Text("Username") },
             singleLine = true
         )
 

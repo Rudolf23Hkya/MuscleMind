@@ -45,7 +45,7 @@ fun LoginScreen(
 ) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
-    //Snackbar:
+    //Snack bar:
     var snackbarMessage by remember { mutableStateOf<String?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -55,6 +55,7 @@ fun LoginScreen(
             when (event) {
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
                 is UiEvent.ShowSnackbar -> snackbarMessage = event.message
+                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
             }
         }
     }

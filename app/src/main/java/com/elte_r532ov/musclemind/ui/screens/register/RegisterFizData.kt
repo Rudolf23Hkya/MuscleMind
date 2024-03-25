@@ -5,6 +5,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
@@ -12,12 +16,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.elte_r532ov.musclemind.ui.screens.login.LoginEvent
 
 @Composable
 fun RegisterFizData(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel()
 ) {
+    var weight by remember { mutableStateOf("") }
+    var age by remember { mutableStateOf("") }
+    var height by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -44,14 +52,26 @@ fun RegisterFizData(
                 fontSize = 16.sp
             )
             Spacer(modifier = Modifier.height(32.dp))
-            UserInfoTextField(label = "Weight", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            UserInfoTextField(
+                value = weight,
+                onValueChange = { weight = it },
+                label = "Weight",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             Spacer(modifier = Modifier.height(16.dp))
-            UserInfoTextField(label = "Age", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            UserInfoTextField(
+                value = age,
+                onValueChange = { age = it },
+                label = "Age",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             Spacer(modifier = Modifier.height(16.dp))
-            UserInfoTextField(label = "Height", keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+            UserInfoTextField(
+                value = height,
+                onValueChange = { height = it },
+                label = "Height",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { /* TODO: Handle the next button click here */ },
+                onClick = {  viewModel.onEvent(RegisterEvent.onFizDataChosen(weight,age,height))},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
@@ -64,10 +84,14 @@ fun RegisterFizData(
 }
 
 @Composable
-fun UserInfoTextField(label: String, keyboardOptions: KeyboardOptions) {
+fun UserInfoTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    keyboardOptions: KeyboardOptions){
     OutlinedTextField(
-        value = "",
-        onValueChange = { /* TODO: Handle the text change here */ },
+        value = value,
+        onValueChange = onValueChange,
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
         singleLine = true,

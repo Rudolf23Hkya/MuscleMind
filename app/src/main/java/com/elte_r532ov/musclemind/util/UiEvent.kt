@@ -6,4 +6,5 @@ sealed class UiEvent {
     data class ShowSnackbar(
         val message: String
     ) : UiEvent()
+    data class ErrorOccured(val errMsg: String) : UiEvent()
 }

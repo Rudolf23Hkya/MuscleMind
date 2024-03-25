@@ -2,15 +2,19 @@ package com.elte_r532ov.musclemind.ui.screens.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,19 +24,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.R
 import com.elte_r532ov.musclemind.data.Gender
+import com.elte_r532ov.musclemind.util.UiEvent
+import androidx.compose.ui.input.pointer.pointerInput
 
 @Composable
 fun GenderSelectionScreen(
     maleImagePainter: Painter,
     femaleImagePainter: Painter,
-    onNextClick: () -> Unit
+    viewModel: SharedRegisterViewModel
 ) {
     val selectedGender = remember { mutableStateOf<Gender?>(null) }
 
@@ -81,7 +89,13 @@ fun GenderSelectionScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = onNextClick,
+            onClick =  {
+                selectedGender.value?.let {
+                    RegisterEvent.onGenderChosen(
+                        it
+                    )
+                }?.let { viewModel.onEvent(it) }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(text = "Next", fontSize = 18.sp)
@@ -100,7 +114,9 @@ fun GenderOption(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .size(160.dp)
-            .clickable { onSelect() }
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { onSelect() })
+            }
     ) {
         Image(
             painter = imagePainter,
@@ -108,6 +124,17 @@ fun GenderOption(
             contentScale = ContentScale.Crop,
             modifier = Modifier
                 .size(100.dp)
+                .graphicsLayer {
+                    // Scale up the size for the selected option
+                    scaleX = if (isSelected) 1.2f else 1f
+                    scaleY = if (isSelected) 1.2f else 1f
+                }
+                .then(
+                    if (isSelected) Modifier.border(
+                        2.dp, MaterialTheme.colorScheme.primary,
+                        CircleShape
+                    ) else Modifier
+                )
                 .background(
                     if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
                     CircleShape
@@ -125,17 +152,30 @@ fun RegisterGender(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel()
 ) {
-    // You would have to replace these with actual image resources from your project
     val maleImagePainter = painterResource(id = R.drawable.boy)
     val femaleImagePainter = painterResource(id = R.drawable.girl)
 
+    //Snack bar
+    var snackbarMessage by remember { mutableStateOf<String?>(null) }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // This LaunchedEffect listens to the UI events and performs actions accordingly
+    LaunchedEffect(key1 = true) {
+        viewModel.uiEvent.collect() { event ->
+            when (event) {
+                is UiEvent.Navigate -> onNavigate.navigate(event.route)
+                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
+                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+            }
+        }
+    }
     GenderSelectionScreen(
         maleImagePainter = maleImagePainter,
         femaleImagePainter = femaleImagePainter,
-        onNextClick = {
-            // Handle the next button click here
-        }
+        viewModel = viewModel
     )
+    Spacer(modifier = Modifier.height(10.dp))
+    SnackbarHost(hostState = snackbarHostState)
 }
 
 
