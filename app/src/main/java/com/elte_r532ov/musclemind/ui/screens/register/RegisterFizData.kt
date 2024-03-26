@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.ui.screens.login.LoginEvent
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 
@@ -32,7 +31,7 @@ fun RegisterFizData(
 
     // This LaunchedEffect listens to the UI events and performs actions accordingly
     LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect() { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
                 is UiEvent.ShowSnackbar -> snackbarMessage = event.message
@@ -100,6 +99,8 @@ fun RegisterFizData(
             }
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
+    SnackbarHost(hostState = snackbarHostState)
 }
 
 @Composable

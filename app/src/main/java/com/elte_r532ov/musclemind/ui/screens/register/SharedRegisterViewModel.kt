@@ -61,6 +61,9 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
             }
             //Setters and Navs
             is RegisterEvent.onGenderChosen -> {
+                if(event.gender == null){
+                    sendUiEvent(UiEvent.ErrorOccured("You need to choose!"))
+                }
                 if(event.gender == Gender.MALE){
                     this.gender = Gender.MALE
                 }

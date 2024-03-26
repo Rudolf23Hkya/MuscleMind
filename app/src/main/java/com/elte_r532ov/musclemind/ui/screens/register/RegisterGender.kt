@@ -110,11 +110,7 @@ fun RegisterGender(
 
         Button(
             onClick =  {
-                selectedGender.value?.let {
-                    RegisterEvent.onGenderChosen(
-                        it
-                    )
-                }?.let { viewModel.onEvent(it) }
+                       viewModel.onEvent(RegisterEvent.onGenderChosen(selectedGender.value))
             },
             modifier = Modifier.fillMaxWidth()
         ) {
