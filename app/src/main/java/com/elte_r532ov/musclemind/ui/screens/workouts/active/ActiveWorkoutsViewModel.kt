@@ -8,7 +8,7 @@ import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepoImpl
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
 import com.elte_r532ov.musclemind.util.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ActiveWorkoutsViewModel @Inject constructor(
     private val userRepo: MuscleMindRepository,
-    private val workoutRepo : WorkoutExcRepoImpl,
+    private val workoutRepo : WorkoutExcRepository,
     private val sessionManagement: SessionManagement
 ) : ViewModel() {
 
@@ -47,3 +47,4 @@ suspend fun echoUserName(repository : MuscleMindRepository, sessionManagement : 
 
     return repository.getUserBySessionToken(sessionToken!!)?.name ?: "UserNotFound"
 }
+

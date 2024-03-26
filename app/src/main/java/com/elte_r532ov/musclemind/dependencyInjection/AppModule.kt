@@ -6,7 +6,9 @@ import com.elte_r532ov.musclemind.data.userData.MuscleMindDB
 import com.elte_r532ov.musclemind.data.userData.MuscleMindRepoImpl
 import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutDao
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout_ExerciseDatabase
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepoImpl
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExerciseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,18 +40,17 @@ object AppModule {
     // Provide the new WorkoutDatabase
     @Provides
     @Singleton
-    fun provideWorkoutDatabase(app: Application): Workout_ExerciseDatabase {
+    fun provideWorkoutDatabase(app: Application): WorkoutExerciseDatabase {
         return Room.databaseBuilder(
             app.applicationContext,
-            Workout_ExerciseDatabase::class.java,
+            WorkoutExerciseDatabase::class.java,
             "workout_db"
         ).fallbackToDestructiveMigration().build()
     }
 
-    // Provide the WorkoutDao from the WorkoutDatabase
     @Provides
     @Singleton
-    fun provideWorkoutRepository(db: Workout_ExerciseDatabase): WorkoutDao {
-        return db.workoutDao()
+    fun provideWorkoutExcRepository(db : WorkoutExerciseDatabase) : WorkoutExcRepository {
+        return WorkoutExcRepoImpl(db.workoutDao())
     }
 }
