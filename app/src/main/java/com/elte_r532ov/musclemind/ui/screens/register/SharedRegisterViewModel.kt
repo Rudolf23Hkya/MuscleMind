@@ -9,12 +9,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.ExperienceLevel
-import com.elte_r532ov.musclemind.data.Gender
-import com.elte_r532ov.musclemind.data.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.UserData
+import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
+import com.elte_r532ov.musclemind.data.userData.Gender
+import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.userData.UserData
 import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.data.SessionManagement
+import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -25,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SharedRegisterViewModel @Inject constructor(
     private val repository: MuscleMindRepository,
-    private val sessionManagement: SessionManagement)
+    private val sessionManagement: SessionManagement
+)
     : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -154,7 +155,7 @@ class SharedRegisterViewModel @Inject constructor(
             _uiEvent.send(event)
         }
     }
-    private suspend fun addUserToDB(): UserData{
+    private suspend fun addUserToDB(): UserData {
         Log.d("MyActivity", this.email+" ,"+this.name+" ,"+
                 this.age+", "+this.weight+", "+this.height +
                 ", "+this.experienceLevel.toString()+"," +this.gender.toString())

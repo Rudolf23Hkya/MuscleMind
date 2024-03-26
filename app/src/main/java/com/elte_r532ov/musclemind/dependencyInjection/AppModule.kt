@@ -2,9 +2,9 @@ package com.elte_r532ov.musclemind.dependencyInjection
 
 import android.app.Application
 import androidx.room.Room
-import com.elte_r532ov.musclemind.data.MuscleMindDB
-import com.elte_r532ov.musclemind.data.MuscleMindRepoImpl
-import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.userData.MuscleMindDB
+import com.elte_r532ov.musclemind.data.userData.MuscleMindRepoImpl
+import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +19,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideUserDataDatabase(app : Application) : MuscleMindDB{
+    fun provideUserDataDatabase(app : Application) : MuscleMindDB {
         return Room.databaseBuilder(
             app.applicationContext,
             MuscleMindDB::class.java,

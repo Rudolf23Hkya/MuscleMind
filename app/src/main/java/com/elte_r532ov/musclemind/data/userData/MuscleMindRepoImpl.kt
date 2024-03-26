@@ -1,9 +1,9 @@
-package com.elte_r532ov.musclemind.data
+package com.elte_r532ov.musclemind.data.userData
 
 //This is the implementation for transferring data from and to the app
 class MuscleMindRepoImpl(
     private val dao : UserDataDao
-) : MuscleMindRepository{
+) : MuscleMindRepository {
     override suspend fun insertUserData(ud: UserData) {
         dao.insertUserData(ud)
     }

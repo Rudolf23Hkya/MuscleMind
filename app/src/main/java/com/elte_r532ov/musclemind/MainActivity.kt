@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 composable(Routes.WORKOUTS_ACTIVE) {
-                    ActiveWorkouts()
+                    ActiveWorkouts(navController)
                 }
             }
         }
