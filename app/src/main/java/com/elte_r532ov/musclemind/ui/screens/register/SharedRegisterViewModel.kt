@@ -22,7 +22,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedRegisterViewModel @Inject constructor(private val repository: MuscleMindRepository) : ViewModel() {
+class SharedRegisterViewModel @Inject constructor(private val repository: MuscleMindRepository)
+    : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
@@ -127,10 +128,15 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
                     this.email = event.email
 
                     viewModelScope.launch{
-                        addUserToDB()
-                        //Login User
+                        try{
+                            addUserToDB()
+                            //Login User
 
-                        sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                            sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                        }
+                        catch (e: Exception){
+                            Log.e("MyActivity",e.toString() )
+                        }
                     }
                 }
             }
@@ -146,6 +152,21 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
         Log.d("MyActivity", this.email+" ,"+this.name+", "+
                 this.password+" ,"+this.age+", "+this.weight+", "+this.height +
                 ", "+this.experienceLevel.toString()+"," +this.gender.toString())
+
+        //Adding new user to the database
+        val newUser = UserData(
+            id = 0, // 0 if autoGenerate is true
+            email = this.email,
+            name = this.name,
+            password = this.password,
+            gender = this.gender!!,
+            experienceLevel = this.experienceLevel!!,
+            age = this.age,
+            weight = this.weight,
+            height = this.height
+        )
+        repository.insertUserData(newUser)
     }
-    private fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
+            Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }

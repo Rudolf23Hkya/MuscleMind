@@ -43,8 +43,7 @@ class LoginViewModel @Inject constructor(private val repository: MuscleMindRepos
                 }
                 else{
                     val msg =  "No such e-mail in our Database"
-                    Log.d(event.eMail, msg)
-                    sendUiEvent(UiEvent.ShowSnackbar(event.eMail+": "+msg))
+                    Log.d(msg,event.eMail)
                 }
             }
             is LoginEvent.onContinueWithGoogle -> {
