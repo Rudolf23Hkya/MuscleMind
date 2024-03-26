@@ -8,6 +8,7 @@ import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepoImpl
 import com.elte_r532ov.musclemind.util.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ActiveWorkoutsViewModel @Inject constructor(
-    private val repository: MuscleMindRepository,
+    private val userRepo: MuscleMindRepository,
+    private val workoutRepo : WorkoutExcRepoImpl,
     private val sessionManagement: SessionManagement
 ) : ViewModel() {
 
@@ -26,7 +28,7 @@ class ActiveWorkoutsViewModel @Inject constructor(
     val userNameLiveData: LiveData<String> = _userName
     init {
         viewModelScope.launch {
-            _userName.value = echoUserName(repository,sessionManagement)
+            _userName.value = echoUserName(userRepo,sessionManagement)
 
             _uiEvent.send(UiEvent.ShowSnackbar("Hello $_userName.value"))
         }
