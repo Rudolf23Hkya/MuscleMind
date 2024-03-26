@@ -60,7 +60,7 @@ fun ActiveWorkouts() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    "Hello Dear",
+                    "Hello ",
                     fontSize = 32.sp,
                     fontFamily = myFontFamily,
                     fontWeight = FontWeight.Bold,

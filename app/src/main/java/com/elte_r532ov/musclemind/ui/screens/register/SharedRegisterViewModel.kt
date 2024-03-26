@@ -14,6 +14,7 @@ import com.elte_r532ov.musclemind.data.Gender
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.UserData
 import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.data.SessionManagement
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -22,7 +23,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SharedRegisterViewModel @Inject constructor(private val repository: MuscleMindRepository)
+class SharedRegisterViewModel @Inject constructor(
+    private val repository: MuscleMindRepository,
+    private val sessionManagement: SessionManagement)
     : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -129,9 +132,13 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
 
                     viewModelScope.launch{
                         try{
-                            addUserToDB()
-                            //Login User
+                            //Adding the new User To the DB
+                            val user =addUserToDB()
 
+                            //Logging in the user after successful account creation
+                            loginUser(user)
+
+                            //Navigating to user-s Active Workouts
                             sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
                         }
                         catch (e: Exception){
@@ -147,15 +154,15 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
             _uiEvent.send(event)
         }
     }
-    //TODO -"Creates an account and loggs it in" - Needs to be accessible to LoginViewModel
-    private suspend fun addUserToDB(){
-        Log.d("MyActivity", this.email+" ,"+this.name+", "+
-                this.password+" ,"+this.age+", "+this.weight+", "+this.height +
+    private suspend fun addUserToDB(): UserData{
+        Log.d("MyActivity", this.email+" ,"+this.name+" ,"+
+                this.age+", "+this.weight+", "+this.height +
                 ", "+this.experienceLevel.toString()+"," +this.gender.toString())
 
         //Adding new user to the database
         val newUser = UserData(
             id = 0, // 0 if autoGenerate is true
+            sessionToken = sessionManagement.generateSessionToken(),
             email = this.email,
             name = this.name,
             password = this.password,
@@ -166,6 +173,10 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
             height = this.height
         )
         repository.insertUserData(newUser)
+        return newUser
+    }
+    private fun loginUser(user: UserData){
+        sessionManagement.saveSessionToken(user.sessionToken)
     }
     private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
             Patterns.EMAIL_ADDRESS.matcher(this).matches()

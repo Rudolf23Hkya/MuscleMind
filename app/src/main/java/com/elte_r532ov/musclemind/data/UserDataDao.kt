@@ -17,4 +17,7 @@ interface UserDataDao {
     @Query("SELECT * FROM users WHERE email = :email AND password = :password")
     suspend fun loginAttempt(email : String,password: String): UserData?
 
+    @Query("SELECT * FROM users WHERE sessionToken = :sT")
+    suspend fun getUserBySessionToken(sT : String):UserData?
+
 }

@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
     indices = [Index(value = ["email"], unique = true)])
 data class UserData(
     @PrimaryKey(autoGenerate = true) val id: Int,
+    val sessionToken: String,
     @ColumnInfo(name = "email")val email: String,
     val name: String,
     val password: String,

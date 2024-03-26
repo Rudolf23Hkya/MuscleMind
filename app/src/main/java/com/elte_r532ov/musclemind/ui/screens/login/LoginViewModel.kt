@@ -4,22 +4,24 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.SessionManagement
 import com.elte_r532ov.musclemind.data.UserData
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: MuscleMindRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val repository: MuscleMindRepository,
+    private val sessionManagement: SessionManagement
+) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-    var userData : UserData? = null
+    private var userData : UserData? = null
 
     private var rememberMeClicked = false
 
@@ -39,6 +41,9 @@ class LoginViewModel @Inject constructor(private val repository: MuscleMindRepos
                     userData = repository.loginAttempt(event.eMail, event.password)
                 }
                 if(userData != null){
+                    //Creating session
+                    sessionManagement.saveSessionToken(userData!!.sessionToken)
+                    //Changing the view
                     sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
                 }
                 else{

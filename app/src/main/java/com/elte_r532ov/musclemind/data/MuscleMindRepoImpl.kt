@@ -15,4 +15,8 @@ class MuscleMindRepoImpl(
     override suspend fun loginAttempt(email : String, password : String): UserData? {
         return dao.loginAttempt(email,password)
     }
+
+    override suspend fun getUserBySessionToken(sT: String): UserData? {
+        return dao.getUserBySessionToken(sT)
+    }
 }
