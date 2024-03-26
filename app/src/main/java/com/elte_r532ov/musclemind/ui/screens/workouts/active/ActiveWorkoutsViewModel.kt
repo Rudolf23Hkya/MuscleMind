@@ -8,6 +8,10 @@ import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.Category
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
+import com.elte_r532ov.musclemind.data.workoutsAndExercises.MuscleGroup
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
 import com.elte_r532ov.musclemind.util.UiEvent
 import kotlinx.coroutines.channels.Channel
@@ -32,7 +36,10 @@ class ActiveWorkoutsViewModel @Inject constructor(
 
             _uiEvent.send(UiEvent.ShowSnackbar("Hello $_userName.value"))
         }
+
     }
+
+
 
 
     private fun sendUiEvent(event: UiEvent){

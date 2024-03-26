@@ -26,6 +26,7 @@ interface WorkoutDao {
     @Transaction
     @Query("SELECT * FROM exercises WHERE exerciseId = :exerciseId")
     suspend fun getExerciseWithWorkouts(exerciseId: Long): List<ExerciseWithWorkouts>
+
 }
 data class WorkoutWithExercises(
     @Embedded val workout: Workout,

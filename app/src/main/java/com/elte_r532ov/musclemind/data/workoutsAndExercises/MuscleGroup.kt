@@ -4,7 +4,5 @@ enum class MuscleGroup {
     LOWER_BODY,
     UPPER_BODY,
     ABS,
-    BACK,
-    HANDS,
-    LEGS
+    BACK
 }

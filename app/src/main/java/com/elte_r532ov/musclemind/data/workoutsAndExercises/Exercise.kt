@@ -11,7 +11,7 @@ data class Exercise(
     val category: Category,
     val muscleGroup: MuscleGroup,
     val experienceLevel: ExperienceLevel,
-    val duration: Int,
+    val duration: Int, // In sec
     val caloriesBurnt: Int,
     val drawablePicName: String
 )
