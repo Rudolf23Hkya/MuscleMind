@@ -7,7 +7,6 @@ import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.ExperienceLevel
@@ -26,21 +25,20 @@ import javax.inject.Inject
 class SharedRegisterViewModel @Inject constructor(private val repository: MuscleMindRepository) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-    var userData : UserData? = null
 
-    init {
-        Log.d("ViewModel", "ViewModel created")
-    }
 
     //USER DATA COLLECTED
-    var name by mutableStateOf("")
-    var email by mutableStateOf("")
-    var password by mutableStateOf("")
-    var gender by mutableStateOf<Gender?>(null)
-    var experienceLevel by mutableStateOf<ExperienceLevel?>(null)
-    var age by mutableIntStateOf(0)
-    var weight by mutableDoubleStateOf(0.0)
-    var height by mutableDoubleStateOf(0.0)
+    //TODO - Go back arrow needs to be implemented in the view
+    //TODO - If a previous view is loaded it s content is loaded from the VM
+
+    private var name by mutableStateOf("")
+    private var email by mutableStateOf("")
+    private var password by mutableStateOf("")
+    private var gender by mutableStateOf<Gender?>(null)
+    private var experienceLevel by mutableStateOf<ExperienceLevel?>(null)
+    private var age by mutableIntStateOf(0)
+    private var weight by mutableDoubleStateOf(0.0)
+    private var height by mutableDoubleStateOf(0.0)
 
     //UserData(0,"","","",
     //        Gender.MALE,ExperienceLevel.NEW,0,0.0,0.0)
@@ -99,9 +97,14 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
                 }
             }
             is RegisterEvent.onExperienceChosen -> {
-                this.experienceLevel = event.exp
+                if(event.exp == null){
+                    sendUiEvent(UiEvent.ErrorOccured("You need to choose!"))
+                }
+                else{
+                    this.experienceLevel = event.exp
 
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_ACCOUNT_DATA))
+                    sendUiEvent(UiEvent.Navigate(Routes.REGISTER_ACCOUNT_DATA))
+                }
             }
             is RegisterEvent.onUserDataChosen -> {
                 //Data validation
@@ -117,16 +120,18 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
                 else if(event.name.length < 2){
                     sendUiEvent(UiEvent.ErrorOccured("Invalid Username!"))
                 }
-                //Validated data can be saved to DB
-                this.password = event.fstPassword
-                this.name = event.name
-                this.email = event.email
+                else{
+                    //Validated data can be saved to DB
+                    this.password = event.fstPassword
+                    this.name = event.name
+                    this.email = event.email
 
-                 viewModelScope.launch{
-                     addUserToDB()
-                     //Login User - TODO
+                    viewModelScope.launch{
+                        addUserToDB()
+                        //Login User
 
-                     sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                        sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                    }
                 }
             }
         }
@@ -136,10 +141,11 @@ class SharedRegisterViewModel @Inject constructor(private val repository: Muscle
             _uiEvent.send(event)
         }
     }
+    //TODO -"Creates an account and loggs it in" - Needs to be accessible to LoginViewModel
     private suspend fun addUserToDB(){
         Log.d("MyActivity", this.email+" ,"+this.name+", "+
-                this.password+" ,"+this.age+", "+this.experienceLevel.toString()+"")
-        TODO("Creates an account and loggs it in")
+                this.password+" ,"+this.age+", "+this.weight+", "+this.height +
+                ", "+this.experienceLevel.toString()+"," +this.gender.toString())
     }
     private fun CharSequence?.isValidEmail() = !isNullOrEmpty() && Patterns.EMAIL_ADDRESS.matcher(this).matches()
 }

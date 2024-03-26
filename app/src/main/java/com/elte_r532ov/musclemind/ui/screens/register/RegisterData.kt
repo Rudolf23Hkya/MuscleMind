@@ -11,7 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -27,16 +26,16 @@ fun RegisterData(
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
     //Snack bar
-    var snackbarMessage by remember { mutableStateOf<String?>(null) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    var snackBarMessage by remember { mutableStateOf<String?>(null) }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // This LaunchedEffect listens to the UI events and performs actions accordingly
     LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect() { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
-                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
+                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
             }
         }
     }
@@ -45,7 +44,6 @@ fun RegisterData(
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     val confirmPasswordState = remember { mutableStateOf("") }
-    val rememberMeState = remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
@@ -98,27 +96,16 @@ fun RegisterData(
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = rememberMeState.value,
-                onCheckedChange = { rememberMeState.value = it }
-            )
-            Text(text = "Remember me")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = { onNavigate.navigate(route = Routes.WORKOUTS_ACTIVE){
-                popUpTo("registration") {
-                    inclusive = true
-                }
-            } },
+            onClick = {
+
+                viewModel.onEvent(RegisterEvent.onUserDataChosen(nameState.value
+                    ,emailState.value,
+                    passwordState.value,
+                    confirmPasswordState.value))
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp)
@@ -126,7 +113,8 @@ fun RegisterData(
             Text(text = "SIGN UP", fontSize = 18.sp)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
+        SnackbarHost(hostState = snackBarHostState)
 
     }
 }

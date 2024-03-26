@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -28,16 +29,16 @@ fun ExperienceSelectionScreen(
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
     //Snack bar
-    var snackbarMessage by remember { mutableStateOf<String?>(null) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    var snackBarMessage by remember { mutableStateOf<String?>(null) }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // This LaunchedEffect listens to the UI events and performs actions accordingly
     LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect() { event ->
+        viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
-                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
+                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
             }
         }
     }
@@ -84,6 +85,8 @@ fun ExperienceSelectionScreen(
             }
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
+    SnackbarHost(hostState = snackBarHostState)
 }
 
 @Composable
