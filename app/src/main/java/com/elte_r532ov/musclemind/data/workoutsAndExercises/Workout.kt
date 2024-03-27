@@ -9,5 +9,6 @@ data class Workout(
     @PrimaryKey(autoGenerate = true) val workoutId: Long = 0,
     val name: String,
     val experienceLevel: ExperienceLevel,
-    val drawablePicName: String
+    val drawablePicName: String,
+    val listOfExercises: List<Long>
 )

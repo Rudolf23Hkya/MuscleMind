@@ -103,6 +103,9 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:2.6.1")
+
+    //Gson converter for DB objects
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 // Allow references to generated code
