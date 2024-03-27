@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens
+package com.elte_r532ov.musclemind.ui
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon

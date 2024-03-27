@@ -1,17 +1,13 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -25,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -36,8 +31,7 @@ import androidx.navigation.compose.rememberNavController
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.runtime.livedata.observeAsState
-import com.elte_r532ov.musclemind.R
-import com.elte_r532ov.musclemind.ui.screens.BottomNavBar
+import com.elte_r532ov.musclemind.ui.BottomNavBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -93,39 +87,19 @@ fun ActiveWorkouts(
                     textDecoration = TextDecoration.Underline
                 )
             }
-            WorkoutList()
+            //WorkoutList()
         }
     }
 }
-//TODO - Lazy list upgrade
+/*
 @Composable
 fun WorkoutList() {
     Column(modifier = Modifier.padding(16.dp)) {
-        WorkoutCard("Workout Name1", R.drawable.warmup)
+        WorkoutItem("Workout Name1", "warmup")
         Spacer(modifier = Modifier.height(8.dp))
-        WorkoutCard("Workout Name2", R.drawable.own_body_weight)
+        WorkoutItem("Workout Name2", "own_body_weight")
+
     }
 }
 
-
-@Composable
-fun WorkoutCard(name: String, drawable: Int) {
-    Card(
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = drawable),
-                contentDescription = name,
-                modifier = Modifier
-                    .height(100.dp)
-                    .fillMaxWidth(0.75f)
-            )
-            Text(
-                text = name,
-                modifier = Modifier.padding(16.dp),
-                fontWeight = FontWeight.Bold
-            )
-        }
-    }
-}
+ */

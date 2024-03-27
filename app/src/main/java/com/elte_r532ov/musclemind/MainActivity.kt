@@ -19,6 +19,7 @@ import com.elte_r532ov.musclemind.ui.screens.workouts.active.ActiveWorkouts
 import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
+import com.elte_r532ov.musclemind.ui.screens.settings.MainSettingsScreen
 import javax.inject.Inject
 
 val myFontFamily = FontFamily(
@@ -78,6 +79,9 @@ fun MyApp(sessionManagement: SessionManagement) {
         }
         composable(Routes.WORKOUTS_ACTIVE) {
             ActiveWorkouts(navController)
+        }
+        composable(Routes.SETTINGS_MAIN){
+            MainSettingsScreen(navController)
         }
     }
 }
