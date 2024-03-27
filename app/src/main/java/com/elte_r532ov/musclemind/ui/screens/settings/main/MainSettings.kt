@@ -38,6 +38,7 @@ fun MainSettingsScreen(
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
                 is UiEvent.ShowSnackbar -> snackBarMessage = event.message
                 is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
+                else -> Unit
             }
         }
     }
@@ -63,11 +64,11 @@ fun MainSettingsScreen(
             SettingItem("Log Out") {
                 viewModel.onEvent(MainSettingsEvent.onLogOutClicked) }
             Spacer(modifier = Modifier.height(20.dp))
-            SettingItem("Change Profile Data") {
-                viewModel.onEvent(MainSettingsEvent.onChangeProfileDataClicked) }
+            SettingItem("Change Account Data") {
+                viewModel.onEvent(MainSettingsEvent.onChangeAccountDataClicked) }
             Spacer(modifier = Modifier.height(20.dp))
-            SettingItem("Account Settings") {
-                viewModel.onEvent(MainSettingsEvent.onAccountSettingsClicked) }
+            SettingItem("Change Password") {
+                viewModel.onEvent(MainSettingsEvent.onChangePasswordClicked) }
             Spacer(modifier = Modifier.height(20.dp))
         }
     }

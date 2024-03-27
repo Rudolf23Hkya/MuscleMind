@@ -36,6 +36,7 @@ fun RegisterData(
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
                 is UiEvent.ShowSnackbar -> snackBarMessage = event.message
                 is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
+                else -> Unit
             }
         }
     }

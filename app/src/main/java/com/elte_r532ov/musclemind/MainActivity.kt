@@ -19,6 +19,7 @@ import com.elte_r532ov.musclemind.ui.screens.workouts.active.ActiveWorkouts
 import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
+import com.elte_r532ov.musclemind.ui.screens.settings.ModifyAccountData
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import javax.inject.Inject
 
@@ -82,6 +83,9 @@ fun MyApp(sessionManagement: SessionManagement) {
         }
         composable(Routes.SETTINGS_MAIN){
             MainSettingsScreen(navController)
+        }
+        composable(Routes.SETTINGS_CHANGE_ACCOUNT_DATA){
+            ModifyAccountData(navController)
         }
     }
 }

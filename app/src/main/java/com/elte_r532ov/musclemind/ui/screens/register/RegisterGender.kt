@@ -54,6 +54,7 @@ fun RegisterGender(
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
                 is UiEvent.ShowSnackbar -> snackbarMessage = event.message
                 is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+                else -> Unit
             }
         }
     }

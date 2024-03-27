@@ -18,6 +18,6 @@ object Routes {
 
     //Settings
     const val SETTINGS_MAIN = "settings_main"
-    const val SETTINGS_CHANGE_PROFILE_DATA = "settings_change_profile_data"
-    const val SETTINGS_ACCOUNT = "settings_account"
+    const val SETTINGS_CHANGE_ACCOUNT_DATA = "settings_change_account_data"
+    const val SETTINGS_PASSWORD = "settings_password"
 }

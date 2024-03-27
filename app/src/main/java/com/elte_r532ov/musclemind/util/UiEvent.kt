@@ -7,4 +7,5 @@ sealed class UiEvent {
         val message: String
     ) : UiEvent()
     data class ErrorOccured(val errMsg: String) : UiEvent()
+
 }
