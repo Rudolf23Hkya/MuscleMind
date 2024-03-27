@@ -11,12 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -39,11 +34,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.elte_r532ov.musclemind.myFontFamily
-import com.elte_r532ov.musclemind.util.BottomNavItem
-import com.elte_r532ov.musclemind.util.BottomNavMenu
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.runtime.livedata.observeAsState
 import com.elte_r532ov.musclemind.R
+import com.elte_r532ov.musclemind.ui.screens.BottomNavBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -57,12 +51,6 @@ fun ActiveWorkouts(
     val workout_image_1 by viewModel.userNameLiveData.observeAsState("")
     val workout_image_2 by viewModel.userNameLiveData.observeAsState("")
 
-    val items = listOf(
-       BottomNavMenu.WORKOUTS,
-        BottomNavMenu.STATS,
-        BottomNavMenu.CALORIES,
-        BottomNavMenu.SETTINGS
-    )
     //SnackBar
     var snackBarMessage by remember { mutableStateOf<String?>(null) }
     val snackBarHostState = remember { SnackbarHostState() }
@@ -79,9 +67,9 @@ fun ActiveWorkouts(
 
     Scaffold(
         bottomBar = {
-            BottomNavBar(items = items, navController = navController, onItemClick = {
-                navController.navigate(it.route)
-            })
+            onNavigate.currentDestination?.route?.let {
+                BottomNavBar(it, onNavigate)
+            }
         },
         snackbarHost ={ SnackbarHost(snackBarHostState) }
 
@@ -119,20 +107,7 @@ fun WorkoutList() {
     }
 }
 
-@Composable
-fun BottomNavBar(items: List<BottomNavItem>, navController: NavHostController, onItemClick: (BottomNavItem) -> Unit) {
-    BottomAppBar {
-        items.forEach { item ->
-            val isSelected = item.route == navController.currentDestination?.route
-            NavigationBarItem(
-                icon = { Icon(painter = painterResource(id = item.icon), contentDescription = item.label, modifier = Modifier.size(20.dp)) },
-                label = { Text(item.label) },
-                selected = isSelected,
-                onClick = { onItemClick(item) }
-            )
-        }
-    }
-}
+
 @Composable
 fun WorkoutCard(name: String, drawable: Int) {
     Card(
