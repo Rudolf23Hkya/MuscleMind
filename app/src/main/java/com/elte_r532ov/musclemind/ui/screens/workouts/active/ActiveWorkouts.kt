@@ -1,15 +1,20 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -38,6 +43,7 @@ import com.elte_r532ov.musclemind.util.BottomNavItem
 import com.elte_r532ov.musclemind.util.BottomNavMenu
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.runtime.livedata.observeAsState
+import com.elte_r532ov.musclemind.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -47,6 +53,9 @@ fun ActiveWorkouts(
 ) {
     val navController = rememberNavController()
     val userName by viewModel.userNameLiveData.observeAsState("")
+
+    val workout_image_1 by viewModel.userNameLiveData.observeAsState("")
+    val workout_image_2 by viewModel.userNameLiveData.observeAsState("")
 
     val items = listOf(
        BottomNavMenu.WORKOUTS,
@@ -96,7 +105,17 @@ fun ActiveWorkouts(
                     textDecoration = TextDecoration.Underline
                 )
             }
+            WorkoutList()
         }
+    }
+}
+//TODO - Lazy list upgrade
+@Composable
+fun WorkoutList() {
+    Column(modifier = Modifier.padding(16.dp)) {
+        WorkoutCard("Workout Name1", R.drawable.warmup)
+        Spacer(modifier = Modifier.height(8.dp))
+        WorkoutCard("Workout Name2", R.drawable.own_body_weight)
     }
 }
 
@@ -110,6 +129,27 @@ fun BottomNavBar(items: List<BottomNavItem>, navController: NavHostController, o
                 label = { Text(item.label) },
                 selected = isSelected,
                 onClick = { onItemClick(item) }
+            )
+        }
+    }
+}
+@Composable
+fun WorkoutCard(name: String, drawable: Int) {
+    Card(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = drawable),
+                contentDescription = name,
+                modifier = Modifier
+                    .height(100.dp)
+                    .fillMaxWidth(0.75f)
+            )
+            Text(
+                text = name,
+                modifier = Modifier.padding(16.dp),
+                fontWeight = FontWeight.Bold
             )
         }
     }
