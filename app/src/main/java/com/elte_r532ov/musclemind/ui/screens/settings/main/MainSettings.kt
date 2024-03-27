@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.settings
+package com.elte_r532ov.musclemind.ui.screens.settings.main
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

@@ -20,4 +20,7 @@ interface UserDataDao {
     @Query("SELECT * FROM users WHERE sessionToken = :sT")
     suspend fun getUserBySessionToken(sT : String): UserData?
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun modifyData(ud:UserData)
+
 }

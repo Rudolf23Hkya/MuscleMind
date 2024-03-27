@@ -19,7 +19,7 @@ import com.elte_r532ov.musclemind.ui.screens.workouts.active.ActiveWorkouts
 import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
-import com.elte_r532ov.musclemind.ui.screens.settings.MainSettingsScreen
+import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import javax.inject.Inject
 
 val myFontFamily = FontFamily(
