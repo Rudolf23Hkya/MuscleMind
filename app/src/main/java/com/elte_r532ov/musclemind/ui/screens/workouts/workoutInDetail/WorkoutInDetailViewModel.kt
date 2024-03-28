@@ -19,8 +19,7 @@ import kotlin.properties.Delegates
 
 @HiltViewModel
 class WorkoutInDetailViewModel @Inject constructor(
-    private val workoutRepo : WorkoutExcRepository,
-    private val sessionManagement: SessionManagement
+    private val workoutRepo : WorkoutExcRepository
 ) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()

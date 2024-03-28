@@ -18,10 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
-import com.elte_r532ov.musclemind.util.Routes
 
 @Composable
 fun WorkoutItem(workout: Workout, navigation: NavHostController) {

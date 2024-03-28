@@ -24,6 +24,7 @@ import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.settings.ModifyAccountData
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
+import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInProgress.WorkoutInProgress
 import javax.inject.Inject
 
 val myFontFamily = FontFamily(
@@ -91,6 +92,9 @@ fun MyApp(sessionManagement: SessionManagement) {
             //Passing parameter with Navigation
             val workoutID = it.arguments?.getLong("workoutId") ?:""
             WorkoutInDetail(workoutID.toString().toLong(),navController)
+        }
+        composable(Routes.WORKOUTS_START){
+            WorkoutInProgress(navController)
         }
         composable(Routes.SETTINGS_MAIN){
             MainSettingsScreen(navController)

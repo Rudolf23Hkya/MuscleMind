@@ -16,7 +16,7 @@ object Routes {
     //Workouts
     const val WORKOUTS_ACTIVE = "workouts_active"
     const val WORKOUTS_IN_DETAIL = "workouts_in_detail/{workoutId}"
-    const val WORKOUTS_IN_PROGRESS = "workouts_in_progress/{workoutId}"
+    const val WORKOUTS_START = "workouts_start"
 
 
     //Settings

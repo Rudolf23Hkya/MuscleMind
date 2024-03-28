@@ -1,7 +1,6 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,7 +12,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,16 +35,17 @@ import androidx.compose.ui.unit.sp
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.ExerciseItemItem
+import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun WorkoutInDetail(
-    workoutID : Long,
+    workoutId : Long,
     onNavigate: NavHostController,
     viewModel: WorkoutInDetailViewModel = hiltViewModel()
 ){
-    viewModel.initWorkoutId(workoutID)
+    viewModel.initWorkoutId(workoutId)
 
     //SnackBar
     var snackBarMessage by remember { mutableStateOf<String?>(null) }
@@ -74,7 +73,7 @@ fun WorkoutInDetail(
         snackbarHost ={ SnackbarHost(snackBarHostState) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /* Handle click here */ },
+                onClick = { onNavigate.navigate(Routes.WORKOUTS_START)},
                 containerColor = MaterialTheme.colorScheme.inversePrimary
             ) {
                 Icon(Icons.Filled.PlayArrow, "Start")
