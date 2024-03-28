@@ -14,4 +14,10 @@ interface WorkoutExcRepository {
     suspend fun getWorkoutWithExercises(workoutId: Long): List<WorkoutWithExercises>
 
     suspend fun getExerciseWithWorkouts(exerciseId: Long): List<ExerciseWithWorkouts>
+
+    suspend fun getWorkouts() :List<Workout>
+
+    suspend fun getWorkoutWithID(workoutId: Long): Workout
+
+    suspend fun getExerciseWithId(exerciseId: Long): Exercise
 }

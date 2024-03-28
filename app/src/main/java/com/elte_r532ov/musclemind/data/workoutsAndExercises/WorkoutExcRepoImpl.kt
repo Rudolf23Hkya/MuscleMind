@@ -21,4 +21,17 @@ class WorkoutExcRepoImpl(private val dao: WorkoutDao) : WorkoutExcRepository {
     override suspend fun getExerciseWithWorkouts(exerciseId: Long): List<ExerciseWithWorkouts> {
         return  dao.getExerciseWithWorkouts(exerciseId)
     }
+
+    override suspend fun getWorkouts(): List<Workout> {
+        return dao.getWorkouts()
+    }
+
+    override suspend fun getWorkoutWithID(workoutId: Long): Workout {
+        return dao.getWorkoutWithId(workoutId)
+    }
+
+    override suspend fun getExerciseWithId(exerciseId: Long): Exercise {
+        return dao.getExerciseWithId(exerciseId)
+    }
+
 }

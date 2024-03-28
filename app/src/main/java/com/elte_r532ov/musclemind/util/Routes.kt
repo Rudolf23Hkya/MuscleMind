@@ -13,7 +13,10 @@ object Routes {
 
     const val STATS_OVERVIEW = "stats_overview"
     const val CALORIES_OVERVIEW = "calories_overview"
+    //Workouts
     const val WORKOUTS_ACTIVE = "workouts_active"
+    const val WORKOUTS_IN_DETAIL = "workouts_in_detail/{workoutId}"
+    const val WORKOUTS_IN_PROGRESS = "workouts_in_progress/{workoutId}"
 
 
     //Settings

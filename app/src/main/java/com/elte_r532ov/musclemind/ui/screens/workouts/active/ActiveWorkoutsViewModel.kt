@@ -28,13 +28,16 @@ class ActiveWorkoutsViewModel @Inject constructor(
     private val _userName = MutableLiveData<String>()
     val userNameLiveData: LiveData<String> = _userName
 
-    private val _activeWorkouts = MutableLiveData<Workout>()
-    val activeWorkoutLiveData: LiveData<Workout> = _activeWorkouts
+    private val _activeWorkouts = MutableLiveData<List<Workout>>()
+    val activeWorkoutLiveData: LiveData<List<Workout>> = _activeWorkouts
+
 
     init {
         viewModelScope.launch {
             _userName.value = echoUserName(userRepo,sessionManagement)
-            //_activeWorkouts.value = workoutRepo.
+
+            val workouts = workoutRepo.getWorkouts()
+            _activeWorkouts.value = workouts
 
             _uiEvent.send(UiEvent.ShowSnackbar("Hello $_userName.value"))
         }
@@ -48,11 +51,10 @@ class ActiveWorkoutsViewModel @Inject constructor(
             _uiEvent.send(event)
         }
     }
-}
+    private suspend fun echoUserName(repository : MuscleMindRepository, sessionManagement : SessionManagement) : String{
+        val sessionToken = sessionManagement.getSessionToken()
 
-suspend fun echoUserName(repository : MuscleMindRepository, sessionManagement : SessionManagement) : String{
-    val sessionToken = sessionManagement.getSessionToken()
-
-    return repository.getUserBySessionToken(sessionToken!!)?.name ?: "UserNotFound"
+        return repository.getUserBySessionToken(sessionToken!!)?.name ?: "UserNotFound"
+    }
 }
 

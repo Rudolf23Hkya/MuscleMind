@@ -2,7 +2,9 @@ package com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,10 +18,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
+import com.elte_r532ov.musclemind.util.Routes
 
 @Composable
-fun WorkoutItem(workout: Workout, navigate: NavHostController) {
+fun WorkoutItem(workout: Workout, navigation: NavHostController) {
     val context = LocalContext.current
 
     val imageResId = context.resources.getIdentifier(workout.drawablePicName, "drawable", context.packageName)
@@ -28,23 +33,27 @@ fun WorkoutItem(workout: Workout, navigate: NavHostController) {
             modifier =
             Modifier.fillMaxWidth().
             clickable {
-                //TODO - Navigate To The Workout s in Detail Page
+                val workoutId = workout.workoutId
+                navigation.navigate("workouts_in_detail/$workoutId")
             }
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start) {
                 Image(
                     painter = painterResource(id = imageResId),
                     contentDescription = workout.name,
                     modifier = Modifier
-                        .height(100.dp)
-                        .fillMaxWidth(0.75f)
+                        .weight(1f, fill = false) // Use weight for the image to occupy required space but not fill horizontally
                 )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Absolute.Left){
                 Text(
                     text = workout.name,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp).weight(2f, fill = false),
                     fontWeight = FontWeight.Bold
                 )
             }
+            Spacer(modifier = Modifier.height(12.dp))
+
         }
     }
     else{
