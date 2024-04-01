@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
+import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -39,7 +40,7 @@ class WorkoutInProgressViewModel @Inject constructor
         if(curExerciseId < exerciseIds.size)
             updateExercise(exerciseIds[this.curExerciseId])
         else
-            sendUiEvent(UiEvent.Navigate("workouts_in_detail/{$workoutId}"))
+            sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
     }
     fun skippedExercise(){
         this.curExerciseId++
@@ -47,7 +48,7 @@ class WorkoutInProgressViewModel @Inject constructor
         if(curExerciseId < exerciseIds.size)
             updateExercise(exerciseIds[this.curExerciseId])
         else
-            sendUiEvent(UiEvent.Navigate("workouts_in_detail/{$workoutId}"))
+            sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
     }
     private fun updateExercise(curExerciseId : Long){
         viewModelScope.launch {

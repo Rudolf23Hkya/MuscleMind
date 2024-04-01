@@ -8,4 +8,6 @@ sealed class UiEvent {
     ) : UiEvent()
     data class ErrorOccured(val errMsg: String) : UiEvent()
 
+    data class ShowFloatingActionButton(val show: Boolean) : UiEvent()
+
 }

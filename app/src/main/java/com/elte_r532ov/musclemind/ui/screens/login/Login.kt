@@ -131,22 +131,6 @@ fun LoginScreen(
                     .padding(horizontal = 32.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center,
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Checkbox(
-                        checked = false,
-                        onCheckedChange = {}
-                    )
-                    Text(
-                        "Remember me",
-                        fontFamily = myFontFamily,
-                        fontWeight = FontWeight.Medium,
-                        modifier = Modifier.padding(start = 1.dp)
-                    )
-                }
                 TextButton(
                     onClick = { /* Handle forgot password */ },
                     modifier = Modifier.weight(1f)

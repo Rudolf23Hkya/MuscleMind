@@ -43,7 +43,7 @@ import com.elte_r532ov.musclemind.util.UiEvent
 fun WorkoutInDetail(
     workoutId : Long,
     onNavigate: NavHostController,
-    viewModel: WorkoutInDetailViewModel = hiltViewModel()
+    viewModel: WorkoutInDetailSharedViewModel = hiltViewModel()
 ){
     viewModel.initWorkoutId(workoutId)
 
@@ -52,6 +52,7 @@ fun WorkoutInDetail(
     val snackBarHostState = remember { SnackbarHostState() }
 
     val selectedExercises = viewModel.selectedExercises.observeAsState(initial = emptyList())
+    var showFAB by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -59,6 +60,7 @@ fun WorkoutInDetail(
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
                 is UiEvent.ShowSnackbar -> snackBarMessage = event.message
                 is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
+                is UiEvent.ShowFloatingActionButton -> showFAB = event.show
                 else -> Unit
             }
         }
@@ -72,11 +74,14 @@ fun WorkoutInDetail(
         },
         snackbarHost ={ SnackbarHost(snackBarHostState) },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = { onNavigate.navigate(Routes.WORKOUTS_START)},
-                containerColor = MaterialTheme.colorScheme.inversePrimary
-            ) {
-                Icon(Icons.Filled.PlayArrow, "Start")
+            // Only render the Floating Action Btn if the exercises are loaded
+            if (showFAB) {
+                FloatingActionButton(
+                    onClick = { onNavigate.navigate(Routes.WORKOUTS_START) },
+                    containerColor = MaterialTheme.colorScheme.inversePrimary
+                ) {
+                    Icon(Icons.Filled.PlayArrow, "Start")
+                }
             }
         }
 

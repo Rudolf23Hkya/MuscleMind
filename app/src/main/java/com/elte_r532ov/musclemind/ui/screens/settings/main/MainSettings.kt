@@ -22,6 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.BottomNavBar
+import com.elte_r532ov.musclemind.ui.screens.login.LoginEvent
 import com.elte_r532ov.musclemind.util.UiEvent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -68,15 +69,46 @@ fun MainSettingsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(20.dp))
-            SettingItem("Log Out") {
-                viewModel.onEvent(MainSettingsEvent.onLogOutClicked) }
+
+            Button(
+                onClick = {viewModel.onEvent(MainSettingsEvent.onLogOutClicked)},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    "Log Out",
+                    fontFamily = myFontFamily,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Spacer(modifier = Modifier.height(20.dp))
-            SettingItem("Change Account Data") {
-                viewModel.onEvent(MainSettingsEvent.onChangeAccountDataClicked) }
+
+            Button(
+                onClick = {viewModel.onEvent(MainSettingsEvent.onChangeAccountDataClicked)},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    "Change Account Data",
+                    fontFamily = myFontFamily,
+                    fontWeight = FontWeight.Bold
+                )
+            }
             Spacer(modifier = Modifier.height(20.dp))
-            SettingItem("Change Password") {
-                viewModel.onEvent(MainSettingsEvent.onChangePasswordClicked) }
-            Spacer(modifier = Modifier.height(20.dp))
+            Button(
+                onClick = {viewModel.onEvent(MainSettingsEvent.onChangePasswordClicked)},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    "Change Password",
+                    fontFamily = myFontFamily,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }

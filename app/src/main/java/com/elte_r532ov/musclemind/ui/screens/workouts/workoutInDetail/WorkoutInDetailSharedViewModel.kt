@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
@@ -14,11 +13,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 
 @HiltViewModel
-class WorkoutInDetailViewModel @Inject constructor(
+class WorkoutInDetailSharedViewModel @Inject constructor(
     private val workoutRepo : WorkoutExcRepository
 ) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()

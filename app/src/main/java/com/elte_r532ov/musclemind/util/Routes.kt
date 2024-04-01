@@ -18,6 +18,8 @@ object Routes {
     const val WORKOUTS_IN_DETAIL = "workouts_in_detail/{workoutId}"
     const val WORKOUTS_START = "workouts_start"
 
+    const val WORKOUTS_DOING_ROUTE = "working_out"
+
 
     //Settings
     const val SETTINGS_MAIN = "settings_main"
