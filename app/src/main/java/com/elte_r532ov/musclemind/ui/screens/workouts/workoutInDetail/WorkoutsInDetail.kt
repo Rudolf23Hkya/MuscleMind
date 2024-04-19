@@ -43,7 +43,7 @@ import com.elte_r532ov.musclemind.util.UiEvent
 fun WorkoutInDetail(
     workoutId : Long,
     onNavigate: NavHostController,
-    viewModel: WorkoutInDetailSharedViewModel = hiltViewModel()
+    viewModel: WorkoutInDetailSharedViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_ROUTE))
 ){
     viewModel.initWorkoutId(workoutId)
 

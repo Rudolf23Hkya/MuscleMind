@@ -85,22 +85,28 @@ fun MyApp(sessionManagement: SessionManagement) {
         composable(Routes.WORKOUTS_ACTIVE) {
             ActiveWorkouts(navController)
         }
-        composable(route= Routes.WORKOUTS_IN_DETAIL,
-            arguments = listOf(navArgument("workoutId"){
-            type = NavType.LongType
-        })){
-            //Passing parameter with Navigation
-            val workoutID = it.arguments?.getLong("workoutId") ?:""
-            WorkoutInDetail(workoutID.toString().toLong(),navController)
-        }
-        composable(Routes.WORKOUTS_START){
-            WorkoutInProgress(navController)
-        }
+
         composable(Routes.SETTINGS_MAIN){
             MainSettingsScreen(navController)
         }
         composable(Routes.SETTINGS_CHANGE_ACCOUNT_DATA){
             ModifyAccountData(navController)
+        }
+        navigation(
+            startDestination = Routes.WORKOUTS_IN_DETAIL,
+            route = Routes.WORKOUTS_ROUTE
+        ){
+            composable(route= Routes.WORKOUTS_IN_DETAIL,
+                arguments = listOf(navArgument("workoutId"){
+                    type = NavType.LongType
+                })){
+                //Passing parameter with Navigation
+                val workoutID = it.arguments?.getLong("workoutId") ?:""
+                WorkoutInDetail(workoutID.toString().toLong(),navController)
+            }
+            composable(Routes.WORKOUTS_START){
+                WorkoutInProgress(navController)
+            }
         }
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -26,12 +27,13 @@ import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Category
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.MuscleGroup
+import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 
 @Composable
 fun WorkoutInProgress(
     onNavigate: NavHostController,
-    viewModel: WorkoutInProgressViewModel = hiltViewModel()
+    viewModel: WorkoutInProgressViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_ROUTE))
 ) {
     val workoutId = 1L
     viewModel.initWorkoutId(workoutId)
