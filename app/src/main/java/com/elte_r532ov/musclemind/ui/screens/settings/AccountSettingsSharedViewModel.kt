@@ -54,8 +54,7 @@ class AccountSettingsSharedViewModel@Inject constructor(
                         val dHeight = height.toDouble()
 
                         val userToModify = UserData(
-                            _userInfo.id,
-                            seshToken,email,name,_userInfo.password,
+                            _userInfo.id,email,name,_userInfo.password,
                             _userInfo.gender,_userInfo.experienceLevel,
                             intAge,dWeight,dHeight)
                         if(!accountRepository.modifyUserData(userToModify))
@@ -75,8 +74,7 @@ class AccountSettingsSharedViewModel@Inject constructor(
                 val oldUser = _userInfo
                 if(oldUser.password == oldPassword){
                     val userToMod = UserData(
-                        oldUser.id,
-                        seshToken,oldUser.email,oldUser.name, newPassword,oldUser.gender,oldUser.experienceLevel,
+                        oldUser.id,oldUser.email,oldUser.name, newPassword,oldUser.gender,oldUser.experienceLevel,
                         oldUser.age,oldUser.weight,oldUser.height)
 
                     accountRepository.modifyPassword(userToMod)

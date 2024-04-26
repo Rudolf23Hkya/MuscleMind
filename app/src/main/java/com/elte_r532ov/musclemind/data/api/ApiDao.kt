@@ -1,34 +1,18 @@
 package com.elte_r532ov.musclemind.data.api
 import com.elte_r532ov.musclemind.data.userData.UserData
+import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface ApiDao {
+    @POST("loginUser/")
+    suspend fun login(@Body loginRequest: Map<String, String>): Response<UserData>
 
-    //Returns a session Token
-    @POST("regUser")
-    fun regAttempt(email : String,password: String): String
+    @POST("regUser/")
+    suspend fun register(@Body newUser: UserData): Response<UserData>
 
-    //Returns a session Token
-    @GET("loginUser")
-    fun loginAttempt(email : String,password: String): String
+    @GET("user_by_access_token/")
+    suspend fun getUserByAccessToken(@Query("session_token") sessionToken: String): Response<UserData>
 }
-/*
-@Dao
-interface UserDataDao {
-
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insertUserData(ud : UserData)
-    @Delete
-    suspend fun deleteUserData(ud : UserData)
-    @Query("SELECT * FROM users WHERE email = :email AND password = :password")
-    suspend fun loginAttempt(email : String,password: String): UserData?
-
-    @Query("SELECT * FROM users WHERE sessionToken = :sT")
-    suspend fun getUserBySessionToken(sT : String): UserData?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun modifyData(ud: UserData)
-
-}
-*/

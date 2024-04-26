@@ -41,8 +41,8 @@ class LoginViewModel @Inject constructor(
                     userData = repository.loginAttempt(event.eMail, event.password)
 
                     if (userData != null) {
-                        //Creating session
-                        sessionManagement.saveSessionToken(userData!!.sessionToken)
+                        //Creating session TODO Login needs to be done trough the API
+                        sessionManagement.saveSessionToken("")
                         //Changing the view
                         sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
                     } else {

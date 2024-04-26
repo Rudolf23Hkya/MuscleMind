@@ -2,10 +2,9 @@ package com.elte_r532ov.musclemind.dependencyInjection
 
 import android.app.Application
 import androidx.room.Room
-import com.elte_r532ov.musclemind.data.userData.MuscleMindDB
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepoImpl
+import com.elte_r532ov.musclemind.data.api.ApiDao
+import com.elte_r532ov.musclemind.data.api.MuscleMindRepoImplApi
 import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutDao
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepoImpl
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExerciseDatabase
@@ -21,22 +20,12 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent :: class)
 object AppModule {
 
-    @Provides
     @Singleton
-    fun provideUserDataDatabase(app : Application) : MuscleMindDB {
-        return Room.databaseBuilder(
-            app.applicationContext,
-            MuscleMindDB::class.java,
-            "muscle_mind_db"
-        ).fallbackToDestructiveMigration().build()
+    @Provides
+    fun provideMuscleMindRepository(apiDao: ApiDao): MuscleMindRepository {
+        return MuscleMindRepoImplApi(apiDao)
     }
 
-    //Context not needed, only the database instance
-    @Provides
-    @Singleton
-    fun provideMuscleMindRepository(db : MuscleMindDB) : MuscleMindRepository {
-        return MuscleMindRepoImpl(db.dao)
-    }
     // Provide the new WorkoutDatabase
     @Provides
     @Singleton

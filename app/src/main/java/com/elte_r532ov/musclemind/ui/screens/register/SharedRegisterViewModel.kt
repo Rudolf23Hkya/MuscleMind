@@ -24,8 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SharedRegisterViewModel @Inject constructor(
-    private val repository: MuscleMindRepository,
-    private val sessionManagement: SessionManagement
+    private val repository: MuscleMindRepository
 )
     : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
@@ -85,7 +84,8 @@ class SharedRegisterViewModel @Inject constructor(
                     val eHeight = event.height.toDouble()
 
                     //The tallest man alive is 251 - Sultan Kosen
-                    if(eWeight > 20 && eAge > 12 &&
+                    if(eWeight > 20 && eWeight < 1500 &&
+                        eAge > 12  && eAge < 120 &&
                         eHeight > 0 && eHeight < 251) {
                         this.weight = eWeight
                         this.age = eAge
@@ -123,7 +123,8 @@ class SharedRegisterViewModel @Inject constructor(
                     sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail address!"))
                 }
                 else if(event.name.length < 2){
-                    sendUiEvent(UiEvent.ErrorOccured("Invalid Username!"))
+                    sendUiEvent(UiEvent.
+                    ErrorOccured("Username must be at least 2 characters long!"))
                 }
                 else{
                     //Validated data can be saved to DB
@@ -135,9 +136,6 @@ class SharedRegisterViewModel @Inject constructor(
                         try{
                             //Adding the new User To the DB
                             val user =addUserToDB()
-
-                            //Logging in the user after successful account creation
-                            loginUser(user)
 
                             //Navigating to user-s Active Workouts
                             sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
@@ -155,7 +153,7 @@ class SharedRegisterViewModel @Inject constructor(
             _uiEvent.send(event)
         }
     }
-    private suspend fun addUserToDB(): UserData {
+    private suspend fun addUserToDB() {
         Log.d("MyActivity", this.email+" ,"+this.name+" ,"+
                 this.age+", "+this.weight+", "+this.height +
                 ", "+this.experienceLevel.toString()+"," +this.gender.toString())
@@ -163,7 +161,6 @@ class SharedRegisterViewModel @Inject constructor(
         //Adding new user to the database
         val newUser = UserData(
             id = 0, // 0 if autoGenerate is true
-            sessionToken = sessionManagement.generateSessionToken(),
             email = this.email,
             name = this.name,
             password = this.password,
@@ -173,11 +170,10 @@ class SharedRegisterViewModel @Inject constructor(
             weight = this.weight,
             height = this.height
         )
-        repository.insertUserData(newUser)
-        return newUser
-    }
-    private fun loginUser(user: UserData){
-        sessionManagement.saveSessionToken(user.sessionToken)
+
+        if(!repository.insertUserData(newUser)){
+            sendUiEvent(UiEvent.ErrorOccured("Error Occurred During Register!"))
+        }
     }
     private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
             Patterns.EMAIL_ADDRESS.matcher(this).matches()
