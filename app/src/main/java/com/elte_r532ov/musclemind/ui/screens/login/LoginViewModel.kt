@@ -16,38 +16,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: MuscleMindRepository,
-    private val sessionManagement: SessionManagement
+    private val repository: MuscleMindRepository
 ) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-    private var userData : UserData? = null
 
     private var rememberMeClicked = false
-
-   /* var eMail by mutableStateOf("")
-        private set
-    var password by mutableStateOf("")
-        private set
-    */
 
     fun onEvent(event : LoginEvent){
         when(event){
             is LoginEvent.onLoginClicked -> {
                 viewModelScope.launch {
-                    Log.d(event.eMail, "E-Mail")
-                    Log.d(event.password, "Password")
-
-                    userData = repository.loginAttempt(event.eMail, event.password)
-
-                    if (userData != null) {
-                        //Creating session TODO Login needs to be done trough the API
-                        sessionManagement.saveSessionToken("")
+                    //Login logic
+                    if (repository.loginAttempt(event.eMail, event.password)) {
                         //Changing the view
                         sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
                     } else {
-                        val msg = "No such e-mail in our Database"
-                        Log.d(msg, event.eMail)
+                        sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail/username or password!"))
                     }
                 }
             }

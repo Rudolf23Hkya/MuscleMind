@@ -22,6 +22,7 @@ object AppModule {
 
     @Singleton
     @Provides
+    //TODO session management needs to be provided- maybe dagger?
     fun provideMuscleMindRepository(apiDao: ApiDao): MuscleMindRepository {
         return MuscleMindRepoImplApi(apiDao)
     }

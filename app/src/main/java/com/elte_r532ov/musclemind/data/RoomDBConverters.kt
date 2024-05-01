@@ -26,14 +26,6 @@ class RoomDBConverters {
         return ExperienceLevel.valueOf(exp)
     }
     @TypeConverter
-    fun fromSex(gender: Gender): String {
-        return gender.name
-    }
-    @TypeConverter
-    fun toSex(gender: String): Gender {
-        return Gender.valueOf(gender)
-    }
-    @TypeConverter
     fun fromMuscleGroup(muscleGroup: MuscleGroup): String {
         return muscleGroup.name
     }

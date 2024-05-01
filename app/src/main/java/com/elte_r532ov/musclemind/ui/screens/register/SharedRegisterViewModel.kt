@@ -172,7 +172,7 @@ class SharedRegisterViewModel @Inject constructor(
         )
 
         if(!repository.insertUserData(newUser)){
-            sendUiEvent(UiEvent.ErrorOccured("Error Occurred During Register!"))
+            sendUiEvent(UiEvent.ErrorOccured("Error Occurred During Registration!"))
         }
     }
     private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
