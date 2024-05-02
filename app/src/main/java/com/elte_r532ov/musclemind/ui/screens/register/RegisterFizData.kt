@@ -26,18 +26,25 @@ fun RegisterFizData(
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
     //Snack bar
-    var snackbarMessage by remember { mutableStateOf<String?>(null) }
-    val snackbarHostState = remember { SnackbarHostState() }
+    var snackBarMessage by remember { mutableStateOf<String?>(null) }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     // This LaunchedEffect listens to the UI events and performs actions accordingly
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
                 is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackbarMessage = event.message
-                is UiEvent.ErrorOccured -> snackbarMessage = event.errMsg
+                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
+                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
                 else -> Unit
             }
+        }
+    }
+
+    LaunchedEffect(snackBarMessage) {
+        snackBarMessage?.let { message ->
+            snackBarHostState.showSnackbar(message=message,duration = SnackbarDuration.Short)
+            snackBarMessage = null
         }
     }
 
@@ -101,7 +108,7 @@ fun RegisterFizData(
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
-    SnackbarHost(hostState = snackbarHostState)
+    SnackbarHost(hostState = snackBarHostState)
 }
 
 @Composable
