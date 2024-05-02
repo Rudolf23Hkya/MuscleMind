@@ -1,7 +1,7 @@
 package com.elte_r532ov.musclemind.data.api.responses
 
-import com.elte_r532ov.musclemind.data.ExperienceLevel
-import com.elte_r532ov.musclemind.data.Gender
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
+import com.elte_r532ov.musclemind.data.enums.Gender
 
 data class UserData(
     val email: String,

@@ -1,7 +1,7 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements
 
 import com.elte_r532ov.musclemind.R
-import com.elte_r532ov.musclemind.data.ExperienceLevel
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 
 fun getPictureIdByExperienceLevel(level: ExperienceLevel): Int {
     return when(level) {

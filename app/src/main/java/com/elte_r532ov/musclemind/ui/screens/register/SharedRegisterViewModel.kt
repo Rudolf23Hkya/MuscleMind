@@ -9,8 +9,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.ExperienceLevel
-import com.elte_r532ov.musclemind.data.Gender
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
+import com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.util.Resource

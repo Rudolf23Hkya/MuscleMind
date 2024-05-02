@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.elte_r532ov.musclemind.data.ExperienceLevel
-import com.elte_r532ov.musclemind.data.Gender
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
+import com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

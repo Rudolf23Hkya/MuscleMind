@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.data.workoutsAndExercises
+package com.elte_r532ov.musclemind.data.enums
 
 enum class Category {
     WEIGHTLIFTING,

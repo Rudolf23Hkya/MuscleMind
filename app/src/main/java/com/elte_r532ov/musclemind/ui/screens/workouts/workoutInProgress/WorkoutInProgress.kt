@@ -22,8 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.data.ExperienceLevel
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Category
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
+import com.elte_r532ov.musclemind.data.enums.Category
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.MuscleGroup
 import com.elte_r532ov.musclemind.util.Routes

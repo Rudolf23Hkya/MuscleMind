@@ -1,6 +1,6 @@
 package com.elte_r532ov.musclemind.ui.screens.register
-import  com.elte_r532ov.musclemind.data.Gender
-import com.elte_r532ov.musclemind.data.ExperienceLevel
+import  com.elte_r532ov.musclemind.data.enums.Gender
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 
 //I use everywhere strings, cuz the view model does the conversion and the error handling
 sealed class RegisterEvent {

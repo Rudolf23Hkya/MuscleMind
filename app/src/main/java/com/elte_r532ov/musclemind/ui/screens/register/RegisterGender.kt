@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.R
-import com.elte_r532ov.musclemind.data.Gender
+import com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.ui.input.pointer.pointerInput
 import com.elte_r532ov.musclemind.util.Routes
