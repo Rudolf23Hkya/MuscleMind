@@ -3,6 +3,8 @@ import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.util.Resource
+import org.json.JSONException
+import org.json.JSONObject
 
 class MuscleMindRepoImplApi(
     private val apiDao: ApiDao,
@@ -12,10 +14,10 @@ class MuscleMindRepoImplApi(
 
     override suspend fun insertUserData(ud: UserData): Resource<UserData> {
         return try {
-            val response = apiDao.register(ud)
-            if (response.isSuccessful) {
+            val regResponse = apiDao.register(ud)
+            if (regResponse.isSuccessful) {
                 // Checking if the body is not null, then return it wrapped in Resource.Success
-                response.body()?.let {
+                regResponse.body()?.let {
                     //Saving the tokens
                     sessionManagement.saveTokens(it.tokens.access,it.tokens.refresh)
                     //Caching user data
@@ -24,8 +26,20 @@ class MuscleMindRepoImplApi(
                     Resource.Success(it.userData)
                 } ?: Resource.Error("Received null data from API", null)
             } else {
-                // Handle the case where the API response indicates an error
-                Resource.Error(response.message() ?: "Unknown error", null)
+                // The API responded but indicated a failure
+                val errorStr = regResponse.errorBody()?.string()
+                if(errorStr != null){
+                    try {
+                        Resource.Error(JSONObject(errorStr).getString("error"), null)
+                    }
+                    catch (e: JSONException) {
+                        Resource.Error(regResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
+                    }
+
+                }
+                else{
+                    Resource.Error(regResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
+                }
             }
         } catch (e: Exception) {
             // Handle network exceptions
@@ -46,8 +60,20 @@ class MuscleMindRepoImplApi(
                     Resource.Success(it.userData)
                 } ?: Resource.Error("Login successful but no user data returned", null)
             } else {
-                // The API responded but indicated a failure (e.g., wrong credentials, etc.)
-                Resource.Error(loginResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
+                // The API responded but indicated a failure
+                val errorStr = loginResponse.errorBody()?.string()
+                if(errorStr != null){
+                    try {
+                        Resource.Error(JSONObject(errorStr).getString("error"), null)
+                        }
+                    catch (e: JSONException) {
+                        Resource.Error(loginResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
+                    }
+
+                }
+                else{
+                    Resource.Error(loginResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
+                }
             }
         } catch (e: Exception) {
             // Handle any exceptions that occur during the network request

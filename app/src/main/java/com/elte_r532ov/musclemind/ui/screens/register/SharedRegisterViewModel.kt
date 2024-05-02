@@ -86,7 +86,7 @@ class SharedRegisterViewModel @Inject constructor(
                     //The tallest man alive is 251 - Sultan Kosen
                     if(eWeight > 20 && eWeight < 1500 &&
                         eAge > 12  && eAge < 120 &&
-                        eHeight > 0 && eHeight < 251) {
+                        eHeight > 100 && eHeight < 251) {
                         this.weight = eWeight
                         this.age = eAge
                         this.height = eHeight
