@@ -1,4 +1,6 @@
-package com.elte_r532ov.musclemind.data.userData
+package com.elte_r532ov.musclemind.data
+
+import com.elte_r532ov.musclemind.data.api.responses.UserData
 
 //This is an abstraction for transferring data from and to the app
 interface MuscleMindRepository {

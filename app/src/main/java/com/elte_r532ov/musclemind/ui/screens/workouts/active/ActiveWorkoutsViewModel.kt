@@ -3,7 +3,7 @@ package com.elte_r532ov.musclemind.ui.screens.workouts.active
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -54,7 +54,7 @@ class ActiveWorkoutsViewModel @Inject constructor(
     private suspend fun echoUserName(repository : MuscleMindRepository, sessionManagement : SessionManagement) : String{
         val sessionToken = sessionManagement.getSessionToken()
 
-        return repository.getUserBySessionToken(sessionToken!!)?.name ?: "UserNotFound"
+        return repository.getUserBySessionToken(sessionToken!!)?.username ?: "UserNotFound"
     }
 }
 

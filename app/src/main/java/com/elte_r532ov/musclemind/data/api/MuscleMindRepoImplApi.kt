@@ -1,7 +1,7 @@
 package com.elte_r532ov.musclemind.data.api
+import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.userData.UserData
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
 
 class MuscleMindRepoImplApi(
     private val apiDao: ApiDao,
@@ -24,8 +24,7 @@ class MuscleMindRepoImplApi(
     override suspend fun loginAttempt(email: String, password: String): Boolean {
         val loginResponse = apiDao.login(mapOf("email" to email, "password" to password))
         if (loginResponse.isSuccessful) {
-
-
+            //sessionManagement.saveSessionToken()
             loginResponse.body()
             return true
         }
@@ -34,7 +33,7 @@ class MuscleMindRepoImplApi(
     }
 
     override suspend fun getUserBySessionToken(sT: String): UserData? {
-        val response = apiDao.getUserByAccessToken(sT)
+        val response = apiDao.getUserWithAccessToken(sT)
         if (response.isSuccessful) {
             return response.body()
         }

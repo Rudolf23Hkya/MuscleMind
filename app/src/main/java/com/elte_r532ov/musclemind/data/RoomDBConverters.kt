@@ -1,8 +1,6 @@
 package com.elte_r532ov.musclemind.data
 
 import androidx.room.TypeConverter
-import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
-import com.elte_r532ov.musclemind.data.userData.Gender
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Category
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.MuscleGroup
 import com.google.gson.Gson

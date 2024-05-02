@@ -4,13 +4,15 @@ import android.app.Application
 import androidx.room.Room
 import com.elte_r532ov.musclemind.data.api.ApiDao
 import com.elte_r532ov.musclemind.data.api.MuscleMindRepoImplApi
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepoImpl
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExerciseDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -18,13 +20,13 @@ import javax.inject.Singleton
 //This is SINGLETON
 @Module
 @InstallIn(SingletonComponent :: class)
-object AppModule {
+object AppModule{
 
     @Singleton
     @Provides
-    //TODO session management needs to be provided- maybe dagger?
-    fun provideMuscleMindRepository(apiDao: ApiDao): MuscleMindRepository {
-        return MuscleMindRepoImplApi(apiDao)
+    fun provideMuscleMindRepository(apiDao: ApiDao,app: Application): MuscleMindRepository {
+        return MuscleMindRepoImplApi(apiDao, SessionManagement(app.applicationContext))
+        //return MuscleMindRepoImplApi(apiDao)
     }
 
     // Provide the new WorkoutDatabase

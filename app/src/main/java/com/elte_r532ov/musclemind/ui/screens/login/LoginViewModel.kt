@@ -1,11 +1,8 @@
 package com.elte_r532ov.musclemind.ui.screens.login
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
-import com.elte_r532ov.musclemind.data.userData.UserData
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

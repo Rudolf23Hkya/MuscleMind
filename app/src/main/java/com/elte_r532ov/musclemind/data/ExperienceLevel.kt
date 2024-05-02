@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.data.userData
+package com.elte_r532ov.musclemind.data
 
 enum class ExperienceLevel {
     NEW,

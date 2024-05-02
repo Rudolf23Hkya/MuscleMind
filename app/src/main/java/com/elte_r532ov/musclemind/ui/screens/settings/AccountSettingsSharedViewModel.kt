@@ -1,15 +1,10 @@
 package com.elte_r532ov.musclemind.ui.screens.settings
 
-import androidx.compose.material.icons.Icons
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
-import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
-import com.elte_r532ov.musclemind.data.userData.Gender
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.userData.UserData
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,9 +49,13 @@ class AccountSettingsSharedViewModel@Inject constructor(
                         val dHeight = height.toDouble()
 
                         val userToModify = UserData(
-                            _userInfo.id,email,name,_userInfo.password,
-                            _userInfo.gender,_userInfo.experienceLevel,
-                            intAge,dWeight,dHeight)
+                            email=email,
+                            username = name,
+                            gender = _userInfo.gender,
+                            experienceLevel = _userInfo.experienceLevel,
+                            age = intAge,
+                            weight = dWeight,
+                            height = dHeight)
                         if(!accountRepository.modifyUserData(userToModify))
                             _uiEvent.send(UiEvent.ErrorOccured("Invalid Password!"))
                         _uiEvent.send(UiEvent.Navigate(Routes.SETTINGS_MAIN))
@@ -67,28 +66,9 @@ class AccountSettingsSharedViewModel@Inject constructor(
                 }
 
     }
-    public fun changePassword(newPassword : String, newPasswordAgain : String, oldPassword : String){
-        if(newPassword == newPasswordAgain){
-            sendUiEvent(UiEvent.Navigate(Routes.SETTINGS_MAIN))
-            viewModelScope.launch {
-                val oldUser = _userInfo
-                if(oldUser.password == oldPassword){
-                    val userToMod = UserData(
-                        oldUser.id,oldUser.email,oldUser.name, newPassword,oldUser.gender,oldUser.experienceLevel,
-                        oldUser.age,oldUser.weight,oldUser.height)
-
-                    accountRepository.modifyPassword(userToMod)
-                }
-                else
-                    sendUiEvent(UiEvent.ErrorOccured("Incorrect Account Password!"))
-            }
-        }
-        else
-            sendUiEvent(UiEvent.ErrorOccured("Passwords do not match!"))
-    }
     public fun deleteAccount(delStr : String,password : String){
         if(delStr == "DELETE"){
-            if(_userInfo.password == password){
+            if(true){
                 viewModelScope.launch {
                     accountRepository.deleteUserData(_userInfo)
                 }

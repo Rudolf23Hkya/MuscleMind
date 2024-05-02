@@ -9,12 +9,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
-import com.elte_r532ov.musclemind.data.userData.Gender
-import com.elte_r532ov.musclemind.data.userData.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.userData.UserData
+import com.elte_r532ov.musclemind.data.ExperienceLevel
+import com.elte_r532ov.musclemind.data.Gender
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -154,15 +153,10 @@ class SharedRegisterViewModel @Inject constructor(
         }
     }
     private suspend fun addUserToDB() {
-        Log.d("MyActivity", this.email+" ,"+this.name+" ,"+
-                this.age+", "+this.weight+", "+this.height +
-                ", "+this.experienceLevel.toString()+"," +this.gender.toString())
-
         //Adding new user to the database
         val newUser = UserData(
-            id = 0, // 0 if autoGenerate is true
             email = this.email,
-            name = this.name,
+            username = this.name,
             password = this.password,
             gender = this.gender!!,
             experienceLevel = this.experienceLevel!!,

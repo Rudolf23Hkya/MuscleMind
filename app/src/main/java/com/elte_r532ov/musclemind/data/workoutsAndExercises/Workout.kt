@@ -2,7 +2,7 @@ package com.elte_r532ov.musclemind.data.workoutsAndExercises
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.elte_r532ov.musclemind.data.userData.ExperienceLevel
+import com.elte_r532ov.musclemind.data.ExperienceLevel
 
 @Entity(tableName = "workouts")
 data class Workout(
