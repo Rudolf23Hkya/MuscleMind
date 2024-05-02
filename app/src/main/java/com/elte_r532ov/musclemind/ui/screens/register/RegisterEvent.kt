@@ -10,10 +10,4 @@ sealed class RegisterEvent {
     data class onUserDataChosen(val  name: String,val email: String,
                                 val fstPassword: String, val sndPassword: String) : RegisterEvent()
 
-    object onGenderBackNav : RegisterEvent()
-
-    object onFizDataBackNav : RegisterEvent()
-    object onExperienceBackNav : RegisterEvent()
-    object onUserDataBackNav : RegisterEvent()
-
 }

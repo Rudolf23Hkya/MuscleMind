@@ -31,10 +31,6 @@ class SharedRegisterViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
 
-    //USER DATA COLLECTED
-    //TODO - Go back arrow needs to be implemented in the view
-    //TODO - If a previous view is loaded it s content is loaded from the VM
-
     private var name by mutableStateOf("")
     private var email by mutableStateOf("")
     private var password by mutableStateOf("")
@@ -44,23 +40,9 @@ class SharedRegisterViewModel @Inject constructor(
     private var weight by mutableDoubleStateOf(0.0)
     private var height by mutableDoubleStateOf(0.0)
 
-    //UserData(0,"","","",
-    //        Gender.MALE,ExperienceLevel.NEW,0,0.0,0.0)
+
     fun onEvent(event : RegisterEvent){
         when(event){
-            //Back Navs - TODO
-            is RegisterEvent.onGenderBackNav -> {
-                sendUiEvent(UiEvent.Navigate(Routes.LOGIN))
-            }
-            is RegisterEvent.onFizDataBackNav -> {
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_GENDER))
-            }
-            is RegisterEvent.onExperienceBackNav -> {
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_FIZ_DATA))
-            }
-            is RegisterEvent.onUserDataBackNav -> {
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_ACCOUNT_DATA))
-            }
             //Setters and Navs
             is RegisterEvent.onGenderChosen -> {
                 if(event.gender == null){
