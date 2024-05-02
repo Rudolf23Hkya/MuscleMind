@@ -40,6 +40,13 @@ fun RegisterData(
             }
         }
     }
+    // Listen for snackbarMessage updates to show the Snackbar
+    LaunchedEffect(snackBarMessage) {
+        snackBarMessage?.let { message ->
+            snackBarHostState.showSnackbar(message=message,duration = SnackbarDuration.Short)
+            snackBarMessage = null
+        }
+    }
 
     val nameState = remember { mutableStateOf("") }
     val emailState = remember { mutableStateOf("") }

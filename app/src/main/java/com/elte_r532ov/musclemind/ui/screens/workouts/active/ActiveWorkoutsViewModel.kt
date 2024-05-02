@@ -18,8 +18,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ActiveWorkoutsViewModel @Inject constructor(
     private val userRepo: MuscleMindRepository,
-    private val workoutRepo : WorkoutExcRepository,
-    private val sessionManagement: SessionManagement
+    private val workoutRepo : WorkoutExcRepository
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UiEvent>()
@@ -34,7 +33,7 @@ class ActiveWorkoutsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _userName.value = echoUserName(userRepo,sessionManagement)
+            _userName.value = echoUserName(userRepo)
 
             val workouts = workoutRepo.getWorkouts()
             _activeWorkouts.value = workouts
@@ -51,10 +50,9 @@ class ActiveWorkoutsViewModel @Inject constructor(
             _uiEvent.send(event)
         }
     }
-    private suspend fun echoUserName(repository : MuscleMindRepository, sessionManagement : SessionManagement) : String{
-        val sessionToken = sessionManagement.getSessionToken()
+    private suspend fun echoUserName(repository : MuscleMindRepository) : String{
 
-        return repository.getUserBySessionToken(sessionToken!!)?.username ?: "UserNotFound"
+        return repository.getUserData().data?.username ?: ""
     }
 }
 

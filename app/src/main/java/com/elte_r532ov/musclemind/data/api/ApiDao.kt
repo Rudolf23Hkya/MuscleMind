@@ -1,4 +1,6 @@
 package com.elte_r532ov.musclemind.data.api
+import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
+import com.elte_r532ov.musclemind.data.api.responses.Tokens
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import retrofit2.Response
 import retrofit2.http.Body
@@ -8,14 +10,14 @@ import retrofit2.http.Query
 
 interface ApiDao {
     @POST("loginUser/")
-    suspend fun login(@Body loginRequest: Map<String, String>): Response<UserData>
+    suspend fun login(@Body loginRequest: Map<String, String>): Response<FullAutUserData>
 
     @POST("regUser/")
-    suspend fun register(@Body newUser: UserData): Response<UserData>
+    suspend fun register(@Body userData: UserData): Response<FullAutUserData>
 
     @GET("user_with_access_token/")
     suspend fun getUserWithAccessToken(@Query("session_token") sessionToken: String): Response<UserData>
 
     @POST("access_token_with_refresh_token/")
-    suspend fun getAccessTokenWithRefreshToken(@Query("session_token") sessionToken: String): Response<UserData>
+    suspend fun getAccessTokenWithRefreshToken(@Query("session_token") sessionToken: String): Response<Tokens>
 }

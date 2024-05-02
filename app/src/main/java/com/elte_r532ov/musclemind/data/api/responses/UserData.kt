@@ -8,7 +8,7 @@ data class UserData(
     val username: String,
     val password: String = "",
     val age: Int,
-    val experienceLevel: ExperienceLevel,
+    val experiencelevel: ExperienceLevel,
     val gender: Gender,
     val height: Double,
     val weight: Double

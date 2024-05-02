@@ -27,7 +27,7 @@ class MainSettingsViewModel@Inject constructor(
                 sendUiEvent(UiEvent.Navigate(Routes.SETTINGS_CHANGE_ACCOUNT_DATA))
             MainSettingsEvent.onLogOutClicked -> {
                 //Forgetting the session
-                sessionManagement.delSessionToken()
+                sessionManagement.deleteTokens()
                 sendUiEvent(UiEvent.Navigate(Routes.LOGIN))
             }
         }

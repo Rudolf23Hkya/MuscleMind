@@ -3,6 +3,7 @@ package com.elte_r532ov.musclemind.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.util.Resource
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,11 +26,11 @@ class LoginViewModel @Inject constructor(
             is LoginEvent.onLoginClicked -> {
                 viewModelScope.launch {
                     //Login logic
-                    if (repository.loginAttempt(event.eMail, event.password)) {
-                        //Changing the view
-                        sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
-                    } else {
-                        sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail/username or password!"))
+                    val result = repository.loginAttempt(event.eMail, event.password)
+
+                    when (result) {
+                        is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                        is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
                     }
                 }
             }

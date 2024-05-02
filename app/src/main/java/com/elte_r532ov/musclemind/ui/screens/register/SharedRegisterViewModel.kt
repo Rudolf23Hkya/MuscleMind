@@ -13,6 +13,7 @@ import com.elte_r532ov.musclemind.data.ExperienceLevel
 import com.elte_r532ov.musclemind.data.Gender
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.UserData
+import com.elte_r532ov.musclemind.util.Resource
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -134,10 +135,7 @@ class SharedRegisterViewModel @Inject constructor(
                     viewModelScope.launch{
                         try{
                             //Adding the new User To the DB
-                            val user =addUserToDB()
-
-                            //Navigating to user-s Active Workouts
-                            sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                           addUserToDB()
                         }
                         catch (e: Exception){
                             Log.e("MyActivity",e.toString() )
@@ -159,14 +157,18 @@ class SharedRegisterViewModel @Inject constructor(
             username = this.name,
             password = this.password,
             gender = this.gender!!,
-            experienceLevel = this.experienceLevel!!,
+            experiencelevel = this.experienceLevel!!,
             age = this.age,
             weight = this.weight,
             height = this.height
         )
 
-        if(!repository.insertUserData(newUser)){
-            sendUiEvent(UiEvent.ErrorOccured("Error Occurred During Registration!"))
+        val result = repository.insertUserData(newUser)
+
+        when (result) {
+            //Navigating to user-s Active Workouts if Success
+            is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+            is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
         }
     }
     private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&

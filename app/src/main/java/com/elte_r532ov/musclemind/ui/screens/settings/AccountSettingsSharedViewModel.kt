@@ -2,7 +2,6 @@ package com.elte_r532ov.musclemind.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.util.Routes
@@ -15,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AccountSettingsSharedViewModel@Inject constructor(
-    private val accountRepository: MuscleMindRepository,
-    private val sessionManagement: SessionManagement
+    private val accountRepository: MuscleMindRepository
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UiEvent>()
@@ -24,18 +22,14 @@ class AccountSettingsSharedViewModel@Inject constructor(
 
     private lateinit var _userInfo : UserData
 
-    private var seshToken = ""
-
 
     init {
         viewModelScope.launch {
             try {
-                seshToken = sessionManagement.getSessionToken()!!
-                _userInfo = accountRepository.getUserBySessionToken(seshToken)!!
-
+                _userInfo = accountRepository.getUserData().data!!
             }
             catch (e: NumberFormatException){
-                sendUiEvent(UiEvent.ErrorOccured("Network error!"))
+                sendUiEvent(UiEvent.ErrorOccured("User Data Error!"))
             }
         }
     }
@@ -52,7 +46,7 @@ class AccountSettingsSharedViewModel@Inject constructor(
                             email=email,
                             username = name,
                             gender = _userInfo.gender,
-                            experienceLevel = _userInfo.experienceLevel,
+                            experiencelevel = _userInfo.experiencelevel,
                             age = intAge,
                             weight = dWeight,
                             height = dHeight)

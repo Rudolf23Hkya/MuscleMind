@@ -64,7 +64,7 @@ fun LoginScreen(
     LaunchedEffect(snackbarMessage) {
         snackbarMessage?.let { message ->
             snackbarHostState.showSnackbar(message=message,duration = SnackbarDuration.Short)
-            snackbarMessage = null // Reset the message to avoid repeated Snackbar shows
+            snackbarMessage = null
         }
     }
 
