@@ -8,7 +8,7 @@ import com.elte_r532ov.musclemind.data.RoomDBConverters
 @Database(entities = [
     Exercise::class, Workout::class,
     WorkoutExerciseCrossRef::class
-                     ], version = 2, exportSchema = false)
+                     ], version = 3, exportSchema = false)
 @TypeConverters(RoomDBConverters::class)
 abstract class WorkoutExerciseDatabase : RoomDatabase() {
     abstract fun workoutDao(): WorkoutDao

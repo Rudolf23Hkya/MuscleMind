@@ -1,5 +1,6 @@
 package com.elte_r532ov.musclemind.data
 
+import com.elte_r532ov.musclemind.data.api.responses.ReqDate
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.util.Resource
 
@@ -17,4 +18,8 @@ interface MuscleMindRepository {
     suspend fun modifyUserData(ud : UserData) : Boolean
 
     suspend fun modifyPassword(ud : UserData) : Boolean
+
+    suspend fun getStats(rd:ReqDate): Unit
+
+    suspend fun addCalForDay(kcal :Int): Resource<IntArray>
 }

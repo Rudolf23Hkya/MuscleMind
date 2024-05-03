@@ -1,4 +1,5 @@
 package com.elte_r532ov.musclemind
+import StatsMainScreen
 import com.elte_r532ov.musclemind.ui.screens.login.LoginScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,6 +22,7 @@ import com.elte_r532ov.musclemind.ui.screens.workouts.active.ActiveWorkouts
 import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
+import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.settings.ModifyAccountData
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
@@ -91,6 +93,13 @@ fun MyApp(sessionManagement: SessionManagement) {
         }
         composable(Routes.SETTINGS_CHANGE_ACCOUNT_DATA){
             ModifyAccountData(navController)
+        }
+        composable(Routes.CALORIES_OVERVIEW){
+            CalorieCounterScreen(navController)
+        }
+        composable(Routes.STATS_OVERVIEW){
+            val progressValues = floatArrayOf(0.3f, 0.5f, 0.2f, 0.8f, 0.4f, 0.6f, 0.1f)
+            StatsMainScreen(navController,progressValues)
         }
         navigation(
             startDestination = Routes.WORKOUTS_IN_DETAIL,

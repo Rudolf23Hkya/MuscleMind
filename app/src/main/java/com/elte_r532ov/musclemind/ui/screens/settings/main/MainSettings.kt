@@ -1,6 +1,7 @@
 package com.elte_r532ov.musclemind.ui.screens.settings.main
 
 import android.annotation.SuppressLint
+import android.icu.lang.UCharacter.VerticalOrientation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -22,8 +23,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.BottomNavBar
-import com.elte_r532ov.musclemind.ui.screens.login.LoginEvent
 import com.elte_r532ov.musclemind.util.UiEvent
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -53,18 +54,20 @@ fun MainSettingsScreen(
             }
         },
         topBar={
+            /*
             Text(
                 "Settings",
                 fontSize = 32.sp,
                 fontFamily = myFontFamily,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.Bold
             )
+            */
         }
     ){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFFFCDD2)), // A pink background
+                .background(MaterialTheme.colorScheme.background), // A pink background
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
