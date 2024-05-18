@@ -1,5 +1,6 @@
 package com.elte_r532ov.musclemind.ui.screens.register
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,6 +58,7 @@ fun RegisterFizData(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         Column(
@@ -123,6 +126,7 @@ fun UserInfoTextField(
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
         singleLine = true,
+        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
         modifier = Modifier.fillMaxWidth()
     )
 }

@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.elte_r532ov.musclemind"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -132,6 +132,10 @@ dependencies {
 
     //Encryption for session tokens
     implementation ("androidx.security:security-crypto:1.0.0")
+
+    //Google Authentication
+    implementation("androidx.credentials:credentials:1.3.0-alpha04")
+    implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 }
 
 // Allow references to generated code

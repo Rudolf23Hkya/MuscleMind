@@ -58,6 +58,7 @@ fun ExperienceSelectionScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
     ) {
         Column(

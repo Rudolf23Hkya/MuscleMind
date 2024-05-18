@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
@@ -69,7 +71,7 @@ fun LoginScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFE1D5E7)),
+                .background(MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -84,7 +86,8 @@ fun LoginScreen(
                     fontSize = 32.sp,
                     fontFamily = myFontFamily,
                     fontWeight = FontWeight.Bold,
-                    textDecoration = TextDecoration.Underline
+                    textDecoration = TextDecoration.Underline,
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
 
@@ -97,7 +100,8 @@ fun LoginScreen(
                     Text(
                         "Email",
                         fontFamily = myFontFamily,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 },
                 singleLine = true,
@@ -113,7 +117,8 @@ fun LoginScreen(
                     Text(
                         "Password",
                         fontFamily = myFontFamily,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 },
                 singleLine = true,
@@ -122,24 +127,6 @@ fun LoginScreen(
             )
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextButton(
-                    onClick = { /* Handle forgot password */ },
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        "Forgot password?",
-                        fontFamily = myFontFamily,
-                        fontWeight = FontWeight.SemiBold
-                    )
-                }
-            }
 
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -153,6 +140,10 @@ fun LoginScreen(
                         )
                     )
                 },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primaryContainer
+                ),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 32.dp)
@@ -160,7 +151,8 @@ fun LoginScreen(
                 Text(
                     "LOGIN",
                     fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
 
@@ -176,12 +168,16 @@ fun LoginScreen(
                 Text(
                     "Don’t have an account?",
                     fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 TextButton(
                     onClick = { viewModel.onEvent(LoginEvent.onSignUpClicked) }
                 ) {
-                    Text("Sign Up", fontFamily = myFontFamily, fontWeight = FontWeight.SemiBold)
+                    Text("Sign Up", fontFamily = myFontFamily,
+                        fontWeight = FontWeight.SemiBold,
+                        color =  MaterialTheme.colorScheme.primaryContainer
+                        )
                 }
             }
 
@@ -196,6 +192,7 @@ fun LoginScreen(
                     "Or",
                     fontFamily = myFontFamily,
                     fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSecondary
                 )
             }
 
@@ -204,11 +201,16 @@ fun LoginScreen(
 
             Button(
                 onClick = { viewModel.onEvent(LoginEvent.onSignUpClicked) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.primaryContainer
+                )
             ) {
                 Text(
                     "Continue with Google",
                     fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))

@@ -27,6 +27,7 @@ import com.elte_r532ov.musclemind.ui.screens.settings.ModifyAccountData
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInProgress.WorkoutInProgress
+import com.elte_r532ov.musclemind.ui.theme.MuscleMindTheme
 import javax.inject.Inject
 
 val myFontFamily = FontFamily(
@@ -43,7 +44,9 @@ class MainActivity: ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp(sessionManagement)
+            MuscleMindTheme {
+                MyApp(sessionManagement)
+            }
         }
     }
 
@@ -98,7 +101,7 @@ fun MyApp(sessionManagement: SessionManagement) {
             CalorieCounterScreen(navController)
         }
         composable(Routes.STATS_OVERVIEW){
-            val progressValues = floatArrayOf(0.3f, 0.5f, 0.2f, 0.8f, 0.4f, 0.6f, 0.1f)
+            val progressValues = floatArrayOf(0.3f, 0.5f, 0.2f, 0.8f, 0.4f, 0.0f, 0.0f)
             StatsMainScreen(navController,progressValues)
         }
         navigation(
