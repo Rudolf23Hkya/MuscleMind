@@ -110,7 +110,7 @@ fun ExperienceOption(
             .fillMaxWidth()
             .height(50.dp)
             .background(
-                color = if (isSelected) Color.DarkGray else Color.Transparent,
+                color = if (isSelected) MaterialTheme.colorScheme.onBackground else Color.Transparent,
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable {

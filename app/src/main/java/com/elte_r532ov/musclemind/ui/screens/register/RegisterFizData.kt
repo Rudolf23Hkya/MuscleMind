@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,7 +85,7 @@ fun RegisterFizData(
             UserInfoTextField(
                 value = weight,
                 onValueChange = { weight = it },
-                label = "Weight",
+                label = "Weight (kg)",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             Spacer(modifier = Modifier.height(16.dp))
             UserInfoTextField(
@@ -96,7 +97,7 @@ fun RegisterFizData(
             UserInfoTextField(
                 value = height,
                 onValueChange = { height = it },
-                label = "Height",
+                label = "Height (cm)",
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             Spacer(modifier = Modifier.height(32.dp))
             Button(
@@ -126,7 +127,9 @@ fun UserInfoTextField(
         label = { Text(label) },
         keyboardOptions = keyboardOptions,
         singleLine = true,
-        textStyle = TextStyle(color = MaterialTheme.colorScheme.onBackground),
+        textStyle = TextStyle(
+            color = MaterialTheme.colorScheme.onBackground,
+            fontWeight = FontWeight.Bold),
         modifier = Modifier.fillMaxWidth()
     )
 }

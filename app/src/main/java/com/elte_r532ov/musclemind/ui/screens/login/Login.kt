@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -37,6 +36,7 @@ import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.ui.text.TextStyle
 
 
 @Composable
@@ -105,7 +105,11 @@ fun LoginScreen(
                     )
                 },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                textStyle = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 20.sp
+                )
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -123,7 +127,11 @@ fun LoginScreen(
                 },
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done)
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                textStyle = TextStyle(
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 20.sp
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))

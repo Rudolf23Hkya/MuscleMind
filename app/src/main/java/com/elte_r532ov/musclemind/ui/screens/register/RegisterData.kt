@@ -12,8 +12,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -63,15 +66,21 @@ fun RegisterData(
     ) {
         Text(
             text = "Create an account",
+            fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            modifier = Modifier.padding(bottom = 32.dp)
+            color = MaterialTheme.colorScheme.onBackground,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = nameState.value,
             onValueChange = { nameState.value = it },
             label = { Text("Username") },
-            singleLine = true
+            singleLine = true,
+            textStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -81,7 +90,10 @@ fun RegisterData(
             onValueChange = { emailState.value = it },
             label = { Text("Email") },
             singleLine = true,
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            textStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -92,7 +104,10 @@ fun RegisterData(
             label = { Text("Password") },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next)
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            textStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -103,7 +118,10 @@ fun RegisterData(
             label = { Text("Confirm Password") },
             singleLine = true,
             visualTransformation = PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done)
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            textStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Bold)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
