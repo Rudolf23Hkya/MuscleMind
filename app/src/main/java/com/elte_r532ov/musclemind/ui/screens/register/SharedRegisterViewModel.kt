@@ -12,6 +12,7 @@ import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 import com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.util.Resource
 import com.elte_r532ov.musclemind.util.Routes
@@ -40,6 +41,10 @@ class SharedRegisterViewModel @Inject constructor(
     private var weight by mutableDoubleStateOf(0.0)
     private var height by mutableDoubleStateOf(0.0)
 
+    private var asthma : Boolean = false
+    private var bad_knee : Boolean = false
+    private var cardiovascular_d : Boolean = false
+    private var osteoporosis : Boolean = false
 
     fun onEvent(event : RegisterEvent){
         when(event){
@@ -125,6 +130,8 @@ class SharedRegisterViewModel @Inject constructor(
                     }
                 }
             }
+
+            is RegisterEvent.onDiseasesChosen -> TODO()
         }
     }
     private fun sendUiEvent(event: UiEvent){
@@ -144,10 +151,13 @@ class SharedRegisterViewModel @Inject constructor(
             weight = this.weight,
             height = this.height
         )
+        val disease = Disease(
+            asthma=asthma,
+            bad_knee = bad_knee,
+            cardiovascular_d = cardiovascular_d,
+            osteoporosis = osteoporosis)
 
-        val result = repository.registerUser(newUser)
-
-        when (result) {
+        when (val result = repository.registerUser(newUser,disease)) {
             //Navigating to user-s Active Workouts if Success
             is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
             is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))

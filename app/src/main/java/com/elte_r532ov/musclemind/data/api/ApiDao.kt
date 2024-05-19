@@ -1,7 +1,9 @@
 package com.elte_r532ov.musclemind.data.api
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
+import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
 import com.elte_r532ov.musclemind.data.api.responses.LoginData
+import com.elte_r532ov.musclemind.data.api.responses.RegisterUser
 import com.elte_r532ov.musclemind.data.api.responses.Success
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
 import com.elte_r532ov.musclemind.data.api.responses.UserData
@@ -21,7 +23,7 @@ interface ApiDao {
     suspend fun login(@Body loginRequest: LoginData): Response<FullAutUserData>
 
     @POST("regUser/")
-    suspend fun register(@Body userData: UserData): Response<FullAutUserData>
+    suspend fun register(@Body regUserData: RegisterUser): Response<FullAutUserData>
 
     @POST("get_access_token/")
     suspend fun getAccessToken(@Query("refresh_token") refreshToken: String): Response<Tokens>

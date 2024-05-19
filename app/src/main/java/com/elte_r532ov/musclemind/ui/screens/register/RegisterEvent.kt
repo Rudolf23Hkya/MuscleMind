@@ -9,5 +9,5 @@ sealed class RegisterEvent {
     data class onExperienceChosen(val  exp: ExperienceLevel?) : RegisterEvent()
     data class onUserDataChosen(val  name: String,val email: String,
                                 val fstPassword: String, val sndPassword: String) : RegisterEvent()
-
+    data class onDiseasesChosen(val diseases: List<DiseaseListElemet>) : RegisterEvent()
 }

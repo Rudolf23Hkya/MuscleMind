@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -20,21 +18,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.util.UiEvent
+
+// This data class is only part of the view
+data class DiseaseListElemet(
+    val name: String,
+    val isSelected: Boolean
+)
 
 @Composable
-fun ExperienceSelectionScreen(
+fun DiseaseSelectionScreen(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
-    //UI handler
+    //Snack bar
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
-    val options = ExperienceLevel.entries.toTypedArray()
-    var selectedOption by remember { mutableStateOf<ExperienceLevel?>(null) }
+    var diseases by remember {
+        mutableStateOf(
+            listOf(
+                DiseaseListElemet("Asthma", false),
+                DiseaseListElemet("Bad Knee", false),
+                DiseaseListElemet("Cardiovascular Disease", false),
+                DiseaseListElemet("Osteoporosis", false)
+            )
+        )
+    }
 
     Box(
         modifier = Modifier
@@ -49,7 +59,7 @@ fun ExperienceSelectionScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "How experienced are you?",
+                "Select your diseases",
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp,
                 color = MaterialTheme.colorScheme.onBackground,
@@ -57,16 +67,20 @@ fun ExperienceSelectionScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(32.dp))
-            options.forEach { option ->
-                ExperienceOption(
-                    text = option.toString(),
-                    isSelected = selectedOption == option,
-                    onSelect = { selectedOption = it }
+            diseases.forEachIndexed { index, disease ->
+                DiseaseOption(
+                    text = disease.name,
+                    isSelected = disease.isSelected,
+                    onSelect = {
+                        diseases = diseases.mapIndexed { i, d ->
+                            if (i == index) d.copy(isSelected = !d.isSelected) else d
+                        }
+                    }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
             Button(
-                onClick = { viewModel.onEvent(RegisterEvent.onExperienceChosen(selectedOption)) },
+                onClick = { viewModel.onEvent(RegisterEvent.onDiseasesChosen(diseases.filter { it.isSelected })) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
@@ -81,10 +95,10 @@ fun ExperienceSelectionScreen(
 }
 
 @Composable
-fun ExperienceOption(
+fun DiseaseOption(
     text: String,
     isSelected: Boolean,
-    onSelect: (ExperienceLevel) -> Unit
+    onSelect: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -94,10 +108,7 @@ fun ExperienceOption(
                 color = if (isSelected) MaterialTheme.colorScheme.onBackground else Color.Transparent,
                 shape = RoundedCornerShape(12.dp)
             )
-            .clickable {
-                val enumValue = enumValueOf<ExperienceLevel>(text)
-                onSelect(enumValue)
-            }
+            .clickable { onSelect() }
             .padding(horizontal = 16.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -37,6 +37,7 @@ import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.text.TextStyle
+import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 
 
 @Composable
@@ -47,26 +48,7 @@ fun LoginScreen(
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
     //Snack bar:
-    var snackBarMessage by remember { mutableStateOf<String?>(null) }
-    val snackBarHostState = remember { SnackbarHostState() }
-
-    // This LaunchedEffect listens to the UI events and performs actions accordingly
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect() { event ->
-            when (event) {
-                is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
-                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
-                else -> Unit
-            }
-        }
-    }
-    LaunchedEffect(snackBarMessage) {
-        snackBarMessage?.let { message ->
-            snackBarHostState.showSnackbar(message=message,duration = SnackbarDuration.Short)
-            snackBarMessage = null
-        }
-    }
+    val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
         Column(
             modifier = Modifier

@@ -3,8 +3,10 @@ import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
+import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
 import com.elte_r532ov.musclemind.data.api.responses.LoginData
+import com.elte_r532ov.musclemind.data.api.responses.RegisterUser
 import com.elte_r532ov.musclemind.data.api.responses.SelectedWorkout
 import com.elte_r532ov.musclemind.data.api.responses.Success
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
@@ -42,9 +44,9 @@ class MuscleMindRepoImplApi(
             }
         }
 
-    override suspend fun registerUser(ud: UserData): Resource<FullAutUserData> {
+    override suspend fun registerUser(ud: UserData,d:Disease): Resource<FullAutUserData> {
         return try {
-            val regResponse = apiDao.register(ud)
+            val regResponse = apiDao.register(RegisterUser(userData = ud, disease = d))
             handleApiResponse(regResponse) { fullAutUserData ->
                 // Saving the tokens
                 sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)

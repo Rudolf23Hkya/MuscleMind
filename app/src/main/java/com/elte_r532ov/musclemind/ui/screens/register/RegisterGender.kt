@@ -36,6 +36,7 @@ import com.elte_r532ov.musclemind.R
 import com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.ui.input.pointer.pointerInput
+import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.Routes
 
 
@@ -44,28 +45,8 @@ fun RegisterGender(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
-    //Snack bar
-    var snackBarMessage by remember { mutableStateOf<String?>(null) }
-    val snackBarHostState = remember { SnackbarHostState() }
-
-    // This LaunchedEffect listens to the UI events and performs actions accordingly
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect() { event ->
-            when (event) {
-                is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
-                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
-                else -> Unit
-            }
-        }
-    }
-
-    LaunchedEffect(snackBarMessage) {
-        snackBarMessage?.let { message ->
-            snackBarHostState.showSnackbar(message=message,duration = SnackbarDuration.Short)
-            snackBarMessage = null
-        }
-    }
+    //UI handler
+    val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
 
     val maleImagePainter = painterResource(id = R.drawable.boy)

@@ -1,6 +1,7 @@
 package com.elte_r532ov.musclemind.data
 
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
+import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
 import com.elte_r532ov.musclemind.data.api.responses.LoginData
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
@@ -16,7 +17,7 @@ import com.elte_r532ov.musclemind.util.Resource
 //This is an abstraction for transferring data from and to the app
 interface MuscleMindRepository {
 
-    suspend fun registerUser(ud : UserData):Resource<FullAutUserData>
+    suspend fun registerUser(ud : UserData,d : Disease):Resource<FullAutUserData>
 
     suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData>
 
