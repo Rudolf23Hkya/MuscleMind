@@ -15,38 +15,57 @@ import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import com.elte_r532ov.musclemind.util.Resource
 import org.json.JSONException
 import org.json.JSONObject
+import retrofit2.Response
 
 class MuscleMindRepoImplApi(
     private val apiDao: ApiDao,
     private val sessionManagement: SessionManagement
     )
     : MuscleMindRepository {
-
-    override suspend fun registerUser(ud: UserData): Resource<FullAutUserData> {
-        return try {
-            val regResponse = apiDao.register(ud)
-            if (regResponse.isSuccessful) {
-                // Checking if the body is not null, then return it wrapped in Resource.Success
-                regResponse.body()?.let { fullAutUserData ->
-                    // Saving the tokens
-                    sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
-                    // Caching user data
-                    sessionManagement.storeUserData(fullAutUserData.userData)
-
-                    Resource.Success(fullAutUserData)
-                } ?: Resource.Error("No data recived from the server!", null)
+        // Generic Api handler
+        private fun <T> handleApiResponse(response: Response<T>, onSuccess: (T) -> Resource<T>): Resource<T> {
+            return if (response.isSuccessful) {
+                response.body()?.let {
+                    onSuccess(it)
+                } ?: Resource.Error("No data received from the server!", null)
             } else {
-                // The API responded but indicated a failure
-                val errorStr = regResponse.errorBody()?.string()
+                val errorStr = response.errorBody()?.string()
                 if (errorStr != null) {
                     try {
                         Resource.Error(JSONObject(errorStr).getString("error"), null)
                     } catch (e: JSONException) {
-                        Resource.Error(regResponse.errorBody()?.string() ?: "Registration failed with unknown error", null)
+                        Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error", null)
                     }
                 } else {
-                    Resource.Error(regResponse.errorBody()?.string() ?: "Registration failed with unknown error", null)
+                    Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error", null)
                 }
+            }
+        }
+
+    override suspend fun registerUser(ud: UserData): Resource<FullAutUserData> {
+        return try {
+            val regResponse = apiDao.register(ud)
+            handleApiResponse(regResponse) { fullAutUserData ->
+                // Saving the tokens
+                sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
+                // Caching user data
+                sessionManagement.storeUserData(fullAutUserData.userData)
+                Resource.Success(fullAutUserData)
+            }
+        } catch (e: Exception) {
+            // Handle network exceptions
+            Resource.Error(e.message ?: "Network error!", null)
+        }
+    }
+    override suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData> {
+        return try {
+            val loginResponse = apiDao.login(LoginData(email=email,password=password))
+            handleApiResponse(loginResponse) { fullAutUserData ->
+                // Saving the tokens
+                sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
+                // Caching user data
+                sessionManagement.storeUserData(fullAutUserData.userData)
+                Resource.Success(fullAutUserData)
             }
         } catch (e: Exception) {
             // Handle network exceptions
@@ -106,37 +125,6 @@ class MuscleMindRepoImplApi(
         authToken: String
     ): Resource<Success> {
         TODO("Not yet implemented")
-    }
-
-    override suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData> {
-        return try {
-            val loginResponse = apiDao.login(LoginData(email = email, password = password))
-            if (loginResponse.isSuccessful) {
-                loginResponse.body()?.let { fullAutUserData ->
-                    // Saving the tokens
-                    sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
-                    // Caching user data
-                    sessionManagement.storeUserData(fullAutUserData.userData)
-
-                    Resource.Success(fullAutUserData)
-                } ?: Resource.Error("Login successful but no user data returned", null)
-            } else {
-                // The API responded but indicated a failure
-                val errorStr = loginResponse.errorBody()?.string()
-                if (errorStr != null) {
-                    try {
-                        Resource.Error(JSONObject(errorStr).getString("error"), null)
-                    } catch (e: JSONException) {
-                        Resource.Error(loginResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
-                    }
-                } else {
-                    Resource.Error(loginResponse.errorBody()?.string() ?: "Login failed with unknown error", null)
-                }
-            }
-        } catch (e: Exception) {
-            // Handle any exceptions that occur during the network request
-            Resource.Error(e.message ?: "Error occurred during login attempt", null)
-        }
     }
 
 
