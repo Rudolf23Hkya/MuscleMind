@@ -145,7 +145,7 @@ class SharedRegisterViewModel @Inject constructor(
             height = this.height
         )
 
-        val result = repository.insertUserData(newUser)
+        val result = repository.registerUser(newUser)
 
         when (result) {
             //Navigating to user-s Active Workouts if Success
