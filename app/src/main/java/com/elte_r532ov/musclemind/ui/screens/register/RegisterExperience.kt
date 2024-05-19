@@ -30,7 +30,7 @@ fun ExperienceSelectionScreen(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
-    //UI handler
+    //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
     val options = ExperienceLevel.entries.toTypedArray()

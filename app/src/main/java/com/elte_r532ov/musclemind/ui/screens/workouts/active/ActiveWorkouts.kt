@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -33,6 +34,7 @@ import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.runtime.livedata.observeAsState
 import com.elte_r532ov.musclemind.ui.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.WorkoutItem
+import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -40,20 +42,9 @@ fun ActiveWorkouts(
     onNavigate: NavHostController,
     viewModel: ActiveWorkoutsViewModel = hiltViewModel()
 ) {
-    //SnackBar
-    var snackBarMessage by remember { mutableStateOf<String?>(null) }
-    val snackBarHostState = remember { SnackbarHostState() }
+    //Handle UiEvent:
+    val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect { event ->
-            when (event) {
-                is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
-                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
-                else -> Unit
-            }
-        }
-    }
     val userName by viewModel.userNameLiveData.observeAsState("")
     val activeWorkouts = viewModel.activeWorkoutLiveData.observeAsState(initial = emptyList())
 
@@ -64,14 +55,16 @@ fun ActiveWorkouts(
                 BottomNavBar(it, onNavigate)
             }
         },
-        snackbarHost ={ SnackbarHost(snackBarHostState) }
-
-    ) {
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .background(Color(0xFFE1D5E7)), // Use a gradient instead for the background
+        snackbarHost = { SnackbarHost(snackBarHostState) }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background) // Use a gradient instead for the background
+                .padding(innerPadding), // Padding for insets
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center) {
+            verticalArrangement = Arrangement.Center
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -83,7 +76,9 @@ fun ActiveWorkouts(
                     "Welcome $userName",
                     fontSize = 32.sp,
                     fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    lineHeight = 40.sp
                 )
             }
             LazyColumn {

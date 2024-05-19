@@ -127,11 +127,19 @@ class SharedRegisterViewModel @Inject constructor(
             fstPassword.length < 6 -> sendUiEvent(UiEvent.ErrorOccured("Password is too short!"))
             !email.isValidEmail() -> sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail address!"))
             name.length < 2 -> sendUiEvent(UiEvent.ErrorOccured("Username must be at least 2 characters long!"))
+            !isValidUsername(name) -> sendUiEvent(UiEvent.ErrorOccured
+                ("Enter a valid username. " +
+                    "This value may contain only letters, numbers, and @/./+/-/_ characters."))
             else -> saveUserData(fstPassword, email, name)
         }
     }
     private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
             Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+    private fun isValidUsername(username: String): Boolean {
+        val regex = Regex("^[a-zA-Z0-9@./+\\-_]+$")
+        return regex.matches(username)
+    }
 
     // Saving user data
     private fun saveUserData(password: String, email: String, name: String) {

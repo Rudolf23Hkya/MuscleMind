@@ -32,7 +32,7 @@ fun DiseaseSelectionScreen(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
-    //Snack bar
+    //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
     var diseases by remember {

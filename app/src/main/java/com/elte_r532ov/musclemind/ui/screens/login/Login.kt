@@ -1,4 +1,5 @@
 package com.elte_r532ov.musclemind.ui.screens.login
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -47,10 +48,10 @@ fun LoginScreen(
 ) {
     val emailState = remember { mutableStateOf("") }
     val passwordState = remember { mutableStateOf("") }
-    //Snack bar:
+    //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
-        Column(
+    Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background),

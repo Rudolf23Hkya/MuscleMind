@@ -1,5 +1,6 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
 
+@SuppressLint("DiscouragedApi")
 @Composable
 fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
     val context = LocalContext.current
@@ -39,17 +41,18 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
     if (imageResId != 0) {
         Card(
             modifier =
-            Modifier.fillMaxWidth()
+            Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
         ) {
 
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier.background(MaterialTheme.colorScheme.inversePrimary).fillMaxSize()){
+                modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.secondary)){
                 Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.Start){
                     Text(
                         text = exercise.name,
                         modifier = Modifier.padding(start = 16.dp).weight(2f, fill = false),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                     Image(
                         painter = painterResource(id = getPictureIdByExperienceLevel(exercise.experienceLevel)),
@@ -69,7 +72,8 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
                     Text(
                         text = exercise.duration.toString(),
                         modifier = Modifier.weight(2f, fill = false),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
                 Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.End){
@@ -81,10 +85,10 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
                     Text(
                         text = exercise.caloriesBurnt.toString(),
                         modifier = Modifier.weight(2f, fill = false),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
                     )
                 }
-
             }
             Row(modifier = Modifier
                 .fillMaxWidth()
@@ -111,7 +115,8 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
                 Text(
                     text = exercise.name,
                     modifier = Modifier.padding(16.dp),
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
         }

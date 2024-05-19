@@ -29,7 +29,7 @@ fun RegisterFizData(
     onNavigate: NavHostController,
     viewModel: SharedRegisterViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.REGISTRATION_ROUTE))
 ) {
-    //UI handler
+    //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
     var weight by remember { mutableStateOf("") }

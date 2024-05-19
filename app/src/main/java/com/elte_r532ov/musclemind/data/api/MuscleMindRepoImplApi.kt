@@ -39,11 +39,10 @@ class MuscleMindRepoImplApi(
                         Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error", null)
                     }
                 } else {
-                    Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error", null)
+                    Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error")
                 }
             }
         }
-
     override suspend fun registerUser(ud: UserData,d:Disease): Resource<FullAutUserData> {
         return try {
             val regResponse = apiDao.register(RegisterUser(userData = ud, disease = d))

@@ -41,8 +41,6 @@ class ActiveWorkoutsViewModel @Inject constructor(
 
             val workouts = workoutRepo.getWorkouts()
             _activeWorkouts.value = workouts
-
-            _uiEvent.send(UiEvent.ShowSnackbar("Hello $_userName.value"))
         }
     }
 
