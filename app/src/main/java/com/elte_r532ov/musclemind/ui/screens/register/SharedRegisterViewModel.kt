@@ -46,100 +46,108 @@ class SharedRegisterViewModel @Inject constructor(
     private var cardiovascular_d : Boolean = false
     private var osteoporosis : Boolean = false
 
-    fun onEvent(event : RegisterEvent){
-        when(event){
-            //Setters and Navs
-            is RegisterEvent.onGenderChosen -> {
-                if(event.gender == null){
-                    sendUiEvent(UiEvent.ErrorOccured("You need to choose!"))
-                }
-                if(event.gender == Gender.MALE){
-                    this.gender = Gender.MALE
-                }
-                else{
-                    this.gender = Gender.FEMALE
-                }
-
-                Log.d("MyActivity", this.gender.toString())
-                sendUiEvent(UiEvent.Navigate(Routes.REGISTER_FIZ_DATA))
-            }
-
-            is RegisterEvent.onFizDataChosen -> {
-                try {
-                    val eWeight = event.weight.toDouble()
-                    val eAge = event.age.toInt()
-                    val eHeight = event.height.toDouble()
-
-                    //The tallest man alive is 251 - Sultan Kosen
-                    if(eWeight > 20 && eWeight < 1500 &&
-                        eAge > 12  && eAge < 120 &&
-                        eHeight > 100 && eHeight < 251) {
-                        this.weight = eWeight
-                        this.age = eAge
-                        this.height = eHeight
-
-                        sendUiEvent(UiEvent.Navigate(Routes.REGISTER_EXP))
-                    }
-                    else{
-                        sendUiEvent(UiEvent.ErrorOccured("Invalid values!"))
-                    }
-                }
-                catch (e: NumberFormatException){
-                    sendUiEvent(UiEvent.ErrorOccured("Invalid number format!"))
-                }
-            }
-            is RegisterEvent.onExperienceChosen -> {
-                if(event.exp == null){
-                    sendUiEvent(UiEvent.ErrorOccured("You need to choose!"))
-                }
-                else{
-                    this.experienceLevel = event.exp
-
-                    sendUiEvent(UiEvent.Navigate(Routes.REGISTER_ACCOUNT_DATA))
-                }
-            }
-            is RegisterEvent.onUserDataChosen -> {
-                //Data validation
-                if((event.fstPassword != event.sndPassword)){
-                    sendUiEvent(UiEvent.ErrorOccured("Not Matching Passwords!"))
-                }
-                else if(event.fstPassword.length < 6){
-                    sendUiEvent(UiEvent.ErrorOccured("Password is too short!"))
-                }
-                else if(!event.email.isValidEmail()){
-                    sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail address!"))
-                }
-                else if(event.name.length < 2){
-                    sendUiEvent(UiEvent.
-                    ErrorOccured("Username must be at least 2 characters long!"))
-                }
-                else{
-                    //Validated data can be saved to DB
-                    this.password = event.fstPassword
-                    this.name = event.name
-                    this.email = event.email
-
-                    viewModelScope.launch{
-                        try{
-                            //Adding the new User To the DB
-                           addUserToDB()
-                        }
-                        catch (e: Exception){
-                            Log.e("MyActivity",e.toString() )
-                        }
-                    }
-                }
-            }
-
-            is RegisterEvent.onDiseasesChosen -> TODO()
+    fun onEvent(event: RegisterEvent) {
+        when (event) {
+            is RegisterEvent.onGenderChosen -> handleGenderChosen(event.gender)
+            is RegisterEvent.onFizDataChosen -> handleFizDataChosen(event.weight, event.age, event.height)
+            is RegisterEvent.onExperienceChosen -> handleExperienceChosen(event.exp)
+            is RegisterEvent.onUserDataChosen -> handleUserDataChosen(event.fstPassword, event.sndPassword, event.email, event.name)
+            is RegisterEvent.onDiseasesChosen -> handleDiseasesChosen(event.diseases)
         }
     }
-    private fun sendUiEvent(event: UiEvent){
+
+    private fun handleGenderChosen(gender: Gender?) {
+        if (gender == null) {
+            sendUiEvent(UiEvent.ErrorOccured("You need to select your gender!"))
+        } else {
+            this.gender = gender
+            Log.d("MyActivity", this.gender.toString())
+            sendUiEvent(UiEvent.Navigate(Routes.REGISTER_FIZ_DATA))
+        }
+    }
+
+    //Fiz data
+    private fun handleFizDataChosen(weight: String, age: String, height: String) {
+        try {
+            val eWeight = weight.toDouble()
+            val eAge = age.toInt()
+            val eHeight = height.toDouble()
+
+            when {
+                !isValidWeight(eWeight) -> sendUiEvent(UiEvent.ErrorOccured("Invalid weight! We only can process users between 20-500 kg."))
+                !isValidAge(eAge) -> sendUiEvent(UiEvent.ErrorOccured("You must be between 12 and 120 years."))
+                !isValidHeight(eHeight) -> sendUiEvent(UiEvent.ErrorOccured("Invalid height! Height must be between 50 and 251 cm."))
+                else -> {
+                    this.weight = eWeight
+                    this.age = eAge
+                    this.height = eHeight
+                    sendUiEvent(UiEvent.Navigate(Routes.REGISTER_EXP))
+                }
+            }
+        } catch (e: NumberFormatException) {
+            sendUiEvent(UiEvent.ErrorOccured("Invalid number format!"))
+        }
+    }
+
+    private fun isValidWeight(weight: Double): Boolean {
+        return weight in 20.0..500.0
+    }
+
+    private fun isValidAge(age: Int): Boolean {
+        return age in 12..120
+    }
+
+    private fun isValidHeight(height: Double): Boolean {
+        return height in 50.0..251.0
+    }
+
+    // Experience
+    private fun handleExperienceChosen(exp: ExperienceLevel?) {
+        if (exp == null) {
+            sendUiEvent(UiEvent.ErrorOccured("You need to select your experience level!"))
+        } else {
+            this.experienceLevel = exp
+            sendUiEvent(UiEvent.Navigate(Routes.REGISTER_DISEASE))
+        }
+    }
+    // Disease
+    private fun handleDiseasesChosen(diseaseList: List<DiseaseListElemet>) {
+            this.asthma = diseaseList.any { it.name == "Asthma" && it.isSelected }
+            this.bad_knee = diseaseList.any { it.name == "Bad Knee" && it.isSelected }
+            this.cardiovascular_d = diseaseList.any { it.name == "Cardiovascular Disease" && it.isSelected }
+            this.osteoporosis = diseaseList.any { it.name == "Osteoporosis" && it.isSelected }
+        // No condition because it s optional
+        sendUiEvent(UiEvent.Navigate(Routes.REGISTER_ACCOUNT_DATA))
+    }
+
+    // User data
+    private fun handleUserDataChosen(fstPassword: String, sndPassword: String, email: String, name: String) {
+        when {
+            fstPassword != sndPassword -> sendUiEvent(UiEvent.ErrorOccured("Not Matching Passwords!"))
+            fstPassword.length < 6 -> sendUiEvent(UiEvent.ErrorOccured("Password is too short!"))
+            !email.isValidEmail() -> sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail address!"))
+            name.length < 2 -> sendUiEvent(UiEvent.ErrorOccured("Username must be at least 2 characters long!"))
+            else -> saveUserData(fstPassword, email, name)
+        }
+    }
+    private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
+            Patterns.EMAIL_ADDRESS.matcher(this).matches()
+
+    // Saving user data
+    private fun saveUserData(password: String, email: String, name: String) {
+        this.password = password
+        this.name = name
+        this.email = email
+
         viewModelScope.launch {
-            _uiEvent.send(event)
+            try {
+                sendRegRequest()
+            } catch (e: Exception) {
+                Log.e("MyActivity", e.toString())
+            }
         }
     }
-    private suspend fun addUserToDB() {
+    private suspend fun sendRegRequest() {
         //Adding new user to the database
         val newUser = UserData(
             email = this.email,
@@ -152,10 +160,10 @@ class SharedRegisterViewModel @Inject constructor(
             height = this.height
         )
         val disease = Disease(
-            asthma=asthma,
-            bad_knee = bad_knee,
-            cardiovascular_d = cardiovascular_d,
-            osteoporosis = osteoporosis)
+            asthma=this.asthma,
+            bad_knee = this.bad_knee,
+            cardiovascular_d = this.cardiovascular_d,
+            osteoporosis = this.osteoporosis)
 
         when (val result = repository.registerUser(newUser,disease)) {
             //Navigating to user-s Active Workouts if Success
@@ -163,6 +171,10 @@ class SharedRegisterViewModel @Inject constructor(
             is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
         }
     }
-    private fun CharSequence?.isValidEmail() = !isNullOrEmpty() &&
-            Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    // Util
+    private fun sendUiEvent(event: UiEvent){
+        viewModelScope.launch {
+            _uiEvent.send(event)
+        }
+    }
 }

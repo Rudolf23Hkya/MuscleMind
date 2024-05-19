@@ -9,6 +9,7 @@ object Routes {
     const val REGISTER_EXP = "registerExperience"
     const val REGISTER_FIZ_DATA = "registerFizData"
     const val REGISTER_GENDER = "registerGender"
+    const val REGISTER_DISEASE = "registerDisease"
     const val REGISTER_ACCOUNT_DATA = "registerACCData"
 
     const val STATS_OVERVIEW = "stats_overview"

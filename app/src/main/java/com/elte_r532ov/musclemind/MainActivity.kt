@@ -23,6 +23,7 @@ import com.elte_r532ov.musclemind.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
+import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.settings.ModifyAccountData
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
@@ -80,8 +81,10 @@ fun MyApp(sessionManagement: SessionManagement) {
                 RegisterFizData(navController)
             }
             composable(Routes.REGISTER_EXP) {
-
                 ExperienceSelectionScreen(navController)
+            }
+            composable(Routes.REGISTER_DISEASE) {
+                DiseaseSelectionScreen(navController)
             }
             composable(Routes.REGISTER_ACCOUNT_DATA) {
                 RegisterData(navController)
