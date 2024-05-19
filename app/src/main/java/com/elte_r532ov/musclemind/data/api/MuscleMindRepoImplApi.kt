@@ -2,7 +2,6 @@ package com.elte_r532ov.musclemind.data.api
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.api.responses.ReqDate
 import com.elte_r532ov.musclemind.util.Resource
 import org.json.JSONException
 import org.json.JSONObject
@@ -92,9 +91,6 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    override suspend fun getStats(rd: ReqDate) {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun addCalForDay(kcal :Int): Resource<IntArray> {
         TODO("Not yet implemented")

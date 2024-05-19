@@ -1,6 +1,5 @@
 package com.elte_r532ov.musclemind.data.api
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
-import com.elte_r532ov.musclemind.data.api.responses.ReqDate
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import retrofit2.Response
@@ -22,7 +21,4 @@ interface ApiDao {
     @POST("access_token_with_refresh_token/")
     suspend fun getAccessTokenWithRefreshToken(@Query("refresh_token") refreshToken: String): Response<Tokens>
 
-    //Using Post
-    @POST("get_stats/")
-    suspend fun getStats(@Body date: ReqDate):Response<UserData>
 }
