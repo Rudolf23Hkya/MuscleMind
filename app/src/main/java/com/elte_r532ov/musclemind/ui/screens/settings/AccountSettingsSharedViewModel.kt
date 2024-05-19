@@ -33,38 +33,11 @@ class AccountSettingsSharedViewModel@Inject constructor(
             }
         }
     }
-    public fun changeProfileData(email: String,name : String,
-        age : String,weight: String,height : String){
-                //User authentication successful, data can be changed
-                viewModelScope.launch {
-                    try {
-                        val intAge = age.toInt()
-                        val dWeight = weight.toDouble()
-                        val dHeight = height.toDouble()
-
-                        val userToModify = UserData(
-                            email=email,
-                            username = name,
-                            gender = _userInfo.gender,
-                            experiencelevel = _userInfo.experiencelevel,
-                            age = intAge,
-                            weight = dWeight,
-                            height = dHeight)
-                        if(!accountRepository.modifyUserData(userToModify))
-                            _uiEvent.send(UiEvent.ErrorOccured("Invalid Password!"))
-                        _uiEvent.send(UiEvent.Navigate(Routes.SETTINGS_MAIN))
-                    }
-                    catch (e: NumberFormatException){
-                        _uiEvent.send(UiEvent.ErrorOccured("Network error!"))
-                    }
-                }
-
-    }
     public fun deleteAccount(delStr : String,password : String){
         if(delStr == "DELETE"){
             if(true){
                 viewModelScope.launch {
-                    accountRepository.deleteUserData(_userInfo)
+                    accountRepository.deleteUserData()
                 }
             }
             else{

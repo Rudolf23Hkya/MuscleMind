@@ -20,25 +20,25 @@ interface MuscleMindRepository {
 
     suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData>
 
-    suspend fun getUserData(authToken: String): Resource<UserData>
+    suspend fun getUserData(): Resource<UserData>
 
-    suspend fun getAccessToken(refreshToken: String): Resource<Tokens>
+    suspend fun getAccessToken(): Resource<Tokens>
 
-    suspend fun getCalories(authToken: String): Resource<CaloriesData>
+    suspend fun getCalories(): Resource<CaloriesData>
 
-    suspend fun addCalories(caloriesData: CaloriesData, authToken: String): Resource<CaloriesData>
+    suspend fun addCalories(caloriesData: CaloriesData): Resource<CaloriesData>
 
-    suspend fun getRecomWorkouts(authToken: String): Resource<List<Workout>>
+    suspend fun getRecomWorkouts(): Resource<List<Workout>>
 
-    suspend fun postUserWorkout(workoutData: SelectedWorkout, authToken: String): Resource<SelectedWorkout>
+    suspend fun postUserWorkout(workoutData: SelectedWorkout): Resource<SelectedWorkout>
 
-    suspend fun getUserWorkout(authToken: String): Resource<List<UserWorkout>>
+    suspend fun getUserWorkout(): Resource<List<UserWorkout>>
 
-    suspend fun workoutDone(workoutDoneData: WorkoutDone, authToken: String): Resource<WorkoutDone>
+    suspend fun workoutDone(workoutDoneData: WorkoutDone): Resource<WorkoutDone>
 
-    suspend fun getStats(year: Int, month: Int, day: Int, authToken: String): Resource<WeekStats>
+    suspend fun getStats(year: Int, month: Int, day: Int): Resource<WeekStats>
 
-    suspend fun getStatsViaEmail(csv: Boolean, pdf: Boolean, authToken: String): Resource<Success>
+    suspend fun getStatsViaEmail(csv: Boolean, pdf: Boolean): Resource<Success>
 
-    suspend fun deleteUserData(authToken: String)
+    suspend fun deleteUserData()
 }

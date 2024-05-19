@@ -102,8 +102,7 @@ fun ModifyAccountData(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { viewModel.changeProfileData(email,name,
-                    age,weight,height)},
+                onClick = {},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),

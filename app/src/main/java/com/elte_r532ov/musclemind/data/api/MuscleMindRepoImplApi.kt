@@ -73,39 +73,36 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    override suspend fun getAccessToken(refreshToken: String): Resource<Tokens> {
+    override suspend fun getAccessToken(): Resource<Tokens> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getCalories(authToken: String): Resource<CaloriesData> {
+    override suspend fun getCalories(): Resource<CaloriesData> {
         TODO("Not yet implemented")
     }
 
     override suspend fun addCalories(
-        caloriesData: CaloriesData,
-        authToken: String
+        caloriesData: CaloriesData
     ): Resource<CaloriesData> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getRecomWorkouts(authToken: String): Resource<List<Workout>> {
+    override suspend fun getRecomWorkouts(): Resource<List<Workout>> {
         TODO("Not yet implemented")
     }
 
     override suspend fun postUserWorkout(
-        workoutData: SelectedWorkout,
-        authToken: String
+        workoutData: SelectedWorkout
     ): Resource<SelectedWorkout> {
         TODO("Not yet implemented")
     }
 
-    override suspend fun getUserWorkout(authToken: String): Resource<List<UserWorkout>> {
+    override suspend fun getUserWorkout(): Resource<List<UserWorkout>> {
         TODO("Not yet implemented")
     }
 
     override suspend fun workoutDone(
-        workoutDoneData: WorkoutDone,
-        authToken: String
+        workoutDoneData: WorkoutDone
     ): Resource<WorkoutDone> {
         TODO("Not yet implemented")
     }
@@ -113,23 +110,21 @@ class MuscleMindRepoImplApi(
     override suspend fun getStats(
         year: Int,
         month: Int,
-        day: Int,
-        authToken: String
+        day: Int
     ): Resource<WeekStats> {
         TODO("Not yet implemented")
     }
 
     override suspend fun getStatsViaEmail(
         csv: Boolean,
-        pdf: Boolean,
-        authToken: String
+        pdf: Boolean
     ): Resource<Success> {
         TODO("Not yet implemented")
     }
 
 
     //This function returns user data from the cache
-    override suspend fun getUserData(authToken: String): Resource<UserData> {
+    override suspend fun getUserData(): Resource<UserData> {
         return try {
             return Resource.Success(sessionManagement.getUserData())
         } catch (e: Exception) {
@@ -137,7 +132,7 @@ class MuscleMindRepoImplApi(
             Resource.Error(e.message ?: "Exception occurred while fetching user data", null)
         }
     }
-    override suspend fun deleteUserData(authToken: String) {
+    override suspend fun deleteUserData() {
         TODO("Not yet implemented")
     }
 
