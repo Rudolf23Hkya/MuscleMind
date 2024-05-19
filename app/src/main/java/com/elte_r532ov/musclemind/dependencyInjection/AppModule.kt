@@ -25,7 +25,7 @@ object AppModule{
     @Singleton
     @Provides
     fun provideMuscleMindRepository(apiDao: ApiDao,app: Application): MuscleMindRepository {
-        return MuscleMindRepoImplApi(apiDao, SessionManagement(app.applicationContext))
+        return MuscleMindRepoImplApi(apiDao, SessionManagement(app.applicationContext),app.applicationContext)
         //return MuscleMindRepoImplApi(apiDao)
     }
 

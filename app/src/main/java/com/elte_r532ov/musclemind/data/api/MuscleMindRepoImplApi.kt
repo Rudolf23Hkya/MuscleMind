@@ -1,4 +1,7 @@
 package com.elte_r532ov.musclemind.data.api
+import android.content.Context
+import android.content.Intent
+import com.elte_r532ov.musclemind.MainActivity
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
@@ -21,9 +24,19 @@ import retrofit2.Response
 
 class MuscleMindRepoImplApi(
     private val apiDao: ApiDao,
-    private val sessionManagement: SessionManagement
+    private val sessionManagement: SessionManagement,
+    private val context: Context
     )
     : MuscleMindRepository {
+        // If the refresh expires the user needs to Log-in again
+        private fun restartMainActivity() {
+            //First the tokens need to be deleted
+            sessionManagement.deleteTokens()
+            //Main activity restart
+            val intent = Intent(context, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            context.startActivity(intent)
+        }
         // Generic Api handler
         private fun <T> handleApiResponse(response: Response<T>, onSuccess: (T) -> Resource<T>): Resource<T> {
             return if (response.isSuccessful) {
@@ -74,8 +87,34 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    override suspend fun getAccessToken(): Resource<Tokens> {
-        TODO("Not yet implemented")
+    override suspend fun updateAccessToken(): Resource<Tokens>{
+        return try {
+            //Getting the stored token
+            val refreshToken = sessionManagement.getRefreshToken()
+            if (refreshToken != null) {
+                val tokensResponse = apiDao.getAccessToken(Tokens(refresh = refreshToken, access = ""))
+                if (tokensResponse.isSuccessful) {
+                    val tokens = tokensResponse.body()
+                    if (tokens != null) {
+                        sessionManagement.saveTokens(tokens.access, tokens.refresh)
+                        Resource.Success(tokens)
+                    } else {
+                        restartMainActivity()
+                        Resource.Error("Failed to parse tokens")
+                    }
+                } else {
+                    restartMainActivity()
+                    Resource.Error("Failed to fetch new access token: ${tokensResponse.message()}")
+                }
+            } else {
+                restartMainActivity()
+                Resource.Error("No refresh token available")
+            }
+        } catch (e: Exception) {
+            sessionManagement.deleteTokens()
+            restartMainActivity()
+            Resource.Error(e.message ?: "Network error!")
+        }
     }
 
     override suspend fun getCalories(): Resource<CaloriesData> {

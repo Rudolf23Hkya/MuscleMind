@@ -26,7 +26,7 @@ interface ApiDao {
     suspend fun register(@Body regUserData: RegisterUser): Response<FullAutUserData>
 
     @POST("get_access_token/")
-    suspend fun getAccessToken(@Query("refresh_token") refreshToken: String): Response<Tokens>
+    suspend fun getAccessToken(@Body tokens: Tokens): Response<Tokens>
 
     @GET("get_user_data/")
     suspend fun getUserData(@Header("Authorization") authToken: String): Response<UserData>

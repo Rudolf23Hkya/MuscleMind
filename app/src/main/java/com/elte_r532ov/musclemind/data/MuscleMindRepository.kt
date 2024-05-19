@@ -23,7 +23,7 @@ interface MuscleMindRepository {
 
     suspend fun getUserData(): Resource<UserData>
 
-    suspend fun getAccessToken(): Resource<Tokens>
+    suspend fun updateAccessToken(): Resource<Tokens>
 
     suspend fun getCalories(): Resource<CaloriesData>
 
