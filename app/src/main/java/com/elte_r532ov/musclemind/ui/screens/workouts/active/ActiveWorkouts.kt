@@ -3,6 +3,7 @@ package com.elte_r532ov.musclemind.ui.screens.workouts.active
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,7 +56,34 @@ fun ActiveWorkouts(
                 BottomNavBar(it, onNavigate)
             }
         },
-        snackbarHost = { SnackbarHost(snackBarHostState) }
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        topBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Row {
+                    Text(
+                        "Welcome  ",
+                        fontSize = 32.sp,
+                        fontFamily = myFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        lineHeight = 40.sp
+                    )
+                    Text(
+                        text = userName,
+                        fontSize = 32.sp,
+                        fontFamily = myFontFamily,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        lineHeight = 40.sp
+                    )
+                }
+            }
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -65,22 +93,6 @@ fun ActiveWorkouts(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 54.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    "Welcome $userName",
-                    fontSize = 32.sp,
-                    fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    lineHeight = 40.sp
-                )
-            }
             LazyColumn {
                 items(activeWorkouts.value) { workout ->
                     WorkoutItem(workout = workout, navigation = onNavigate)

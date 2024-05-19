@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.BottomNavBar
+import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.UiEvent
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
@@ -32,20 +33,8 @@ fun MainSettingsScreen(
     onNavigate: NavHostController,
     viewModel: MainSettingsViewModel = hiltViewModel()
 ) {
-    //SnackBar
-    var snackBarMessage by remember { mutableStateOf<String?>(null) }
-    val snackBarHostState = remember { SnackbarHostState() }
-
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect { event ->
-            when (event) {
-                is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
-                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
-                else -> Unit
-            }
-        }
-    }
+    //Handle UiEvent:
+    val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
     Scaffold(
         bottomBar = {
@@ -53,21 +42,28 @@ fun MainSettingsScreen(
                 BottomNavBar(it, onNavigate)
             }
         },
-        topBar={
-            /*
-            Text(
-                "Settings",
-                fontSize = 32.sp,
-                fontFamily = myFontFamily,
-                fontWeight = FontWeight.Bold
-            )
-            */
+        snackbarHost = { SnackbarHost(snackBarHostState) },
+        topBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Settings",
+                    fontSize = 32.sp,
+                    fontFamily = myFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
     ){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background), // A pink background
+                .background(MaterialTheme.colorScheme.background),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -85,53 +81,6 @@ fun MainSettingsScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Button(
-                onClick = {viewModel.onEvent(MainSettingsEvent.onChangeAccountDataClicked)},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-            ) {
-                Text(
-                    "Change Account Data",
-                    fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Button(
-                onClick = {viewModel.onEvent(MainSettingsEvent.onChangePasswordClicked)},
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 32.dp)
-            ) {
-                Text(
-                    "Change Password",
-                    fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun SettingItem(text: String, onClick: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(50), // Highly rounded corners
-        modifier = Modifier
-            .fillMaxWidth(0.8f) // Fill 80% of the width
-            .height(50.dp)
-            .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp) // Shadow effect
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            Text(
-                text = text,
-                fontSize = 18.sp,
-                color = Color.White
-            )
         }
     }
 }

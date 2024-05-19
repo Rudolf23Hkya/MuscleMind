@@ -21,10 +21,6 @@ class MainSettingsViewModel@Inject constructor(
 
     fun onEvent(event : MainSettingsEvent){
         when(event){
-            MainSettingsEvent.onChangePasswordClicked ->
-                sendUiEvent(UiEvent.Navigate(Routes.SETTINGS_PASSWORD))
-            MainSettingsEvent.onChangeAccountDataClicked ->
-                sendUiEvent(UiEvent.Navigate(Routes.SETTINGS_CHANGE_ACCOUNT_DATA))
             MainSettingsEvent.onLogOutClicked -> {
                 //Forgetting the session
                 sessionManagement.deleteTokens()

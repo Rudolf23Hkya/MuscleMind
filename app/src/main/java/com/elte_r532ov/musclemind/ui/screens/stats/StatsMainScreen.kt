@@ -10,9 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.BottomNavBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -25,6 +27,21 @@ fun StatsMainScreen(onNavigate: NavHostController, progressValues: FloatArray) {
             }
         },
         topBar = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Statistics",
+                    fontSize = 32.sp,
+                    fontFamily = myFontFamily,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    lineHeight = 40.sp
+                )
+            }
         }
     ) {
         Column(

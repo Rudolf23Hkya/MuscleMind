@@ -4,6 +4,4 @@ sealed class MainSettingsEvent {
 
     object onLogOutClicked : MainSettingsEvent()
 
-    object onChangeAccountDataClicked : MainSettingsEvent()
-    object onChangePasswordClicked : MainSettingsEvent()
 }

@@ -24,7 +24,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
-import com.elte_r532ov.musclemind.ui.screens.settings.ModifyAccountData
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInProgress.WorkoutInProgress
@@ -96,9 +95,6 @@ fun MyApp(sessionManagement: SessionManagement) {
 
         composable(Routes.SETTINGS_MAIN){
             MainSettingsScreen(navController)
-        }
-        composable(Routes.SETTINGS_CHANGE_ACCOUNT_DATA){
-            ModifyAccountData(navController)
         }
         composable(Routes.CALORIES_OVERVIEW){
             CalorieCounterScreen(navController)
