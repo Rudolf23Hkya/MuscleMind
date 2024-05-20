@@ -4,16 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.enums.Category
-import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.MuscleGroup
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
+import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.util.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -21,8 +15,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ActiveWorkoutsViewModel @Inject constructor(
-    private val userRepo: MuscleMindRepository,
-    private val workoutRepo : WorkoutExcRepository
+    private val userRepo: MuscleMindRepository
 ) : ViewModel() {
 
     private val _uiEvent = Channel<UiEvent>()
@@ -38,9 +31,9 @@ class ActiveWorkoutsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _userName.value = echoUserName(userRepo)
-
-            val workouts = workoutRepo.getWorkouts()
-            _activeWorkouts.value = workouts
+            //TODO
+            //val workouts = workoutRepo.getWorkouts()
+            //_activeWorkouts.value = workouts
         }
     }
 

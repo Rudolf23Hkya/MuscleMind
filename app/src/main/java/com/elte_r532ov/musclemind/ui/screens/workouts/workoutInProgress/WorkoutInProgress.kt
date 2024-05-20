@@ -22,10 +22,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.elte_r532ov.musclemind.data.api.responses.Exercise
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 import com.elte_r532ov.musclemind.data.enums.Category
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.MuscleGroup
+import com.elte_r532ov.musclemind.data.enums.MuscleGroup
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 
@@ -34,6 +34,7 @@ fun WorkoutInProgress(
     onNavigate: NavHostController,
     viewModel: WorkoutInProgressViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_IN_PROGRESS))
 ) {
+    /*
     val workoutId = 1L
     viewModel.initWorkoutId(workoutId)
     Text(text = workoutId.toString())
@@ -47,16 +48,13 @@ fun WorkoutInProgress(
         }
     }
     val selectedExercises = viewModel.selectedExercise.observeAsState(initial =
-    Exercise(0,"",
-        Category.OWN_BODY_WEIGHT,MuscleGroup.UPPER_BODY,
-        ExperienceLevel.INTERMEDIATE,0,0,""))
 
     val context = LocalContext.current
 
-    val drawableResId =context.resources.getIdentifier(selectedExercises.value.drawablePicName,
+    val drawableResId =context.resources.getIdentifier(selectedExercises.value.drawablepicname,
         "drawable", context.packageName)
     val workoutName = selectedExercises.value.name
-    val muscleGroup = selectedExercises.value.muscleGroup
+    val muscleGroup = selectedExercises.value.musclegroup
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -101,4 +99,5 @@ fun WorkoutInProgress(
             }
         }
     }
+    */
 }

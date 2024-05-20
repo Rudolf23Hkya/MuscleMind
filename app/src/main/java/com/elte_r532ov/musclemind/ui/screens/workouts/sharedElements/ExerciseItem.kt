@@ -1,10 +1,8 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,20 +22,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
+import com.elte_r532ov.musclemind.data.api.responses.Exercise
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 
 @SuppressLint("DiscouragedApi")
 @Composable
 fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
     val context = LocalContext.current
 
-    val imageResId = context.resources.getIdentifier(exercise.drawablePicName, "drawable", context.packageName)
+    val imageResId = context.resources.getIdentifier(exercise.drawablepicname, "drawable", context.packageName)
     if (imageResId != 0) {
         Card(
             modifier =
@@ -55,7 +53,7 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Image(
-                        painter = painterResource(id = getPictureIdByExperienceLevel(exercise.experienceLevel)),
+                        painter = painterResource(id = getPictureIdByExperienceLevel(ExperienceLevel.valueOf(exercise.experiencelevel.uppercase()))),
                         contentDescription = exercise.name,
                         modifier = Modifier
                             .weight(1f, fill = false)
@@ -83,7 +81,7 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
                         modifier = Modifier.padding(end = 6.dp, start = 12.dp)
                     )
                     Text(
-                        text = exercise.caloriesBurnt.toString(),
+                        text = exercise.caloriesburnt.toString(),
                         modifier = Modifier.weight(2f, fill = false),
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground

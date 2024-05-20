@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Exercise
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.WorkoutExcRepository
+import com.elte_r532ov.musclemind.data.MuscleMindRepository
+import com.elte_r532ov.musclemind.data.api.responses.Exercise
+import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WorkoutInDetailSharedViewModel @Inject constructor(
-    private val workoutRepo : WorkoutExcRepository
+    private val repository: MuscleMindRepository
 ) : ViewModel() {
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -32,12 +32,13 @@ class WorkoutInDetailSharedViewModel @Inject constructor(
     fun initWorkoutId(workoutId: Long){
 
         viewModelScope.launch {
-            workoutInDetail = workoutRepo.getWorkoutWithID(workoutId)
-            exerciseIds = workoutInDetail.listOfExercises
+            //TODO
+            //workoutInDetail = workoutRepo.getWorkoutWithID(workoutId)
+            //exerciseIds = workoutInDetail.listOfExercises
             val exercisesTemp = mutableListOf<Exercise>()
 
             for (value in exerciseIds) {
-                exercisesTemp.add(workoutRepo.getExerciseWithId(value))
+                //exercisesTemp.add(workoutRepo.getExerciseWithId(value))
             }
             _selectedExercises.value = exercisesTemp.toList()
         }

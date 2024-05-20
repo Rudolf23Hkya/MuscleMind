@@ -21,20 +21,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.data.workoutsAndExercises.Workout
+import com.elte_r532ov.musclemind.data.api.responses.Workout
 
 @SuppressLint("DiscouragedApi")
 @Composable
 fun WorkoutItem(workout: Workout, navigation: NavHostController) {
     val context = LocalContext.current
 
-    val imageResId = context.resources.getIdentifier(workout.drawablePicName, "drawable", context.packageName)
+    val imageResId = context.resources.getIdentifier(workout.drawablepicname, "drawable", context.packageName)
     if (imageResId != 0) {
         Card(
             modifier =
             Modifier.fillMaxWidth().
             clickable {
-                val workoutId = workout.workoutId
+                val workoutId = workout.workoutid
                 navigation.navigate("workouts_in_detail/$workoutId")
             }
         ) {
