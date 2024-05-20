@@ -18,6 +18,7 @@ import com.elte_r532ov.musclemind.data.api.responses.WeekStats
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import com.elte_r532ov.musclemind.util.Resource
+import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
@@ -41,6 +42,7 @@ class MuscleMindRepoImplApi(
         private fun <T> handleApiResponse(
             response: Response<T>,
             onSuccess: (T) -> Resource<T>,
+            onError: (String) -> Resource<T>
         ): Resource<T> {
             return if (response.isSuccessful) {
                 response.body()?.let {
@@ -50,26 +52,28 @@ class MuscleMindRepoImplApi(
                 val errorStr = response.errorBody()?.string()
                 if (errorStr != null) {
                     try {
-                        Resource.Error(JSONObject(errorStr).getString("error"), null)
+                        onError(JSONObject(errorStr).getString("error"))
                     } catch (e: JSONException) {
-                        Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error", null)
+                        onError(response.errorBody()?.string() ?: "Operation failed with unknown error")
                     }
                 } else {
-                    Resource.Error(response.errorBody()?.string() ?: "Operation failed with unknown error")
+                    onError(response.errorBody()?.string() ?: "Operation failed with unknown error")
                 }
             }
         }
 
-    override suspend fun registerUser(ud: UserData,d:Disease): Resource<FullAutUserData> {
+    override suspend fun registerUser(ud: UserData, d: Disease): Resource<FullAutUserData> {
         return try {
             val regResponse = apiDao.register(RegisterUser(userData = ud, disease = d))
-            handleApiResponse(regResponse) { fullAutUserData ->
+            handleApiResponse(regResponse, { fullAutUserData ->
                 // Saving the tokens
                 sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
                 // Caching user data
                 sessionManagement.storeUserData(fullAutUserData.userData)
                 Resource.Success(fullAutUserData)
-            }
+            }, { errorMessage ->
+                Resource.Error(errorMessage, null)
+            })
         } catch (e: Exception) {
             // Handle network exceptions
             Resource.Error(e.message ?: "Network error!", null)
@@ -77,21 +81,23 @@ class MuscleMindRepoImplApi(
     }
     override suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData> {
         return try {
-            val loginResponse = apiDao.login(LoginData(email=email,password=password))
-            handleApiResponse(loginResponse) { fullAutUserData ->
+            val loginResponse = apiDao.login(LoginData(email = email, password = password))
+            handleApiResponse(loginResponse, { fullAutUserData ->
                 // Saving the tokens
                 sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
                 // Caching user data
                 sessionManagement.storeUserData(fullAutUserData.userData)
                 Resource.Success(fullAutUserData)
-            }
+            }, { errorMessage ->
+                Resource.Error(errorMessage, null)
+            })
         } catch (e: Exception) {
             // Handle network exceptions
             Resource.Error(e.message ?: "Network error!", null)
         }
     }
 
-    override suspend fun updateAccessToken(): Resource<Tokens>{
+    override suspend fun updateAccessToken(): Resource<Tokens> {
         return try {
             //Getting the stored token
             val refreshToken = sessionManagement.getRefreshToken()
@@ -124,10 +130,22 @@ class MuscleMindRepoImplApi(
     // Functions from here need Access tokens so they need to be handled by handleApiResponseRestart
     override suspend fun getCalories(): Resource<CaloriesData> {
         return try {
-            // Meghívja az API függvényt és kezeli a választ a handleApiResponse segítségével
             val response = apiDao.getCalories(authToken = sessionManagement.getBearerToken())
-            handleApiResponse(response) { responseData ->
+            handleApiResponse(response, { responseData ->
                 Resource.Success(responseData)
+            }) { errorMessage ->
+                // If access token is invalid, try to update it and retry the request
+                val tokenUpdateResult = runBlocking { updateAccessToken() }
+                if (tokenUpdateResult is Resource.Success) {
+                    val retryResponse = runBlocking {apiDao.getCalories(authToken = sessionManagement.getBearerToken())}
+                    handleApiResponse(retryResponse, { retryData ->
+                        Resource.Success(retryData)
+                    }) { retryError ->
+                        Resource.Error(retryError, null)
+                    }
+                } else {
+                    Resource.Error(errorMessage, null)
+                }
             }
         } catch (e: Exception) {
             // Hálózati hibák kezelése
@@ -137,10 +155,22 @@ class MuscleMindRepoImplApi(
 
     override suspend fun addCalories(caloriesData: CaloriesData): Resource<String> {
         return try {
-            // Meghívja az API függvényt és kezeli a választ a handleApiResponse segítségével
             val response = apiDao.addCalories(caloriesData = caloriesData, authToken = sessionManagement.getBearerToken())
-            handleApiResponse(response) { responseData ->
+            handleApiResponse(response, { responseData ->
                 Resource.Success(responseData)
+            }) { errorMessage ->
+                // If access token is invalid, try to update it and retry the request
+                val tokenUpdateResult = runBlocking { updateAccessToken() }
+                if (tokenUpdateResult is Resource.Success) {
+                    val retryResponse = runBlocking {apiDao.addCalories(caloriesData = caloriesData, authToken = sessionManagement.getBearerToken())}
+                    handleApiResponse(retryResponse, { retryData ->
+                        Resource.Success(retryData)
+                    }) { retryError ->
+                        Resource.Error(retryError, null)
+                    }
+                } else {
+                    Resource.Error(errorMessage, null)
+                }
             }
         } catch (e: Exception) {
             // Hálózati hibák kezelése
