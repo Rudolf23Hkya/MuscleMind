@@ -22,45 +22,46 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Response
+import java.io.IOException
 
 class MuscleMindRepoImplApi(
     private val apiDao: ApiDao,
     private val sessionManagement: SessionManagement,
     private val context: Context
-    )
+)
     : MuscleMindRepository {
-        // If the refresh expires the user needs to Log-in again
-        private fun restartMainActivity() {
-            //First the tokens need to be deleted
-            sessionManagement.deleteTokens()
-            //Main activity restart
-            val intent = Intent(context, MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            context.startActivity(intent)
-        }
-        // Generic Api handler
-        private fun <T> handleApiResponse(
-            response: Response<T>,
-            onSuccess: (T) -> Resource<T>,
-            onError: (String) -> Resource<T>
-        ): Resource<T> {
-            return if (response.isSuccessful) {
-                response.body()?.let {
-                    onSuccess(it)
-                } ?: Resource.Error("No data received from the server!", null)
-            } else {
-                val errorStr = response.errorBody()?.string()
-                if (errorStr != null) {
-                    try {
-                        onError(JSONObject(errorStr).getString("error"))
-                    } catch (e: JSONException) {
-                        onError(response.errorBody()?.string() ?: "Operation failed with unknown error")
-                    }
-                } else {
+    // If the refresh expires the user needs to Log-in again
+    private fun restartMainActivity() {
+        //First the tokens need to be deleted
+        sessionManagement.deleteTokens()
+        //Main activity restart
+        val intent = Intent(context, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        context.startActivity(intent)
+    }
+    // Generic Api handler
+    private fun <T> handleApiResponse(
+        response: Response<T>,
+        onSuccess: (T) -> Resource<T>,
+        onError: (String) -> Resource<T>
+    ): Resource<T> {
+        return if (response.isSuccessful) {
+            response.body()?.let {
+                onSuccess(it)
+            } ?: Resource.Error("No data received from the server!", null)
+        } else {
+            val errorStr = response.errorBody()?.string()
+            if (errorStr != null) {
+                try {
+                    onError(JSONObject(errorStr).getString("error"))
+                } catch (e: JSONException) {
                     onError(response.errorBody()?.string() ?: "Operation failed with unknown error")
                 }
+            } else {
+                onError(response.errorBody()?.string() ?: "Operation failed with unknown error")
             }
         }
+    }
 
     override suspend fun registerUser(ud: UserData, d: Disease): Resource<FullAutUserData> {
         return try {
@@ -74,11 +75,16 @@ class MuscleMindRepoImplApi(
             }, { errorMessage ->
                 Resource.Error(errorMessage, null)
             })
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             // Handle network exceptions
-            Resource.Error(e.message ?: "Network error!", null)
+            Resource.Error("Network connection issue. Please check your internet connection!", null)
+        } catch (e: Exception) {
+            // Handle other exceptions
+            Resource.Error(e.message ?: "Unknown error!", null)
         }
     }
+
+
     override suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData> {
         return try {
             val loginResponse = apiDao.login(LoginData(email = email, password = password))
@@ -91,9 +97,12 @@ class MuscleMindRepoImplApi(
             }, { errorMessage ->
                 Resource.Error(errorMessage, null)
             })
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             // Handle network exceptions
-            Resource.Error(e.message ?: "Network error!", null)
+            Resource.Error("Network connection issue. Please check your internet connection!", null)
+        } catch (e: Exception) {
+            // Handle other exceptions
+            Resource.Error(e.message ?: "Unknown error!", null)
         }
     }
 
@@ -121,7 +130,6 @@ class MuscleMindRepoImplApi(
                 Resource.Error("No refresh token available")
             }
         } catch (e: Exception) {
-            sessionManagement.deleteTokens()
             restartMainActivity()
             Resource.Error(e.message ?: "Network error!")
         }
@@ -148,7 +156,7 @@ class MuscleMindRepoImplApi(
                 }
             }
         } catch (e: Exception) {
-            // Hálózati hibák kezelése
+            restartMainActivity()
             Resource.Error(e.message ?: "Network error!", null)
         }
     }
@@ -173,7 +181,7 @@ class MuscleMindRepoImplApi(
                 }
             }
         } catch (e: Exception) {
-            // Hálózati hibák kezelése
+            restartMainActivity()
             Resource.Error(e.message ?: "Network error!", null)
         }
     }
@@ -187,6 +195,7 @@ class MuscleMindRepoImplApi(
                 Resource.Error(response.message())
             }
         } catch (e: Exception) {
+            restartMainActivity()
             Resource.Error(e.message ?: "An unknown error occurred")
         }
     }

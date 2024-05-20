@@ -29,7 +29,7 @@ class StatsViewModel @Inject constructor(
 
     // Values should not be more than 150 and less than 0
     private val kcalStats = listOf(150, 20, 70, 60, 90, 80, 50)
-    private val timeStats = listOf(-20, 10, 40, 35, 60, 45, 25)
+    private val timeStats = listOf(20, 10, 40, 35, 60, 45, 25)
 
     private val _scaledStats = MutableStateFlow(kcalStats)
     val scaledStats: StateFlow<List<Int>> = _scaledStats

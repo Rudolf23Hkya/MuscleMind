@@ -88,7 +88,7 @@ fun CreateWorkoutData(
                 .padding(contentPadding),
             contentAlignment = Alignment.Center
         ) {
-            Column {
+            Column(Modifier.padding(20.dp)) {
                 Text(
                     "For first, do you have any equipment?",
                     fontWeight = FontWeight.Medium,

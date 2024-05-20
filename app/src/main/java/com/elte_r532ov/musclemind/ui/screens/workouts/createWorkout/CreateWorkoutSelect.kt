@@ -35,7 +35,6 @@ fun CreateWorkoutSelect(
 ) {
     //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
-    
 
     Scaffold(
         bottomBar = {
