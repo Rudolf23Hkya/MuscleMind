@@ -114,7 +114,7 @@ class MuscleMindRepoImplApi(
                     }
                 } else {
                     restartMainActivity()
-                    Resource.Error("Failed to fetch new access token: ${tokensResponse.message()}")
+                    Resource.Error("Failed to fetch new access token!")
                 }
             } else {
                 restartMainActivity()
@@ -141,7 +141,7 @@ class MuscleMindRepoImplApi(
                     handleApiResponse(retryResponse, { retryData ->
                         Resource.Success(retryData)
                     }) { retryError ->
-                        Resource.Error(retryError, null)
+                        Resource.Error("Server error!", null)
                     }
                 } else {
                     Resource.Error(errorMessage, null)
@@ -166,10 +166,10 @@ class MuscleMindRepoImplApi(
                     handleApiResponse(retryResponse, { retryData ->
                         Resource.Success(retryData)
                     }) { retryError ->
-                        Resource.Error(retryError, null)
+                        Resource.Error("Server error!", null)
                     }
                 } else {
-                    Resource.Error(errorMessage, null)
+                    Resource.Error("Bad request, try again later!", null)
                 }
             }
         } catch (e: Exception) {

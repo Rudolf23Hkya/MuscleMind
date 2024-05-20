@@ -32,7 +32,7 @@ import com.elte_r532ov.musclemind.util.UiEvent
 @Composable
 fun WorkoutInProgress(
     onNavigate: NavHostController,
-    viewModel: WorkoutInProgressViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_ROUTE))
+    viewModel: WorkoutInProgressViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_IN_PROGRESS))
 ) {
     val workoutId = 1L
     viewModel.initWorkoutId(workoutId)

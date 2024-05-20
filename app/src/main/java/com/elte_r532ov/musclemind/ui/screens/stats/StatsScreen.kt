@@ -78,20 +78,6 @@ fun StatsMainScreen(
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            /*
-            Row(
-                modifier = Modifier.padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Button(onClick = { viewModel.setMode(StatsMode.KCAL) }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
-                    Text("kcal")
-                }
-                Spacer(modifier = Modifier.width(16.dp))
-                Button(onClick = { viewModel.setMode(StatsMode.TIME) }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)) {
-                    Text("time")
-                }
-            }
-            */
 
             SelectionBar(selectedMode) { mode ->
                 viewModel.setMode(mode)

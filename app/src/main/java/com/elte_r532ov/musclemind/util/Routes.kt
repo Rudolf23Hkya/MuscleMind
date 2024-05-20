@@ -4,7 +4,7 @@ object Routes {
     const val LOGIN = "login"
 
     //Registration
-    const val REGISTRATION_ROUTE = "registration"//Nested root
+    const val REGISTRATION_ROUTE = "registration_route"//Nested root
 
     const val REGISTER_EXP = "registerExperience"
     const val REGISTER_FIZ_DATA = "registerFizData"
@@ -12,18 +12,24 @@ object Routes {
     const val REGISTER_DISEASE = "registerDisease"
     const val REGISTER_ACCOUNT_DATA = "registerACCData"
 
-    const val STATS_OVERVIEW = "stats_overview"
-    const val CALORIES_OVERVIEW = "calories_overview"
-    //Workouts
+    //Workout
+
     const val WORKOUTS_ACTIVE = "workouts_active"
+
     const val WORKOUTS_IN_DETAIL = "workouts_in_detail/{workoutId}"
     const val WORKOUTS_START = "workouts_start"
+    const val WORKOUTS_IN_PROGRESS = "workouts_in_progress"
+    const val WORKOUTS_RATING = "workouts_rating"
 
-    const val WORKOUTS_ROUTE = "working_out"
+    //Create Workout
+    const val CREATE_WORKOUT_ROUTE = "create_workout_route"//Nested root
 
+    const val CREATE_WORKOUT_DATA = "create_workout_data"
+    const val CREATE_WORKOUT_SELECT = "create_workout_select"
+    const val CREATE_WORKOUT_SELECT_DETAIL = "create_workout_select_detail"
 
-    //Settings
+    //Other
+    const val STATS_OVERVIEW = "stats_overview"
+    const val CALORIES_OVERVIEW = "calories_overview"
     const val SETTINGS_MAIN = "settings_main"
-    const val SETTINGS_CHANGE_ACCOUNT_DATA = "settings_change_account_data"
-    const val SETTINGS_PASSWORD = "settings_password"
 }

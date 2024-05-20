@@ -25,6 +25,9 @@ import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
+import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutData
+import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutDetail
+import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutSelect
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
 import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInProgress.WorkoutInProgress
 import com.elte_r532ov.musclemind.ui.theme.MuscleMindTheme
@@ -69,6 +72,7 @@ fun MyApp(sessionManagement: SessionManagement) {
         composable(Routes.LOGIN) {
             LoginScreen(navController)
         }
+        // Register Route
         navigation(
             startDestination = Routes.REGISTER_GENDER,
             route = Routes.REGISTRATION_ROUTE
@@ -89,6 +93,21 @@ fun MyApp(sessionManagement: SessionManagement) {
                 RegisterData(navController)
             }
         }
+        // Create Workout Route
+        navigation(
+            startDestination = Routes.CREATE_WORKOUT_DATA,
+            route = Routes.CREATE_WORKOUT_ROUTE
+        ) {
+            composable(Routes.CREATE_WORKOUT_DATA) {
+                CreateWorkoutData(navController)
+            }
+            composable(Routes.CREATE_WORKOUT_SELECT) {
+                CreateWorkoutSelect(navController)
+            }
+            composable(Routes.CREATE_WORKOUT_SELECT_DETAIL) {
+                CreateWorkoutDetail(navController)
+            }
+        }
         composable(Routes.WORKOUTS_ACTIVE) {
             ActiveWorkouts(navController)
         }
@@ -104,7 +123,7 @@ fun MyApp(sessionManagement: SessionManagement) {
         }
         navigation(
             startDestination = Routes.WORKOUTS_IN_DETAIL,
-            route = Routes.WORKOUTS_ROUTE
+            route = Routes.WORKOUTS_IN_PROGRESS
         ){
             composable(route= Routes.WORKOUTS_IN_DETAIL,
                 arguments = listOf(navArgument("workoutId"){

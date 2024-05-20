@@ -11,6 +11,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -36,6 +40,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import com.elte_r532ov.musclemind.ui.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.WorkoutItem
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
+import com.elte_r532ov.musclemind.util.Routes
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -82,6 +87,15 @@ fun ActiveWorkouts(
                         lineHeight = 40.sp
                     )
                 }
+            }
+        },
+        floatingActionButton = {
+            // Only render the Floating Action Btn if the exercises are loaded
+            FloatingActionButton(
+                onClick = { onNavigate.navigate(Routes.WORKOUTS_START) },
+                containerColor = MaterialTheme.colorScheme.inversePrimary
+            ) {
+                Icon(Icons.Filled.PlayArrow, "Start")
             }
         }
     ) { innerPadding ->

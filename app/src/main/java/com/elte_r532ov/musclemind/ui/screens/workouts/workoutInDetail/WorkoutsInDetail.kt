@@ -16,10 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -35,36 +33,23 @@ import androidx.compose.ui.unit.sp
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.ExerciseItemItem
+import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.util.UiEvent
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun WorkoutInDetail(
     workoutId : Long,
     onNavigate: NavHostController,
-    viewModel: WorkoutInDetailSharedViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_ROUTE))
+    viewModel: WorkoutInDetailSharedViewModel = hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUTS_IN_PROGRESS))
 ){
     viewModel.initWorkoutId(workoutId)
 
-    //SnackBar
-    var snackBarMessage by remember { mutableStateOf<String?>(null) }
-    val snackBarHostState = remember { SnackbarHostState() }
+    //Handle UiEvent:
+    val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
     val selectedExercises = viewModel.selectedExercises.observeAsState(initial = emptyList())
     var showFAB by remember { mutableStateOf(false) }
-
-    LaunchedEffect(key1 = true) {
-        viewModel.uiEvent.collect { event ->
-            when (event) {
-                is UiEvent.Navigate -> onNavigate.navigate(event.route)
-                is UiEvent.ShowSnackbar -> snackBarMessage = event.message
-                is UiEvent.ErrorOccured -> snackBarMessage = event.errMsg
-                is UiEvent.ShowFloatingActionButton -> showFAB = event.show
-                else -> Unit
-            }
-        }
-    }
 
     Scaffold(
         bottomBar = {
