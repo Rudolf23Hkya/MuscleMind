@@ -100,8 +100,7 @@ fun MyApp(sessionManagement: SessionManagement) {
             CalorieCounterScreen(navController)
         }
         composable(Routes.STATS_OVERVIEW){
-            val progressValues = floatArrayOf(0.3f, 0.5f, 0.2f, 0.8f, 0.4f, 0.0f, 0.0f)
-            StatsMainScreen(navController,progressValues)
+            StatsMainScreen(navController)
         }
         navigation(
             startDestination = Routes.WORKOUTS_IN_DETAIL,

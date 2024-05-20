@@ -38,7 +38,10 @@ class MuscleMindRepoImplApi(
             context.startActivity(intent)
         }
         // Generic Api handler
-        private fun <T> handleApiResponse(response: Response<T>, onSuccess: (T) -> Resource<T>): Resource<T> {
+        private fun <T> handleApiResponse(
+            response: Response<T>,
+            onSuccess: (T) -> Resource<T>,
+        ): Resource<T> {
             return if (response.isSuccessful) {
                 response.body()?.let {
                     onSuccess(it)
@@ -132,7 +135,6 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    //apiDao.addCalories(caloriesData)
     override suspend fun addCalories(caloriesData: CaloriesData): Resource<String> {
         return try {
             // Meghívja az API függvényt és kezeli a választ a handleApiResponse segítségével
