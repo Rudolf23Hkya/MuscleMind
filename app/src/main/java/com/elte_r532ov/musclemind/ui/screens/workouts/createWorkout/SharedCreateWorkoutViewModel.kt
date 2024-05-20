@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.api.responses.Workout
+import com.elte_r532ov.musclemind.data.api.responses.WorkoutApi
 import com.elte_r532ov.musclemind.ui.util.OptiListElement
 import com.elte_r532ov.musclemind.util.Resource
 import com.elte_r532ov.musclemind.util.Routes
@@ -39,8 +39,8 @@ class SharedCreateWorkoutViewModel @Inject constructor(
 
     private var doWeekly by mutableIntStateOf(0)
 
-    private val _recommendedWorkouts = MutableStateFlow<List<Workout>>(emptyList())
-    val recommendedWorkouts: StateFlow<List<Workout>> = _recommendedWorkouts
+    private val _recommendedWorkouts = MutableStateFlow<List<WorkoutApi>>(emptyList())
+    val recommendedWorkouts: StateFlow<List<WorkoutApi>> = _recommendedWorkouts
 
 
     init{

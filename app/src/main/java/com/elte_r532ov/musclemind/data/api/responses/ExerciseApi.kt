@@ -1,6 +1,6 @@
 package com.elte_r532ov.musclemind.data.api.responses
 
-data class Exercise(
+data class ExerciseApi(
     val caloriesburnt: Int,
     val category: String,
     val drawablepicname: String,

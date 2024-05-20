@@ -15,7 +15,7 @@ import com.elte_r532ov.musclemind.data.api.responses.Success
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
 import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.WeekStats
-import com.elte_r532ov.musclemind.data.api.responses.Workout
+import com.elte_r532ov.musclemind.data.api.responses.WorkoutApi
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import com.elte_r532ov.musclemind.util.Resource
 import kotlinx.coroutines.runBlocking
@@ -186,7 +186,7 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    override suspend fun getRecomWorkouts(weightlifting: Boolean, trx: Boolean): Resource<List<Workout>> {
+    override suspend fun getRecomWorkouts(weightlifting: Boolean, trx: Boolean): Resource<List<WorkoutApi>> {
         return try {
             val response = apiDao.getRecomWorkouts(sessionManagement.getBearerToken(), weightlifting, trx)
             if (response.isSuccessful) {

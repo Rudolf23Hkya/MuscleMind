@@ -4,5 +4,5 @@ data class UserWorkout(
     val do_weekly: Int,
     val id: Int,
     val weights: List<Double>,
-    val workout: Workout
+    val workoutApi: WorkoutApi
 )

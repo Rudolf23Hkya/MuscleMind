@@ -3,14 +3,13 @@ package com.elte_r532ov.musclemind.data
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
-import com.elte_r532ov.musclemind.data.api.responses.LoginData
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.api.responses.SelectedWorkout
 import com.elte_r532ov.musclemind.data.api.responses.Success
 import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.WeekStats
-import com.elte_r532ov.musclemind.data.api.responses.Workout
+import com.elte_r532ov.musclemind.data.api.responses.WorkoutApi
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import com.elte_r532ov.musclemind.util.Resource
 
@@ -29,7 +28,7 @@ interface MuscleMindRepository {
 
     suspend fun addCalories(caloriesData: CaloriesData): Resource<String>
 
-    suspend fun getRecomWorkouts(weightlifting: Boolean, trx: Boolean): Resource<List<Workout>>
+    suspend fun getRecomWorkouts(weightlifting: Boolean, trx: Boolean): Resource<List<WorkoutApi>>
 
     suspend fun postUserWorkout(workoutData: SelectedWorkout): Resource<SelectedWorkout>
 
