@@ -8,6 +8,8 @@ import com.elte_r532ov.musclemind.util.Resource
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,13 +22,24 @@ class CalViewModel @Inject constructor(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    private val _consumedKcal = MutableStateFlow("")
+    val consumedKcal: StateFlow<String> = _consumedKcal
+
+    init {
+        viewModelScope.launch {
+            refreshCal()
+        }
+    }
+
     fun addCal(kcal: String){
         viewModelScope.launch {
-            // Call the repository function and store the result
-            // Check the result type using a when statement
-            when (val result = repository.updateAccessToken()) {
+            refreshCal()
+
+            when (val result = repository.addCalories(
+                CaloriesData(kcal.toInt())
+            )) {
                 is Resource.Success -> {
-                    _uiEvent.send(UiEvent.ErrorOccured("Működött a token"))
+                    refreshCal()
                 }
                 is Resource.Error -> {
                     result.message?.let { UiEvent.ErrorOccured(it) }?.let { _uiEvent.send(it) }
@@ -35,6 +48,18 @@ class CalViewModel @Inject constructor(
         }
     }
 
+    private suspend fun refreshCal(){
+        when (val result = repository.getCalories()) {
+            is Resource.Success -> {
+                result.data?.let {
+                    _consumedKcal.value = it.calories.toString()
+                }
+            }
+            is Resource.Error -> {
+                result.message?.let { UiEvent.ErrorOccured(it) }?.let { _uiEvent.send(it) }
+            }
+        }
+    }
 
     private fun sendUiEvent(event: UiEvent){
         viewModelScope.launch {

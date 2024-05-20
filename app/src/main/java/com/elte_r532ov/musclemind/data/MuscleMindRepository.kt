@@ -27,7 +27,7 @@ interface MuscleMindRepository {
 
     suspend fun getCalories(): Resource<CaloriesData>
 
-    suspend fun addCalories(caloriesData: CaloriesData): Resource<CaloriesData>
+    suspend fun addCalories(caloriesData: CaloriesData): Resource<String>
 
     suspend fun getRecomWorkouts(): Resource<List<Workout>>
 

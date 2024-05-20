@@ -60,6 +60,11 @@ class SessionManagement @Inject constructor(@ApplicationContext private val cont
     fun getAccessToken(): String? {
         return sharedPreferences.getString("access_token", null)
     }
+    // Retrieves the access token with Bearer before it
+    fun getBearerToken(): String {
+        val accessToken = sharedPreferences.getString("access_token", null)
+        return "Bearer $accessToken"
+    }
 
     // Retrieves the refresh token
     fun getRefreshToken(): String? {

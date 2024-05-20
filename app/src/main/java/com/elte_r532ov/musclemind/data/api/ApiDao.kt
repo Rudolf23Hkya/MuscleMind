@@ -35,7 +35,7 @@ interface ApiDao {
     suspend fun getCalories(@Header("Authorization") authToken: String): Response<CaloriesData>
 
     @POST("add_calories/")
-    suspend fun addCalories(@Body caloriesData: CaloriesData, @Header("Authorization") authToken: String): Response<CaloriesData>
+    suspend fun addCalories(@Body caloriesData: CaloriesData, @Header("Authorization") authToken: String): Response<String>
 
     @GET("get_recom_workouts/")
     suspend fun getRecomWorkouts(@Header("Authorization") authToken: String): Response<SelectedWorkout>

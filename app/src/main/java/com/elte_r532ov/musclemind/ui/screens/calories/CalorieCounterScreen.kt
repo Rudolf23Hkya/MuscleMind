@@ -12,7 +12,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,6 +38,7 @@ fun CalorieCounterScreen(
     viewModel: CalViewModel = hiltViewModel()
 ) {
     var kcal by remember { mutableStateOf("") }
+    val consumedKcal by viewModel.consumedKcal.collectAsState()
 
     //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
@@ -77,9 +80,41 @@ fun CalorieCounterScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text("Count Your Calories With Us", fontSize = 24.sp, color = MaterialTheme.colorScheme.onSecondary)
+                Text("Count Your Calories With Us",
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onSecondary)
+
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("You can follow your daily calorie intake with us.", fontSize = 16.sp, color = MaterialTheme.colorScheme.onBackground)
+
+                Text("You can follow your daily calorie intake here.",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onBackground)
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Today you consumed:",
+                        fontSize = 16.sp,
+                        color = MaterialTheme.colorScheme.onBackground,
+
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(consumedKcal, fontSize = 28.sp,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        fontWeight = FontWeight.Bold
+                        )
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text("kcal", fontSize = 28.sp,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
                 Spacer(modifier = Modifier.height(40.dp))
                 BasicTextField(
                     value = kcal,

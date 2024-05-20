@@ -56,6 +56,7 @@ class MuscleMindRepoImplApi(
                 }
             }
         }
+
     override suspend fun registerUser(ud: UserData,d:Disease): Resource<FullAutUserData> {
         return try {
             val regResponse = apiDao.register(RegisterUser(userData = ud, disease = d))
@@ -117,14 +118,32 @@ class MuscleMindRepoImplApi(
         }
     }
 
+    // Functions from here need Access tokens so they need to be handled by handleApiResponseRestart
     override suspend fun getCalories(): Resource<CaloriesData> {
-        TODO("Not yet implemented")
+        return try {
+            // Meghívja az API függvényt és kezeli a választ a handleApiResponse segítségével
+            val response = apiDao.getCalories(authToken = sessionManagement.getBearerToken())
+            handleApiResponse(response) { responseData ->
+                Resource.Success(responseData)
+            }
+        } catch (e: Exception) {
+            // Hálózati hibák kezelése
+            Resource.Error(e.message ?: "Network error!", null)
+        }
     }
 
-    override suspend fun addCalories(
-        caloriesData: CaloriesData
-    ): Resource<CaloriesData> {
-        TODO("Not yet implemented")
+    //apiDao.addCalories(caloriesData)
+    override suspend fun addCalories(caloriesData: CaloriesData): Resource<String> {
+        return try {
+            // Meghívja az API függvényt és kezeli a választ a handleApiResponse segítségével
+            val response = apiDao.addCalories(caloriesData = caloriesData, authToken = sessionManagement.getBearerToken())
+            handleApiResponse(response) { responseData ->
+                Resource.Success(responseData)
+            }
+        } catch (e: Exception) {
+            // Hálózati hibák kezelése
+            Resource.Error(e.message ?: "Network error!", null)
+        }
     }
 
     override suspend fun getRecomWorkouts(): Resource<List<Workout>> {
