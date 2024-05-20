@@ -29,7 +29,7 @@ interface MuscleMindRepository {
 
     suspend fun addCalories(caloriesData: CaloriesData): Resource<String>
 
-    suspend fun getRecomWorkouts(): Resource<List<Workout>>
+    suspend fun getRecomWorkouts(weightlifting: Boolean, trx: Boolean): Resource<List<Workout>>
 
     suspend fun postUserWorkout(workoutData: SelectedWorkout): Resource<SelectedWorkout>
 

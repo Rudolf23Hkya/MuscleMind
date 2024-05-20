@@ -31,7 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.compose.ui.unit.sp
 import com.elte_r532ov.musclemind.myFontFamily
-import com.elte_r532ov.musclemind.ui.BottomNavBar
+import com.elte_r532ov.musclemind.ui.util.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.ExerciseItemItem
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.Routes

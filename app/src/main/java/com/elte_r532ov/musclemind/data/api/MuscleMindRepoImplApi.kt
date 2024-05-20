@@ -178,8 +178,17 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    override suspend fun getRecomWorkouts(): Resource<List<Workout>> {
-        TODO("Not yet implemented")
+    override suspend fun getRecomWorkouts(weightlifting: Boolean, trx: Boolean): Resource<List<Workout>> {
+        return try {
+            val response = apiDao.getRecomWorkouts(sessionManagement.getBearerToken(), weightlifting, trx)
+            if (response.isSuccessful) {
+                Resource.Success(response.body() ?: emptyList())
+            } else {
+                Resource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
     }
 
     override suspend fun postUserWorkout(

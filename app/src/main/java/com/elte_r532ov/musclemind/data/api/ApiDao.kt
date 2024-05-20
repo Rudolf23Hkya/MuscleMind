@@ -11,6 +11,7 @@ import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.WeekStats
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import com.elte_r532ov.musclemind.data.api.responses.SelectedWorkout
+import com.elte_r532ov.musclemind.data.api.responses.Workout
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -38,7 +39,11 @@ interface ApiDao {
     suspend fun addCalories(@Body caloriesData: CaloriesData, @Header("Authorization") authToken: String): Response<String>
 
     @GET("get_recom_workouts/")
-    suspend fun getRecomWorkouts(@Header("Authorization") authToken: String): Response<SelectedWorkout>
+    suspend fun getRecomWorkouts(
+        @Header("Authorization") authToken: String,
+        @Query("weightlifting") weightlifting: Boolean,
+        @Query("trx") trx: Boolean
+    ): Response<List<Workout>>
 
     @POST("post_user_workout/")
     suspend fun postUserWorkout(@Body workoutData: SelectedWorkout, @Header("Authorization") authToken: String): Response<SelectedWorkout>

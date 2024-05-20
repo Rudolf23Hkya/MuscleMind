@@ -4,7 +4,7 @@ object Routes {
     const val LOGIN = "login"
 
     //Registration
-    const val REGISTRATION_ROUTE = "registration_route"//Nested root
+    const val REGISTRATION_ROUTE = "registration"//Nested root
 
     const val REGISTER_EXP = "registerExperience"
     const val REGISTER_FIZ_DATA = "registerFizData"
@@ -26,7 +26,7 @@ object Routes {
 
     const val CREATE_WORKOUT_DATA = "create_workout_data"
     const val CREATE_WORKOUT_SELECT = "create_workout_select"
-    const val CREATE_WORKOUT_SELECT_DETAIL = "create_workout_select_detail"
+    const val CREATE_WORKOUT_SELECT_DETAIL = "create_workout_detail"
 
     //Other
     const val STATS_OVERVIEW = "stats_overview"

@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
-import com.elte_r532ov.musclemind.ui.BottomNavBar
+import com.elte_r532ov.musclemind.ui.util.BottomNavBar
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.Routes
 
@@ -48,7 +48,7 @@ fun CreateWorkoutDetail(
             ) {
                 Row {
                     Text(
-                        "Welcome  ",
+                        "Welcome  FU",
                         fontSize = 32.sp,
                         fontFamily = myFontFamily,
                         fontWeight = FontWeight.Bold,

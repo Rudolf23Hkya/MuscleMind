@@ -1,6 +1,7 @@
 package com.elte_r532ov.musclemind.ui.screens.register
 import  com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
+import com.elte_r532ov.musclemind.ui.util.OptiListElement
 
 //I use everywhere strings, cuz the view model does the conversion and the error handling
 sealed class RegisterEvent {
@@ -9,5 +10,5 @@ sealed class RegisterEvent {
     data class onExperienceChosen(val  exp: ExperienceLevel?) : RegisterEvent()
     data class onUserDataChosen(val  name: String,val email: String,
                                 val fstPassword: String, val sndPassword: String) : RegisterEvent()
-    data class onDiseasesChosen(val diseases: List<DiseaseListElemet>) : RegisterEvent()
+    data class onDiseasesChosen(val diseases: List<OptiListElement>) : RegisterEvent()
 }

@@ -1,10 +1,8 @@
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -26,7 +24,7 @@ import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.data.enums.StatsFormat
 import com.elte_r532ov.musclemind.data.enums.StatsMode
 import com.elte_r532ov.musclemind.myFontFamily
-import com.elte_r532ov.musclemind.ui.BottomNavBar
+import com.elte_r532ov.musclemind.ui.util.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.stats.StatsViewModel
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 

@@ -14,6 +14,7 @@ import com.elte_r532ov.musclemind.data.enums.Gender
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.UserData
+import com.elte_r532ov.musclemind.ui.util.OptiListElement
 import com.elte_r532ov.musclemind.util.Resource
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
@@ -111,7 +112,7 @@ class SharedRegisterViewModel @Inject constructor(
         }
     }
     // Disease
-    private fun handleDiseasesChosen(diseaseList: List<DiseaseListElemet>) {
+    private fun handleDiseasesChosen(diseaseList: List<OptiListElement>) {
             this.asthma = diseaseList.any { it.name == "Asthma" && it.isSelected }
             this.bad_knee = diseaseList.any { it.name == "Bad Knee" && it.isSelected }
             this.cardiovascular_d = diseaseList.any { it.name == "Cardiovascular Disease" && it.isSelected }

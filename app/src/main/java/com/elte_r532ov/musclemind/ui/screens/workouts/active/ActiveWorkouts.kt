@@ -12,32 +12,25 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
-import com.elte_r532ov.musclemind.util.UiEvent
 import androidx.compose.runtime.livedata.observeAsState
-import com.elte_r532ov.musclemind.ui.BottomNavBar
+import com.elte_r532ov.musclemind.ui.util.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.WorkoutItem
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.util.Routes
@@ -92,10 +85,10 @@ fun ActiveWorkouts(
         floatingActionButton = {
             // Only render the Floating Action Btn if the exercises are loaded
             FloatingActionButton(
-                onClick = { onNavigate.navigate(Routes.WORKOUTS_START) },
+                onClick = { onNavigate.navigate(Routes.CREATE_WORKOUT_DATA) },
                 containerColor = MaterialTheme.colorScheme.inversePrimary
             ) {
-                Icon(Icons.Filled.PlayArrow, "Start")
+                Icon(Icons.Filled.Add, "Create Workout")
             }
         }
     ) { innerPadding ->

@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui
+package com.elte_r532ov.musclemind.ui.util
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
