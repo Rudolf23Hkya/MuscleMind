@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
-import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.ui.util.Routes
 @Composable
 fun RegisterData(
     onNavigate: NavHostController,

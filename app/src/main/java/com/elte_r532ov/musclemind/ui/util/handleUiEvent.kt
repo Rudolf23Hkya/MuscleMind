@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.util.UiEvent
 import kotlinx.coroutines.flow.Flow
 
 @Composable

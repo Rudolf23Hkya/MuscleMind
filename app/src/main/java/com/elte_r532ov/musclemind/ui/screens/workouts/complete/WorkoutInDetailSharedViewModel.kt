@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail
+package com.elte_r532ov.musclemind.ui.screens.workouts.complete
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.Exercise
 import com.elte_r532ov.musclemind.data.api.responses.Workout
-import com.elte_r532ov.musclemind.util.UiEvent
+import com.elte_r532ov.musclemind.ui.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow

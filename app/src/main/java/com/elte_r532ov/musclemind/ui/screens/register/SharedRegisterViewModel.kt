@@ -15,9 +15,9 @@ import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.ui.util.OptiListElement
-import com.elte_r532ov.musclemind.util.Resource
-import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.util.UiEvent
+import com.elte_r532ov.musclemind.data.Resource
+import com.elte_r532ov.musclemind.ui.util.Routes
+import com.elte_r532ov.musclemind.ui.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -128,7 +128,8 @@ class SharedRegisterViewModel @Inject constructor(
             fstPassword.length < 6 -> sendUiEvent(UiEvent.ErrorOccured("Password is too short!"))
             !email.isValidEmail() -> sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail address!"))
             name.length < 2 -> sendUiEvent(UiEvent.ErrorOccured("Username must be at least 2 characters long!"))
-            !isValidUsername(name) -> sendUiEvent(UiEvent.ErrorOccured
+            !isValidUsername(name) -> sendUiEvent(
+                UiEvent.ErrorOccured
                 ("Enter a valid username. " +
                     "This value may contain only letters, numbers, and @/./+/-/_ characters."))
             else -> saveUserData(fstPassword, email, name)

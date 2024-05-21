@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements
+package com.elte_r532ov.musclemind.ui.screens.workouts.shared
 
 import com.elte_r532ov.musclemind.R
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel

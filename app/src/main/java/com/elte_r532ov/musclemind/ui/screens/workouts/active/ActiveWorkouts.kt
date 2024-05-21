@@ -31,9 +31,9 @@ import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import androidx.compose.runtime.livedata.observeAsState
 import com.elte_r532ov.musclemind.ui.util.BottomNavBar
-import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.WorkoutItem
+import com.elte_r532ov.musclemind.ui.screens.workouts.shared.WorkoutItem
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
-import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.ui.util.Routes
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

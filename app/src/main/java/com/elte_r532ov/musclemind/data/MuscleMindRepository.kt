@@ -11,12 +11,11 @@ import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.WeekStats
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
-import com.elte_r532ov.musclemind.util.Resource
 
 //This is an abstraction for transferring data from and to the app
 interface MuscleMindRepository {
 
-    suspend fun registerUser(ud : UserData,d : Disease):Resource<FullAutUserData>
+    suspend fun registerUser(ud : UserData,d : Disease): Resource<FullAutUserData>
 
     suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData>
 

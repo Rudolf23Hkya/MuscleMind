@@ -1,6 +1,8 @@
-package com.elte_r532ov.musclemind.util
+package com.elte_r532ov.musclemind.ui.util
 
 import com.elte_r532ov.musclemind.R
+import com.elte_r532ov.musclemind.ui.util.BottomNavItem
+import com.elte_r532ov.musclemind.ui.util.Routes
 
 object BottomNavMenu {
     val STATS = BottomNavItem("Stats", R.drawable.line_up,

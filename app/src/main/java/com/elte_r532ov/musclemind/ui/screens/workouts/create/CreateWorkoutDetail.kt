@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout
+package com.elte_r532ov.musclemind.ui.screens.workouts.create
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,7 @@ import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.util.BottomNavBar
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
-import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.ui.util.Routes
 
 @Composable
 fun CreateWorkoutDetail(

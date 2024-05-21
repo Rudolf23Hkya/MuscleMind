@@ -10,7 +10,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.elte_r532ov.musclemind.util.BottomNavMenu
 
 @Composable
 public fun BottomNavBar(currentNav: String, onNavigate: NavHostController) {

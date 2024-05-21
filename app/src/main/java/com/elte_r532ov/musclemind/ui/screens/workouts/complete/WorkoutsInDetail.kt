@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail
+package com.elte_r532ov.musclemind.ui.screens.workouts.complete
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -32,9 +32,9 @@ import androidx.navigation.NavHostController
 import androidx.compose.ui.unit.sp
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.util.BottomNavBar
-import com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements.ExerciseItemItem
+import com.elte_r532ov.musclemind.ui.screens.workouts.shared.ExerciseItemItem
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
-import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.ui.util.Routes
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable

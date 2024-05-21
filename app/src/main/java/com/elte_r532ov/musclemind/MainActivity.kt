@@ -19,17 +19,17 @@ import com.elte_r532ov.musclemind.ui.screens.register.RegisterData
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterFizData
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterGender
 import com.elte_r532ov.musclemind.ui.screens.workouts.active.ActiveWorkouts
-import com.elte_r532ov.musclemind.util.Routes
+import com.elte_r532ov.musclemind.ui.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
-import com.elte_r532ov.musclemind.data.localDataProviders.SessionManagement
+import com.elte_r532ov.musclemind.data.local.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.settings.MainSettingsScreen
-import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutData
-import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutDetail
-import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutSelect
-import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInDetail.WorkoutInDetail
-import com.elte_r532ov.musclemind.ui.screens.workouts.workoutInProgress.WorkoutInProgress
+import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutData
+import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutDetail
+import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutSelect
+import com.elte_r532ov.musclemind.ui.screens.workouts.complete.WorkoutInDetail
+import com.elte_r532ov.musclemind.ui.screens.workouts.complete.WorkoutInProgress
 import com.elte_r532ov.musclemind.ui.theme.MuscleMindTheme
 import javax.inject.Inject
 

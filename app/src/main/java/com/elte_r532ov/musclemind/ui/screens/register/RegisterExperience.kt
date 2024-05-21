@@ -6,9 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,8 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
-import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.util.UiEvent
+import com.elte_r532ov.musclemind.ui.util.Routes
 
 @Composable
 fun ExperienceSelectionScreen(

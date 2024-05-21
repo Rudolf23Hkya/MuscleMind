@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.util
+package com.elte_r532ov.musclemind.data
 
 //Wrapper for API calls
 sealed class Resource<T>(val data: T? = null,val message: String? = null) {

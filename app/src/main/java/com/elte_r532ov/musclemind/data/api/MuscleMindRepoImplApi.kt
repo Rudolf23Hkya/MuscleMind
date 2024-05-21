@@ -3,7 +3,7 @@ import android.content.Context
 import android.content.Intent
 import com.elte_r532ov.musclemind.MainActivity
 import com.elte_r532ov.musclemind.data.api.responses.UserData
-import com.elte_r532ov.musclemind.data.localDataProviders.SessionManagement
+import com.elte_r532ov.musclemind.data.local.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
 import com.elte_r532ov.musclemind.data.api.responses.Disease
@@ -17,7 +17,7 @@ import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.WeekStats
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
-import com.elte_r532ov.musclemind.util.Resource
+import com.elte_r532ov.musclemind.data.Resource
 import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject

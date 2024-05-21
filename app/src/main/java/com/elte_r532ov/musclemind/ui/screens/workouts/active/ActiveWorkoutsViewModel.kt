@@ -8,7 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.api.responses.Workout
-import com.elte_r532ov.musclemind.util.UiEvent
+import com.elte_r532ov.musclemind.ui.util.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch

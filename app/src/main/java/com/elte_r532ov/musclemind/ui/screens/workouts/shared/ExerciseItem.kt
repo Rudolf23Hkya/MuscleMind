@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.sharedElements
+package com.elte_r532ov.musclemind.ui.screens.workouts.shared
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.data.localDataProviders
+package com.elte_r532ov.musclemind.data.local
 
 import com.elte_r532ov.musclemind.data.api.ApiDao
 import dagger.Module

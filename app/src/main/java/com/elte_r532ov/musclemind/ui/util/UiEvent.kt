@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.util
+package com.elte_r532ov.musclemind.ui.util
 
 //This event is for UI in general
 sealed class UiEvent {

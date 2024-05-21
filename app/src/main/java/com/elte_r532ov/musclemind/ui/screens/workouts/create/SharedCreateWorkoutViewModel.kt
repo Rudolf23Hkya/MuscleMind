@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout
+package com.elte_r532ov.musclemind.ui.screens.workouts.create
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -8,9 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.ui.util.OptiListElement
-import com.elte_r532ov.musclemind.util.Resource
-import com.elte_r532ov.musclemind.util.Routes
-import com.elte_r532ov.musclemind.util.UiEvent
+import com.elte_r532ov.musclemind.data.Resource
+import com.elte_r532ov.musclemind.ui.util.Routes
+import com.elte_r532ov.musclemind.ui.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
