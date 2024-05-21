@@ -1,5 +1,6 @@
 package com.elte_r532ov.musclemind.data
 
+import com.elte_r532ov.musclemind.data.api.Resource
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData

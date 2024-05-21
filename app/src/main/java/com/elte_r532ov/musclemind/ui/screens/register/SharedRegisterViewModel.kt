@@ -15,7 +15,7 @@ import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.ui.util.OptiListElement
-import com.elte_r532ov.musclemind.data.Resource
+import com.elte_r532ov.musclemind.data.api.Resource
 import com.elte_r532ov.musclemind.ui.util.Routes
 import com.elte_r532ov.musclemind.ui.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

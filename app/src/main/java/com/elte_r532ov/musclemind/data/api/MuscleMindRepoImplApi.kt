@@ -17,7 +17,6 @@ import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.WeekStats
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
-import com.elte_r532ov.musclemind.data.Resource
 import kotlinx.coroutines.runBlocking
 import org.json.JSONException
 import org.json.JSONObject
