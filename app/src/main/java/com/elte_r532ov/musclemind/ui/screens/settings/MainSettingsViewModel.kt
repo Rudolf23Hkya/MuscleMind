@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.settings.main
+package com.elte_r532ov.musclemind.ui.screens.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import com.elte_r532ov.musclemind.data.localDataProviders.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
-import com.elte_r532ov.musclemind.ui.screens.settings.main.MainSettingsScreen
+import com.elte_r532ov.musclemind.ui.screens.settings.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutData
 import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutDetail
 import com.elte_r532ov.musclemind.ui.screens.workouts.createWorkout.CreateWorkoutSelect
