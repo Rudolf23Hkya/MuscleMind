@@ -3,7 +3,7 @@ import android.content.Context
 import android.content.Intent
 import com.elte_r532ov.musclemind.MainActivity
 import com.elte_r532ov.musclemind.data.api.responses.UserData
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
+import com.elte_r532ov.musclemind.data.localDataProviders.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
 import com.elte_r532ov.musclemind.data.api.responses.Disease

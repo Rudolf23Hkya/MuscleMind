@@ -1,10 +1,9 @@
-package com.elte_r532ov.musclemind.dependencyInjection
+package com.elte_r532ov.musclemind.data.localDataProviders
 
 import android.app.Application
 import com.elte_r532ov.musclemind.data.api.ApiDao
 import com.elte_r532ov.musclemind.data.api.MuscleMindRepoImplApi
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

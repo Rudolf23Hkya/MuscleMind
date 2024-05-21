@@ -2,7 +2,7 @@ package com.elte_r532ov.musclemind.ui.screens.settings.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.elte_r532ov.musclemind.data.sessionManagement.SessionManagement
+import com.elte_r532ov.musclemind.data.localDataProviders.SessionManagement
 import com.elte_r532ov.musclemind.util.Routes
 import com.elte_r532ov.musclemind.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

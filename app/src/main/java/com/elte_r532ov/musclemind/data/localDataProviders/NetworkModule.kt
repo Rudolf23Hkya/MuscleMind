@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.dependencyInjection
+package com.elte_r532ov.musclemind.data.localDataProviders
 
 import com.elte_r532ov.musclemind.data.api.ApiDao
 import dagger.Module

@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.data.sessionManagement
+package com.elte_r532ov.musclemind.data.localDataProviders
 
 import android.content.Context
 import android.content.SharedPreferences
