@@ -162,14 +162,14 @@ class MuscleMindRepoImplApi(
 
     override suspend fun addCalories(caloriesData: CaloriesData): Resource<String> {
         return try {
-            val response = apiDao.addCalories(caloriesData = caloriesData, authToken = sessionManagement.getBearerToken())
+            val response = apiDao.addCalories(authToken = sessionManagement.getBearerToken(),caloriesData = caloriesData)
             handleApiResponse(response, { responseData ->
                 Resource.Success(responseData)
             }) { errorMessage ->
                 // If access token is invalid, try to update it and retry the request
                 val tokenUpdateResult = runBlocking { updateAccessToken() }
                 if (tokenUpdateResult is Resource.Success) {
-                    val retryResponse = runBlocking {apiDao.addCalories(caloriesData = caloriesData, authToken = sessionManagement.getBearerToken())}
+                    val retryResponse = runBlocking {apiDao.addCalories(authToken = sessionManagement.getBearerToken(),caloriesData = caloriesData)}
                     handleApiResponse(retryResponse, { retryData ->
                         Resource.Success(retryData)
                     }) { retryError ->
@@ -199,12 +199,19 @@ class MuscleMindRepoImplApi(
         }
     }
 
-    override suspend fun postUserWorkout(
-        workoutData: SelectedWorkout
-    ): Resource<SelectedWorkout> {
-        TODO("Not yet implemented")
+    override suspend fun postUserWorkout(workoutData: SelectedWorkout): Resource<SelectedWorkout> {
+        return try {
+            val response = apiDao.postUserWorkout(sessionManagement.getBearerToken(), workoutData)
+            if (response.isSuccessful) {
+                Resource.Success(response.body() ?: workoutData)
+            } else {
+                Resource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            restartMainActivity()
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
     }
-
     override suspend fun getUserWorkout(): Resource<List<UserWorkout>> {
         TODO("Not yet implemented")
     }
@@ -239,9 +246,6 @@ class MuscleMindRepoImplApi(
             // Handle any exceptions that might occur during the network request
             Resource.Error(e.message ?: "Exception occurred while fetching user data", null)
         }
-    }
-    override suspend fun deleteUserData() {
-        TODO("Not yet implemented")
     }
 
 }

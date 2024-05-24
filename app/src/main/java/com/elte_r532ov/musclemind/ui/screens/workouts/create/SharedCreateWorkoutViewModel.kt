@@ -1,5 +1,6 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.create
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,8 @@ import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.ui.util.OptiListElement
 import com.elte_r532ov.musclemind.data.api.Resource
+import com.elte_r532ov.musclemind.data.api.responses.Exercise
+import com.elte_r532ov.musclemind.data.api.responses.SelectedWorkout
 import com.elte_r532ov.musclemind.ui.util.Routes
 import com.elte_r532ov.musclemind.ui.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,16 +47,30 @@ class SharedCreateWorkoutViewModel @Inject constructor(
     private val _recommendedWorkouts = MutableLiveData<List<Workout>>()
     val recommendedWorkouts: LiveData<List<Workout>> = _recommendedWorkouts
 
+    // Selected workout
+    private val _selectedWorkout = MutableLiveData<Workout?>()
+    val selectedWorkout: LiveData<Workout?> = _selectedWorkout
 
+    // Selected exercises
+    private val _selectedExercises = MutableLiveData<List<Exercise>>()
+    val selectedExercises: LiveData<List<Exercise>> = _selectedExercises
     init{
         viewModelScope.launch {
             when (val result = repository.updateAccessToken()) {
                 is Resource.Success -> {
+                    _recommendedWorkouts.value = emptyList()
                 }
                 is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
             }
         }
     }
+
+    // Callback function for changing the selected workout
+    fun onWorkoutClicked(workout: Workout) {
+        _selectedWorkout.value = workout
+        _selectedExercises.value = workout.exercises
+    }
+
     fun workoutDataSet(equipmentList: List<OptiListElement>, doWeekly: String){
         try {
             val doWeeklyTemp = doWeekly.toInt()
@@ -101,21 +118,29 @@ class SharedCreateWorkoutViewModel @Inject constructor(
             sendUiEvent(UiEvent.ErrorOccured(e.message ?: "An unexpected error occurred"))
         }
     }
+    // Sends the selected workout in the background to the server
+    fun postSelectedWorkout() {
+        viewModelScope.launch {
+            val selectedWorkout = _selectedWorkout.value
+            val doWeekly = this@SharedCreateWorkoutViewModel.doWeekly
 
-}
+            if (selectedWorkout != null && doWeekly != 0) {
+                val result = repository.postUserWorkout(SelectedWorkout(
+                    do_weekly = doWeekly,
+                    workout = selectedWorkout
+                ))
 
-/*
-private suspend fun postSelectedWorkout() {
-    val selectedWorkout = Workout()
-    val selectedWorkoutData = SelectedWorkout()
-
-    when (val result = repository.postUserWorkout()) {
-        //Navigating to user-s Active Workouts if Success
-        is Resource.Success -> {
-            //If the recommended workouts arrive from the server they can be displayed
-            sendUiEvent(UiEvent.Navigate(Routes.CREATE_WORKOUT_SELECT))
+                when (result) {
+                    is Resource.Success -> {
+                        sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                    }
+                    is Resource.Error -> {
+                        sendUiEvent(UiEvent.ErrorOccured(result.message ?: "An error occurred while posting the workout"))
+                    }
+                }
+            } else {
+                sendUiEvent(UiEvent.ErrorOccured("No workout selected"))
+            }
         }
-        is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
     }
 }
-*/

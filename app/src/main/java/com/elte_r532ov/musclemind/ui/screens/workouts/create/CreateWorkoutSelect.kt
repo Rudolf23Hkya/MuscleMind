@@ -77,7 +77,12 @@ fun CreateWorkoutSelect(
         ) {
             LazyColumn {
                 items(recommendedWorkouts.value) { workout ->
-                    WorkoutItem(workout = workout, navigation = onNavigate,true)
+                    WorkoutItem(workout = workout,
+                        navigation = onNavigate,
+                        createWorkoutView = true,
+                        onWorkoutClick = { clickedWorkout ->
+                            viewModel.onWorkoutClicked(clickedWorkout)
+                        })
                 }
             }
         }

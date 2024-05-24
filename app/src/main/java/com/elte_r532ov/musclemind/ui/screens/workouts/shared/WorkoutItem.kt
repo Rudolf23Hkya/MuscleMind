@@ -22,11 +22,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.data.api.responses.Workout
+import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 import com.elte_r532ov.musclemind.ui.util.Routes
 
 @SuppressLint("DiscouragedApi")
 @Composable
-fun WorkoutItem(workout: Workout, navigation: NavHostController,createWorkoutView: Boolean) {
+fun WorkoutItem(workout: Workout,
+                navigation: NavHostController,
+                createWorkoutView: Boolean,
+                onWorkoutClick: ((Workout) -> Unit)? = null // Only used by createWorkoutView
+) {
     val context = LocalContext.current
 
     val imageResId = context.resources.getIdentifier(
@@ -38,8 +43,10 @@ fun WorkoutItem(workout: Workout, navigation: NavHostController,createWorkoutVie
             clickable {
                 // This list Composable is used on 2 views in the app
                 // The navigation logic should be specified
-                if (createWorkoutView)
+                if (createWorkoutView){
+                    onWorkoutClick!!(workout)
                     navigation.navigate(Routes.CREATE_WORKOUT_SELECT_DETAIL)
+                }
                 else{
                     val workoutId = workout.workoutid
                     navigation.navigate("workouts_in_detail/$workoutId")
@@ -58,13 +65,36 @@ fun WorkoutItem(workout: Workout, navigation: NavHostController,createWorkoutVie
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Absolute.Left){
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = workout.name,
-                    modifier = Modifier.padding(16.dp).weight(2f, fill = false),
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .weight(1f),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.weight(1f).padding(end = 8.dp)
+                ) {
+                    Text(
+                        text = "Difficulty: ",
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Image(
+                        painter = painterResource(id = getPictureIdByExperienceLevel(
+                            ExperienceLevel.valueOf(workout.experiencelevel.toString().uppercase()))),
+                        contentDescription = workout.name,
+                        modifier = Modifier
+                            .padding(start = 4.dp)
+                            .align(Alignment.CenterVertically)
+                    )
+                }
             }
             Spacer(modifier = Modifier.height(12.dp))
 

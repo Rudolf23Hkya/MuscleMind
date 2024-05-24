@@ -40,5 +40,4 @@ interface MuscleMindRepository {
 
     suspend fun getStatsViaEmail(csv: Boolean, pdf: Boolean): Resource<Success>
 
-    suspend fun deleteUserData()
 }

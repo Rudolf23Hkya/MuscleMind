@@ -35,7 +35,7 @@ interface ApiDao {
     suspend fun getCalories(@Header("Authorization") authToken: String): Response<CaloriesData>
 
     @POST("add_calories/")
-    suspend fun addCalories(@Body caloriesData: CaloriesData, @Header("Authorization") authToken: String): Response<String>
+    suspend fun addCalories(@Header("Authorization") authToken: String,@Body caloriesData: CaloriesData): Response<String>
 
     @GET("get_recom_workouts/")
     suspend fun getRecomWorkouts(
@@ -45,27 +45,27 @@ interface ApiDao {
     ): Response<List<Workout>>
 
     @POST("post_user_workout/")
-    suspend fun postUserWorkout(@Body workoutData: SelectedWorkout, @Header("Authorization") authToken: String): Response<SelectedWorkout>
+    suspend fun postUserWorkout(@Header("Authorization") authToken: String,@Body workoutData: SelectedWorkout): Response<SelectedWorkout>
 
     @GET("get_user_workout/")
     suspend fun getUserWorkout(@Header("Authorization") authToken: String): Response<UserWorkout>
 
     @POST("workout_done/")
-    suspend fun workoutDone(@Body workoutDoneData: WorkoutDone, @Header("Authorization") authToken: String): Response<WorkoutDone>
+    suspend fun workoutDone(@Header("Authorization") authToken: String,@Body workoutDoneData: WorkoutDone): Response<WorkoutDone>
 
     @GET("get_stats/")
     suspend fun getStats(
+        @Header("Authorization") authToken: String,
         @Query("year") year: Int,
         @Query("month") month: Int,
-        @Query("day") day: Int,
-        @Header("Authorization") authToken: String
+        @Query("day") day: Int
     ): Response<WeekStats>
 
     @GET("get_stats_via_email/")
     suspend fun getStatsViaEmail(
+        @Header("Authorization") authToken: String,
         @Query("csv") csv: Boolean,
-        @Query("pdf") pdf: Boolean,
-        @Header("Authorization") authToken: String
+        @Query("pdf") pdf: Boolean
     ): Response<Success>
 }
 
