@@ -83,7 +83,6 @@ fun ActiveWorkouts(
             }
         },
         floatingActionButton = {
-            // Only render the Floating Action Btn if the exercises are loaded
             FloatingActionButton(
                 onClick = { onNavigate.navigate(Routes.CREATE_WORKOUT_DATA) },
                 containerColor = MaterialTheme.colorScheme.inversePrimary
@@ -95,14 +94,14 @@ fun ActiveWorkouts(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background) // Use a gradient instead for the background
-                .padding(innerPadding), // Padding for insets
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             LazyColumn {
                 items(activeWorkouts.value) { workout ->
-                    WorkoutItem(workout = workout, navigation = onNavigate)
+                    WorkoutItem(workout = workout, navigation = onNavigate,false)
                 }
             }
         }

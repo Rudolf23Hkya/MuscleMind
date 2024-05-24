@@ -88,7 +88,7 @@ fun WorkoutInDetail(
         Spacer(modifier = Modifier.height(32.dp))
         LazyColumn {
             items(selectedExercises.value) { ex ->
-                ExerciseItemItem(exercise = ex, navigation = onNavigate)
+                ExerciseItemItem(exercise = ex)
             }
         }
     }

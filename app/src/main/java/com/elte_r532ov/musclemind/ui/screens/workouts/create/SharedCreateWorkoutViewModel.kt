@@ -3,6 +3,8 @@ package com.elte_r532ov.musclemind.ui.screens.workouts.create
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
@@ -39,8 +41,8 @@ class SharedCreateWorkoutViewModel @Inject constructor(
 
     private var doWeekly by mutableIntStateOf(0)
 
-    private val _recommendedWorkouts = MutableStateFlow<List<Workout>>(emptyList())
-    val recommendedWorkouts: StateFlow<List<Workout>> = _recommendedWorkouts
+    private val _recommendedWorkouts = MutableLiveData<List<Workout>>()
+    val recommendedWorkouts: LiveData<List<Workout>> = _recommendedWorkouts
 
 
     init{
@@ -77,32 +79,43 @@ class SharedCreateWorkoutViewModel @Inject constructor(
 
 
     private suspend fun getRecommendedWorkouts() {
-        when (val result = repository.getRecomWorkouts(
-            trx = this.trx, weightlifting = this.weightlifting
-        )) {
-            //Navigating to user-s Active Workouts if Success
-            is Resource.Success -> {
-                //If the recommended workouts arrive from the server they can be displayed
-                sendUiEvent(UiEvent.Navigate(Routes.CREATE_WORKOUT_SELECT))
-            }
+        try {
+            val result = repository.getRecomWorkouts(
+                trx = this.trx, weightlifting = this.weightlifting
+            )
+            when (result) {
+                is Resource.Success -> {
+                    val workouts = result.data ?: emptyList()
+                    _recommendedWorkouts.value = workouts
 
-            is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
+                    if (workouts.isEmpty()) {
+                        sendUiEvent(UiEvent.ErrorOccured("Network Error!"))
+                    } else {
+                        sendUiEvent(UiEvent.Navigate(Routes.CREATE_WORKOUT_SELECT))
+                    }
+                }
+                is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(
+                    result.message ?: "Network Error!"))
+            }
+        } catch (e: Exception) {
+            sendUiEvent(UiEvent.ErrorOccured(e.message ?: "An unexpected error occurred"))
         }
     }
-    /*
-    private suspend fun postSelectedWorkout() {
-        val selectedWorkout = Workout()
-        val selectedWorkoutData = SelectedWorkout()
 
-        when (val result = repository.postUserWorkout()) {
-            //Navigating to user-s Active Workouts if Success
-            is Resource.Success -> {
-                //If the recommended workouts arrive from the server they can be displayed
-                sendUiEvent(UiEvent.Navigate(Routes.CREATE_WORKOUT_SELECT))
-            }
-            is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
+}
+
+/*
+private suspend fun postSelectedWorkout() {
+    val selectedWorkout = Workout()
+    val selectedWorkoutData = SelectedWorkout()
+
+    when (val result = repository.postUserWorkout()) {
+        //Navigating to user-s Active Workouts if Success
+        is Resource.Success -> {
+            //If the recommended workouts arrive from the server they can be displayed
+            sendUiEvent(UiEvent.Navigate(Routes.CREATE_WORKOUT_SELECT))
         }
+        is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
     }
-    */
-
-    }
+}
+*/

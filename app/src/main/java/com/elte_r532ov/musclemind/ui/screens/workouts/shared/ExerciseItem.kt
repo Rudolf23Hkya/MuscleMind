@@ -26,13 +26,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.data.api.responses.Exercise
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 
 @SuppressLint("DiscouragedApi")
 @Composable
-fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
+fun ExerciseItemItem(exercise: Exercise) {
     val context = LocalContext.current
 
     val imageResId = context.resources.getIdentifier(exercise.drawablepicname, "drawable", context.packageName)
@@ -53,7 +52,8 @@ fun ExerciseItemItem(exercise: Exercise, navigation: NavHostController) {
                         color = MaterialTheme.colorScheme.onBackground
                     )
                     Image(
-                        painter = painterResource(id = getPictureIdByExperienceLevel(ExperienceLevel.valueOf(exercise.experiencelevel.uppercase()))),
+                        painter = painterResource(id = getPictureIdByExperienceLevel(
+                            ExperienceLevel.valueOf(exercise.experiencelevel.uppercase()))),
                         contentDescription = exercise.name,
                         modifier = Modifier
                             .weight(1f, fill = false)
