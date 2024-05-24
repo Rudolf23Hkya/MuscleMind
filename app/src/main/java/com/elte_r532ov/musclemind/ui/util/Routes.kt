@@ -13,13 +13,12 @@ object Routes {
     const val REGISTER_ACCOUNT_DATA = "registerACCData"
 
     //Workout
+    const val WORKOUT_ACTIVE_ROUTE ="workout_active_route"
 
-    const val WORKOUTS_ACTIVE = "workouts_active"
-
-    const val WORKOUTS_IN_DETAIL = "workouts_in_detail/{workoutId}"
-    const val WORKOUTS_START = "workouts_start"
-    const val WORKOUTS_IN_PROGRESS = "workouts_in_progress"
-    const val WORKOUTS_RATING = "workouts_rating"
+    const val WORKOUT_ACTIVE = "workout_active"
+    const val WORKOUT_BEFORE_START = "workout_before_start"
+    const val WORKOUT_IN_PROGRESS = "workout_in_progress"
+    const val WORKOUT_RATING = "workout_rating"
 
     //Create Workout
     const val CREATE_WORKOUT_ROUTE = "create_workout_route"//Nested root

@@ -79,7 +79,7 @@ fun CreateWorkoutSelect(
                 items(recommendedWorkouts.value) { workout ->
                     WorkoutItem(workout = workout,
                         navigation = onNavigate,
-                        createWorkoutView = true,
+                        navigateTo = Routes.CREATE_WORKOUT_SELECT_DETAIL,
                         onWorkoutClick = { clickedWorkout ->
                             viewModel.onWorkoutClicked(clickedWorkout)
                         })

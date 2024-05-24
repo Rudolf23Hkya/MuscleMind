@@ -29,7 +29,7 @@ class LoginViewModel @Inject constructor(
                     val result = repository.loginAttempt(event.eMail, event.password)
 
                     when (result) {
-                        is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                        is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_ACTIVE))
                         is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
                     }
                 }

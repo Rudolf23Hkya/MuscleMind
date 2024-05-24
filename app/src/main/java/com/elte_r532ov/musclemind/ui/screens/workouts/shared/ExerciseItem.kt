@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Accessibility
 import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.filled.WatchLater
 import androidx.compose.material3.Card
@@ -63,12 +64,21 @@ fun ExerciseItemItem(exercise: Exercise) {
                 }
                 Row(verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.End){
                     Icon(
-                        imageVector = Icons.Filled.WatchLater,
-                        contentDescription = "Stopwatch",
+                        imageVector =
+                        if (exercise.duration != 0)
+                            Icons.Filled.WatchLater
+                        else
+                            Icons.Filled.Accessibility,
+                        contentDescription = "Duration/Reps",
                         modifier = Modifier.padding(end = 6.dp)
                     )
+                    //imageVector = Icons.Filled.WatchLater,
                     Text(
-                        text = exercise.duration.toString(),
+                        text =
+                        if (exercise.duration != 0)
+                            exercise.duration.toString()
+                        else
+                            exercise.reps.toString(),
                         modifier = Modifier.weight(2f, fill = false),
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground

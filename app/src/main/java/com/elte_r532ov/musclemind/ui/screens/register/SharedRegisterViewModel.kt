@@ -177,7 +177,7 @@ class SharedRegisterViewModel @Inject constructor(
 
         when (val result = repository.registerUser(newUser,disease)) {
             //Navigating to user-s Active Workouts if Success
-            is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+            is Resource.Success -> sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_ACTIVE))
             is Resource.Error -> sendUiEvent(UiEvent.ErrorOccured(result.message!!))
         }
     }

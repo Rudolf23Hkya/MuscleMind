@@ -1,6 +1,5 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.create
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
@@ -18,8 +17,6 @@ import com.elte_r532ov.musclemind.ui.util.Routes
 import com.elte_r532ov.musclemind.ui.util.UiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -132,7 +129,7 @@ class SharedCreateWorkoutViewModel @Inject constructor(
 
                 when (result) {
                     is Resource.Success -> {
-                        sendUiEvent(UiEvent.Navigate(Routes.WORKOUTS_ACTIVE))
+                        sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_ACTIVE))
                     }
                     is Resource.Error -> {
                         sendUiEvent(UiEvent.ErrorOccured(result.message ?: "An error occurred while posting the workout"))

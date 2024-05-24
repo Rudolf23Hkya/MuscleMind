@@ -29,8 +29,8 @@ import com.elte_r532ov.musclemind.ui.util.Routes
 @Composable
 fun WorkoutItem(workout: Workout,
                 navigation: NavHostController,
-                createWorkoutView: Boolean,
-                onWorkoutClick: ((Workout) -> Unit)? = null // Only used by createWorkoutView
+                navigateTo: String,
+                onWorkoutClick: ((Workout) -> Unit)
 ) {
     val context = LocalContext.current
 
@@ -41,16 +41,8 @@ fun WorkoutItem(workout: Workout,
             modifier =
             Modifier.fillMaxWidth().
             clickable {
-                // This list Composable is used on 2 views in the app
-                // The navigation logic should be specified
-                if (createWorkoutView){
-                    onWorkoutClick!!(workout)
-                    navigation.navigate(Routes.CREATE_WORKOUT_SELECT_DETAIL)
-                }
-                else{
-                    val workoutId = workout.workoutid
-                    navigation.navigate("workouts_in_detail/$workoutId")
-                }
+                onWorkoutClick(workout)
+                navigation.navigate(navigateTo)
             }
         ) {
             Row(

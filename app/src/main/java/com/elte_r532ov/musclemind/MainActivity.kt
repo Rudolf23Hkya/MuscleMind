@@ -8,12 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.elte_r532ov.musclemind.ui.screens.register.ExperienceSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterData
 import com.elte_r532ov.musclemind.ui.screens.register.RegisterFizData
@@ -25,11 +23,10 @@ import com.elte_r532ov.musclemind.data.local.SessionManagement
 import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.settings.MainSettingsScreen
+import com.elte_r532ov.musclemind.ui.screens.workouts.active.WorkoutBeforeStart
 import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutData
 import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutDetail
 import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutSelect
-import com.elte_r532ov.musclemind.ui.screens.workouts.complete.WorkoutInDetail
-import com.elte_r532ov.musclemind.ui.screens.workouts.complete.WorkoutInProgress
 import com.elte_r532ov.musclemind.ui.theme.MuscleMindTheme
 import javax.inject.Inject
 
@@ -60,8 +57,7 @@ fun MyApp(sessionManagement: SessionManagement) {
 
     // Determine the start destination based on session token presence
     val appStartDestination = if (sessionManagement.isLoggedIn()) {
-        //Routes.LOGIN
-        Routes.WORKOUTS_ACTIVE
+        Routes.WORKOUT_ACTIVE_ROUTE
     } else {
         Routes.LOGIN
     }
@@ -108,8 +104,23 @@ fun MyApp(sessionManagement: SessionManagement) {
                 CreateWorkoutDetail(navController)
             }
         }
-        composable(Routes.WORKOUTS_ACTIVE) {
-            ActiveWorkouts(navController)
+        // Active Workout Route
+        navigation(
+            startDestination = Routes.WORKOUT_ACTIVE,
+            route = Routes.WORKOUT_ACTIVE_ROUTE
+        ) {
+            composable(Routes.WORKOUT_ACTIVE) {
+                ActiveWorkouts(navController)
+            }
+            composable(Routes.WORKOUT_BEFORE_START) {
+                WorkoutBeforeStart(navController)
+            }
+            composable(Routes.WORKOUT_IN_PROGRESS) {
+                //ActiveWorkouts(navController)
+            }
+            composable(Routes.WORKOUT_RATING) {
+                //ActiveWorkouts(navController)
+            }
         }
 
         composable(Routes.SETTINGS_MAIN){
@@ -120,22 +131,6 @@ fun MyApp(sessionManagement: SessionManagement) {
         }
         composable(Routes.STATS_OVERVIEW){
             StatsMainScreen(navController)
-        }
-        navigation(
-            startDestination = Routes.WORKOUTS_IN_DETAIL,
-            route = Routes.WORKOUTS_IN_PROGRESS
-        ){
-            composable(route= Routes.WORKOUTS_IN_DETAIL,
-                arguments = listOf(navArgument("workoutId"){
-                    type = NavType.LongType
-                })){
-                //Passing parameter with Navigation
-                val workoutID = it.arguments?.getLong("workoutId") ?:""
-                WorkoutInDetail(workoutID.toString().toLong(),navController)
-            }
-            composable(Routes.WORKOUTS_START){
-                WorkoutInProgress(navController)
-            }
         }
     }
 }

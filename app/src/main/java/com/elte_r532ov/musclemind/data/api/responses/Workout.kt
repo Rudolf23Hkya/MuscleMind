@@ -12,5 +12,6 @@ data class Workout(
     val experiencelevel: ExperienceLevel,
     val musclegroup: List<MuscleGroup>,
     val name: String,
-    val workoutid: Int
+    val workoutid: Int,
+    val userWorkoutId: Int = 0 // Default is 0, only used for active Workouts
 )

@@ -1,4 +1,4 @@
-package com.elte_r532ov.musclemind.ui.screens.workouts.create
+package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,14 +28,14 @@ import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import com.elte_r532ov.musclemind.ui.screens.workouts.shared.ExerciseItemItem
 import com.elte_r532ov.musclemind.ui.util.BottomNavBar
-import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.ui.util.Routes
+import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 
 @Composable
-fun CreateWorkoutDetail(
+fun WorkoutBeforeStart(
     onNavigate: NavHostController,
-    viewModel: SharedCreateWorkoutViewModel =
-        hiltViewModel(onNavigate.getBackStackEntry(Routes.CREATE_WORKOUT_ROUTE))
+    viewModel: SharedActiveWorkoutViewModel =
+        hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUT_ACTIVE_ROUTE))
 ) {
     //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
@@ -51,11 +51,12 @@ fun CreateWorkoutDetail(
         snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { viewModel.postSelectedWorkout() },
+                onClick = { /// viewModel.startWorkout
+                     },
                 containerColor = MaterialTheme.colorScheme.inversePrimary
             ) {
                 Text(
-                    "Add",
+                    "Start",
                     fontSize = 22.sp,
                     fontFamily = myFontFamily,
                     fontWeight = FontWeight.Bold,
@@ -85,6 +86,7 @@ fun CreateWorkoutDetail(
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
+
             LazyColumn {
                 items(selectedExercises.value) { ex ->
                     ExerciseItemItem(exercise = ex)

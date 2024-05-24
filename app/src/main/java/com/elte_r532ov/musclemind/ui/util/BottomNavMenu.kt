@@ -1,8 +1,6 @@
 package com.elte_r532ov.musclemind.ui.util
 
 import com.elte_r532ov.musclemind.R
-import com.elte_r532ov.musclemind.ui.util.BottomNavItem
-import com.elte_r532ov.musclemind.ui.util.Routes
 
 object BottomNavMenu {
     val STATS = BottomNavItem("Stats", R.drawable.line_up,
@@ -12,5 +10,5 @@ object BottomNavMenu {
     val SETTINGS = BottomNavItem("Settings", R.drawable.setting_line,
         Routes.SETTINGS_MAIN,"settings")
     val WORKOUTS = BottomNavItem("Workouts", R.drawable.lightning,
-        Routes.WORKOUTS_ACTIVE,"workouts")
+        Routes.WORKOUT_ACTIVE,"workouts")
 }

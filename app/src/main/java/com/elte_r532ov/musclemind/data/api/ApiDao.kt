@@ -48,7 +48,7 @@ interface ApiDao {
     suspend fun postUserWorkout(@Header("Authorization") authToken: String,@Body workoutData: SelectedWorkout): Response<SelectedWorkout>
 
     @GET("get_user_workout/")
-    suspend fun getUserWorkout(@Header("Authorization") authToken: String): Response<UserWorkout>
+    suspend fun getUserWorkout(@Header("Authorization") authToken: String): Response<List<UserWorkout>>
 
     @POST("workout_done/")
     suspend fun workoutDone(@Header("Authorization") authToken: String,@Body workoutDoneData: WorkoutDone): Response<WorkoutDone>

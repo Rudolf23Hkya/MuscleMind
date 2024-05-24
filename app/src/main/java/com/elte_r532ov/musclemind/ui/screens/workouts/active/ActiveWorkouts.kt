@@ -39,14 +39,14 @@ import com.elte_r532ov.musclemind.ui.util.Routes
 @Composable
 fun ActiveWorkouts(
     onNavigate: NavHostController,
-    viewModel: ActiveWorkoutsViewModel = hiltViewModel()
+    viewModel: SharedActiveWorkoutViewModel =
+        hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUT_ACTIVE_ROUTE))
 ) {
     //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
     val userName by viewModel.userNameLiveData.observeAsState("")
-    val activeWorkouts = viewModel.activeWorkoutLiveData.observeAsState(initial = emptyList())
-
+    val activeWorkouts = viewModel.activeWorkouts.observeAsState(initial = emptyList())
 
     Scaffold(
         bottomBar = {
@@ -101,7 +101,12 @@ fun ActiveWorkouts(
         ) {
             LazyColumn {
                 items(activeWorkouts.value) { workout ->
-                    WorkoutItem(workout = workout, navigation = onNavigate,false)
+                    WorkoutItem(workout = workout,
+                        navigation = onNavigate,
+                        navigateTo = Routes.WORKOUT_BEFORE_START,
+                        onWorkoutClick = { clickedWorkout ->
+                            viewModel.onWorkoutClicked(clickedWorkout)
+                        })
                 }
             }
         }
