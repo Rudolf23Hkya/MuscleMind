@@ -24,7 +24,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -44,11 +49,10 @@ fun WorkoutRating(
     viewModel: SharedActiveWorkoutViewModel =
         hiltViewModel(onNavigate.getBackStackEntry(Routes.WORKOUT_ACTIVE_ROUTE))
 ) {
-    //Handle UiEvent:
+    // Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
-    val exercises = viewModel.selectedExercises.observeAsState(initial = emptyList())
-    //val ratings by viewModel.ratings.observeAsState(initial = emptyList())
+    val exercisesDone by viewModel.exercisesDone.observeAsState(initial = mutableListOf())
 
     Scaffold(
         topBar = {
@@ -71,7 +75,7 @@ fun WorkoutRating(
                 onClick = { /* Save action here */ },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(16.dp)
             ) {
                 Text("Save")
             }
@@ -84,20 +88,22 @@ fun WorkoutRating(
                 .padding(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            /*
             LazyColumn {
-                itemsIndexed(exercises) { index, exercise ->
+                itemsIndexed(exercisesDone) { index, exerciseDone ->
+                    val exerciseNameTag = if (exerciseDone.skipped) {
+                        "${exerciseDone.name} - skipped"
+                    } else {
+                        exerciseDone.name
+                    }
                     RatingItem(
-                        exerciseName = exercise,
-                        rating = ratings[index],
+                        exerciseName = exerciseNameTag,
+                        rating = exerciseDone.rating,
                         onRatingChange = { newRating ->
                             viewModel.updateRating(index, newRating)
                         }
                     )
                 }
-
             }
-             */
         }
     }
 }
@@ -108,6 +114,8 @@ fun RatingItem(
     rating: Int,
     onRatingChange: (Int) -> Unit
 ) {
+    var currentRating by remember { mutableIntStateOf(rating) }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -117,10 +125,13 @@ fun RatingItem(
         Row {
             (1..5).forEach { index ->
                 IconButton(
-                    onClick = { onRatingChange(index) }
+                    onClick = {
+                        currentRating = index
+                        onRatingChange(index)
+                    }
                 ) {
                     Icon(
-                        imageVector = if (index <= rating) Icons.Default.Star else Icons.Default.StarBorder,
+                        imageVector = if (index <= currentRating) Icons.Default.Star else Icons.Default.StarBorder,
                         contentDescription = null
                     )
                 }

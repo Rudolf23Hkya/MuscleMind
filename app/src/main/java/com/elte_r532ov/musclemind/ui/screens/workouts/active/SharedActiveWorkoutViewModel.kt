@@ -1,6 +1,7 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.collection.emptyLongSet
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -137,6 +138,9 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     }
 
     private fun addExerciseDone(exercise: Exercise, skipped: Boolean) {
+        // If the exercise is duration based then duration - remainingTime will be added for duration
+        // If the exercise is reps based the elapsed time will be added as duration, because
+        // It took that much time for the user to complete the exercise
         val duration = if (exercise.duration == 0) {
             _elapsedTime.value ?: 0
         } else {
@@ -146,7 +150,8 @@ class SharedActiveWorkoutViewModel @Inject constructor(
             skipped = skipped,
             duration = duration,
             rating = 3,
-            cal = exercise.caloriesburnt
+            cal = exercise.caloriesburnt,
+            name = exercise.name
         )
         _exercisesDone.value?.add(exerciseDone)
     }
@@ -233,6 +238,17 @@ class SharedActiveWorkoutViewModel @Inject constructor(
                 _elapsedTime.value = (_elapsedTime.value ?: 0) + 1
             }
         }
+    }
+    // For saving the ratings
+    fun updateRating(index: Int, newRating: Int) {
+        _exercisesDone.value?.let {
+            if (index >= 0 && index < it.size) {
+                val updatedExercise = it[index].copy(rating = newRating)
+                it[index] = updatedExercise
+                _exercisesDone.value = it
+            }
+        }
+        //Log.d("RATING", "ExercisesDone: ${_exercisesDone.value}")
     }
 
 
