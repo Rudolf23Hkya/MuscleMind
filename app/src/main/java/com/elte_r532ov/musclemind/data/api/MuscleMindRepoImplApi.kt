@@ -6,15 +6,15 @@ import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.local.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
+import com.elte_r532ov.musclemind.data.api.responses.StatsDay
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
 import com.elte_r532ov.musclemind.data.api.responses.LoginData
 import com.elte_r532ov.musclemind.data.api.responses.RegisterUser
 import com.elte_r532ov.musclemind.data.api.responses.SelectedWorkout
-import com.elte_r532ov.musclemind.data.api.responses.Success
+import com.elte_r532ov.musclemind.data.api.responses.StatsWeek
 import com.elte_r532ov.musclemind.data.api.responses.Tokens
 import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
-import com.elte_r532ov.musclemind.data.api.responses.WeekStats
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import kotlinx.coroutines.runBlocking
@@ -244,8 +244,20 @@ class MuscleMindRepoImplApi(
         year: Int,
         month: Int,
         day: Int
-    ): Resource<WeekStats> {
-        TODO("Not yet implemented")
+    ): Resource<StatsWeek> {
+        return try {
+            val response = apiDao.getStats(sessionManagement.getBearerToken(), year, month, day)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    Resource.Success(it)
+                } ?: Resource.Error("Empty response body")
+            } else {
+                Resource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            //restartMainActivity()
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
     }
 
     override suspend fun getStatsViaEmail(
@@ -260,7 +272,6 @@ class MuscleMindRepoImplApi(
                 Resource.Error(response.message())
             }
         } catch (e: Exception) {
-            // Kezeld a hibát és indítsd újra az activity-t
             restartMainActivity()
             Resource.Error(e.message ?: "An unknown error occurred")
         }
@@ -272,7 +283,6 @@ class MuscleMindRepoImplApi(
         return try {
             return Resource.Success(sessionManagement.getUserData())
         } catch (e: Exception) {
-            // Handle any exceptions that might occur during the network request
             Resource.Error(e.message ?: "Exception occurred while fetching user data", null)
         }
     }

@@ -35,9 +35,15 @@ fun StatsMainScreen(
     viewModel: StatsViewModel = hiltViewModel()
 ) {
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
-    val scaledStats = viewModel.scaledStats.collectAsState()
-    val realStats = viewModel.realStats.collectAsState()
+
+    val scaledKcalStats by viewModel.scaledKcalStats.collectAsState()
+    val realKcalStats by viewModel.realKcalStats.collectAsState()
+
+    val scaledTimeStats by viewModel.scaledTimeStats.collectAsState()
+    val realTimeStats by viewModel.realTimeStats.collectAsState()
+
     val selectedMode by viewModel.selectedMode.collectAsState()
+    val currentDate by viewModel.currentDate.collectAsState()
 
     Scaffold(
         bottomBar = {
@@ -73,6 +79,12 @@ fun StatsMainScreen(
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Today is: $currentDate",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -83,7 +95,10 @@ fun StatsMainScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            BarGraph(scaledStats.value,realStats.value)
+            when (selectedMode) {
+                StatsMode.KCAL -> BarGraph(scaledKcalStats, realKcalStats)
+                StatsMode.TIME -> BarGraph(scaledTimeStats, realTimeStats)
+            }
 
             Spacer(modifier = Modifier.height(16.dp))
 
@@ -95,15 +110,17 @@ fun StatsMainScreen(
             Row(
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(onClick = { viewModel.sendStatsByEmail(StatsFormat.PDF) },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary)) {
+                Button(
+                    onClick = { viewModel.sendStatsByEmail(StatsFormat.PDF) },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
                     Text("PDF")
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Button(onClick = { viewModel.sendStatsByEmail(StatsFormat.CSV) }
-                    , colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary)) {
+                Button(
+                    onClick = { viewModel.sendStatsByEmail(StatsFormat.CSV) },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                ) {
                     Text("CSV")
                 }
             }
@@ -112,7 +129,7 @@ fun StatsMainScreen(
 }
 
 @Composable
-fun BarGraph(scaledValues: List<Int>,realValues: List<Int>) {
+fun BarGraph(scaledValues: List<Int>, realValues: List<Int>) {
     val barColors = listOf(
         Color(MaterialTheme.colorScheme.onSurface.value),
         Color(MaterialTheme.colorScheme.onSurface.value),

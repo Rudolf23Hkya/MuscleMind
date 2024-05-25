@@ -1,7 +1,7 @@
 package com.elte_r532ov.musclemind.data.api.responses
 
 //Needed for showing statistics
-data class CalorieData(
+data class DailyReportData(
     val calorie_intake: Int,
     val calories_burnt: Int,
     val date: String,
