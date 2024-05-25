@@ -13,5 +13,6 @@ data class Workout(
     val musclegroup: List<MuscleGroup>,
     val name: String,
     val workoutid: Int,
-    val userWorkoutId: Int = 0 // Default is 0, only used for active Workouts
+    val userWorkoutId: Int = 0, // Default is 0, only used for active Workouts
+    val weekly: Int = 0, // Used to display how often should a user do this workout weekly
 )

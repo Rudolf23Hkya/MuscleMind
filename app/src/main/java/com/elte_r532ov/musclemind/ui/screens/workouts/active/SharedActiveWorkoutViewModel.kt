@@ -42,9 +42,6 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     private val _userName = MutableLiveData<String>()
     val userNameLiveData: LiveData<String> = _userName
 
-    private val _doWeekly = MutableLiveData<List<Int>>()
-    val doWeekly: LiveData<List<Int>> = _doWeekly
-
     private val _activeWorkouts = MutableLiveData<List<Workout>>()
     val activeWorkouts: LiveData<List<Workout>> = _activeWorkouts
 
@@ -103,7 +100,6 @@ class SharedActiveWorkoutViewModel @Inject constructor(
             when (val result = repository.updateAccessToken()) {
                 is Resource.Success -> {
                     _activeWorkouts.value = emptyList()
-                    _doWeekly.value = emptyList()
 
                     getActiveWorkouts()
                 }
@@ -285,7 +281,6 @@ class SharedActiveWorkoutViewModel @Inject constructor(
                     else{
                         try {
                             _activeWorkouts.value = processWorkouts(workouts)
-                            _doWeekly.value = getWeekly(workouts)
                         }
                         catch (e: Exception){
                             sendUiEvent(UiEvent.ErrorOccured(e.message ?: "Invalid data received!"))
@@ -356,17 +351,11 @@ class SharedActiveWorkoutViewModel @Inject constructor(
                 musclegroup = listOfWorkouts[i].workout.musclegroup,
                 name = listOfWorkouts[i].workout.name,
                 workoutid = listOfWorkouts[i].workout.workoutid,
-                userWorkoutId = listOfWorkouts[i].id // This makes the workout a unique user Workout
+                userWorkoutId = listOfWorkouts[i].id, // This makes the workout a unique user Workout
+                weekly = listOfWorkouts[i].do_weekly
             ))
         }
         return processedWorkouts
-    }
-    private fun getWeekly(listOfWorkouts: List<UserWorkout>): List<Int>{
-        val weeklyTemp = ArrayList<Int>()
-        for (workout in listOfWorkouts) {
-            weeklyTemp.add(workout.do_weekly)
-        }
-        return weeklyTemp
     }
 
 

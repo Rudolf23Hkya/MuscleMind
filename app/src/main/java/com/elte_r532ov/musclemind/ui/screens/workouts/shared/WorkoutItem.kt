@@ -60,14 +60,26 @@ fun WorkoutItem(workout: Workout,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
-                    text = workout.name,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .weight(1f),
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                if(navigateTo == Routes.WORKOUT_BEFORE_START){
+                    Text(
+                        text = workout.name +" - "+workout.weekly+" time(s) a week",
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .weight(1f),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                else{
+                    Text(
+                        text = workout.name,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .weight(1f),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End,
