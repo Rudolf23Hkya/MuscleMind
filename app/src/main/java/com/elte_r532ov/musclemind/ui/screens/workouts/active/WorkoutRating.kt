@@ -9,13 +9,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Archive
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -71,13 +75,30 @@ fun WorkoutRating(
             }
         },
         bottomBar = {
-            Button(
-                onClick = { /* Save action here */ },
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(bottom = 24.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
-                Text("Save")
+                Button(
+                    onClick = { //TODO
+                         },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary),
+                    modifier = Modifier
+                        .height(56.dp)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Text(
+                        text = "Save",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+
+                    Icon(Icons.Filled.Archive, "Save")
+                }
             }
         },
         snackbarHost = { SnackbarHost(snackBarHostState) }
@@ -86,8 +107,16 @@ fun WorkoutRating(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(MaterialTheme.colorScheme.background)
+                .background(MaterialTheme.colorScheme.background),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.width(34.dp))
+            Column(
+                modifier = Modifier
+                .fillMaxSize()
+                .padding(start = 34.dp)
+                .background(MaterialTheme.colorScheme.background
+                )) {
             LazyColumn {
                 itemsIndexed(exercisesDone) { index, exerciseDone ->
                     val exerciseNameTag = if (exerciseDone.skipped) {
@@ -101,7 +130,8 @@ fun WorkoutRating(
                         onRatingChange = { newRating ->
                             viewModel.updateRating(index, newRating)
                         }
-                    )
+                        )
+                    }
                 }
             }
         }
