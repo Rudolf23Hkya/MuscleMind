@@ -15,6 +15,7 @@ import com.elte_r532ov.musclemind.data.api.responses.Exercise
 import com.elte_r532ov.musclemind.data.api.responses.ExerciseDone
 import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.Workout
+import com.elte_r532ov.musclemind.data.api.responses.WorkoutDone
 import com.elte_r532ov.musclemind.ui.util.Routes
 import com.elte_r532ov.musclemind.ui.util.UiEvent
 import kotlinx.coroutines.Job
@@ -248,7 +249,28 @@ class SharedActiveWorkoutViewModel @Inject constructor(
                 _exercisesDone.value = it
             }
         }
-        //Log.d("RATING", "ExercisesDone: ${_exercisesDone.value}")
+    }
+    fun saveWorkout(){
+        val workoutDoneData = _selectedWorkout.value?.let {
+            exercisesDone.value?.let { it1 ->
+                WorkoutDone(exercises = it1,
+                    it.userWorkoutId)
+            }
+        }
+        Log.d("RATING", "Data: ${workoutDoneData.toString()}")
+        if(workoutDoneData != null) {
+            sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_ACTIVE))
+            viewModelScope.launch {
+                try {
+                    repository.workoutDone(workoutDoneData)
+                } catch (e: Exception) {
+                    //Error handling
+                    sendUiEvent(UiEvent.ErrorOccured("Failed to save workout!"))
+                }
+            }
+        }
+        else
+            sendUiEvent(UiEvent.ErrorOccured("Unexpected error occurred!"))
     }
 
 
@@ -277,7 +299,6 @@ class SharedActiveWorkoutViewModel @Inject constructor(
             sendUiEvent(UiEvent.ErrorOccured(e.message ?: "An unexpected error occurred"))
         }
     }
-
 
     // Applying custom weights for and Exercises
     private fun processWorkouts(listOfWorkouts: List<UserWorkout>) : List<Workout>{

@@ -82,8 +82,7 @@ fun WorkoutRating(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = { //TODO
-                         },
+                    onClick = { viewModel.saveWorkout()},
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
