@@ -134,6 +134,7 @@ class SharedActiveWorkoutViewModel @Inject constructor(
         _exerciseName.value = "Completed"
         _imageUrl.value = ""
         _remainingTime.value = 0
+        sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_RATING))
     }
 
     private fun updateCurrentExercise(exercise: Exercise?) {
