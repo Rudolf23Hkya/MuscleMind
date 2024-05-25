@@ -16,7 +16,9 @@ import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.ui.util.Routes
 import com.elte_r532ov.musclemind.ui.util.UiEvent
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.util.LinkedList
@@ -64,6 +66,12 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     private val _isNextButtonEnabled = MutableLiveData(false)
     val isNextButtonEnabled: LiveData<Boolean> = _isNextButtonEnabled
 
+    private val _reps = MutableLiveData(0)
+    val reps: LiveData<Int> = _reps
+
+    private val _isRepsZero = MutableLiveData(true)
+    val isRepsZero: LiveData<Boolean> = _isRepsZero
+
     // TIMER
     private val _remainingTime = MutableLiveData(0)
     val remainingTime: LiveData<Int> = _remainingTime
@@ -74,7 +82,11 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     private val _progress = MutableLiveData(1f)
     val progress: LiveData<Float> = _progress
 
+    private val _elapsedTime = MutableLiveData(0)
+    val elapsedTime: LiveData<Int> = _elapsedTime
+
     private var timer: CountDownTimer? = null
+    private var countUpTimer: Job? = null
 
 
     // For collecting data to post after the exercise
@@ -125,9 +137,14 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     }
 
     private fun addExerciseDone(exercise: Exercise, skipped: Boolean) {
+        val duration = if (exercise.duration == 0) {
+            _elapsedTime.value ?: 0
+        } else {
+            exercise.duration - (_remainingTime.value ?: 0)
+        }
         val exerciseDone = ExerciseDone(
             skipped = skipped,
-            duration = exercise.duration - (_remainingTime.value ?: 0),
+            duration = duration,
             rating = 3,
             cal = exercise.caloriesburnt
         )
@@ -163,11 +180,7 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     }
 
     private fun completeWorkout() {
-        _exerciseName.value = "Completed"
-        _imageUrl.value = ""
-        _remainingTime.value = 0
-        _progress.value = 1f
-        _isNextButtonEnabled.value = true
+        countUpTimer?.cancel()
         sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_RATING))
     }
 
@@ -177,13 +190,20 @@ class SharedActiveWorkoutViewModel @Inject constructor(
             _imageUrl.value = exercise.drawablepicname
             _remainingTime.value = exercise.duration
             _maxTime.value = exercise.duration
+            _reps.value = exercise.reps
+            _isRepsZero.value = exercise.reps == 0
             _isNextButtonEnabled.value = false
-            startTimer(exercise.duration)
+            if (exercise.duration == 0) {
+                startCountUpTimer()
+            } else {
+                startTimer(exercise.duration)
+            }
         }
     }
 
     private fun startTimer(duration: Int) {
         timer?.cancel()
+        countUpTimer?.cancel()
         _maxTime.value = duration
         _progress.value = 1f
         timer = object : CountDownTimer(duration.toLong() * 1000, 1000) {
@@ -202,11 +222,17 @@ class SharedActiveWorkoutViewModel @Inject constructor(
         }.start()
     }
 
-    private fun resetTimer() {
+    private fun startCountUpTimer() {
         timer?.cancel()
-        _remainingTime.value = 0
-        _progress.value = 1f
-        _isNextButtonEnabled.value = true
+        countUpTimer?.cancel()
+        _elapsedTime.value = 0
+        _progress.value = 0f
+        countUpTimer = viewModelScope.launch {
+            while (true) {
+                delay(1000)
+                _elapsedTime.value = (_elapsedTime.value ?: 0) + 1
+            }
+        }
     }
 
 

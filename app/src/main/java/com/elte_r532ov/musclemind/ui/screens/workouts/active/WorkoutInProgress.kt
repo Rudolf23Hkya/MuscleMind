@@ -63,8 +63,11 @@ fun WorkoutInProgress(
     val exerciseName by viewModel.exerciseName.observeAsState("default_exercise")
     val imageUrl by viewModel.imageUrl.observeAsState("")
     val remainingTime by viewModel.remainingTime.observeAsState(0)
+
     val progress by viewModel.progress.observeAsState(1f)
     val isNextButtonEnabled by viewModel.isNextButtonEnabled.observeAsState(false)
+    val reps by viewModel.reps.observeAsState(0)
+    val isRepsZero by viewModel.isRepsZero.observeAsState(true)
 
     val context = LocalContext.current
     val imageResId = context.resources.getIdentifier(imageUrl, "drawable", context.packageName)
@@ -117,7 +120,7 @@ fun WorkoutInProgress(
                 }
                 Button(
                     onClick = { viewModel.onExerciseNext() },
-                    enabled = isNextButtonEnabled,
+                    enabled = isNextButtonEnabled || !isRepsZero,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
@@ -170,20 +173,31 @@ fun WorkoutInProgress(
 
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "${remainingTime}s",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                LinearProgressIndicator(
-                    progress = progress,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp)
-                        .height(16.dp)
-                        .background(MaterialTheme.colorScheme.onSurface)
-                )
+                if(isRepsZero) {
+                    // If reps is zero it means it s a duration Exercise
+                    Text(
+                        text = "${remainingTime}s",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    LinearProgressIndicator(
+                        progress = progress,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp)
+                            .height(16.dp)
+                            .background(MaterialTheme.colorScheme.onSurface)
+                    )
+                }
+                else{
+                    // If reps is not zero it s a Reps exercise
+                    Text(
+                        text = "Reps: $reps",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
         }
     }
