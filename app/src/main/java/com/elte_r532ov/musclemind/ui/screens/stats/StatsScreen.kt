@@ -95,11 +95,15 @@ fun StatsMainScreen(
             Row(
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(onClick = { viewModel.sendStatsByEmail(StatsFormat.PDF) }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
+                Button(onClick = { viewModel.sendStatsByEmail(StatsFormat.PDF) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary)) {
                     Text("PDF")
                 }
                 Spacer(modifier = Modifier.width(16.dp))
-                Button(onClick = { viewModel.sendStatsByEmail(StatsFormat.CSV) }, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)) {
+                Button(onClick = { viewModel.sendStatsByEmail(StatsFormat.CSV) }
+                    , colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary)) {
                     Text("CSV")
                 }
             }

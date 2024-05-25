@@ -66,6 +66,6 @@ interface ApiDao {
         @Header("Authorization") authToken: String,
         @Query("csv") csv: Boolean,
         @Query("pdf") pdf: Boolean
-    ): Response<Success>
+    ): Response<Any>
 }
 

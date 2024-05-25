@@ -52,7 +52,12 @@ class StatsViewModel @Inject constructor(
     }
 
     fun sendStatsByEmail(format: StatsFormat) {
-        // Implement email sending functionality
+        viewModelScope.launch {
+        if(format == StatsFormat.CSV)
+            repository.getStatsViaEmail(csv = true,pdf = false)
+        else if(format == StatsFormat.PDF)
+            repository.getStatsViaEmail(csv = false,pdf = true)
+        }
     }
     private fun sendUiEvent(event: UiEvent){
         viewModelScope.launch {

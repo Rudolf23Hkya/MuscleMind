@@ -251,8 +251,19 @@ class MuscleMindRepoImplApi(
     override suspend fun getStatsViaEmail(
         csv: Boolean,
         pdf: Boolean
-    ): Resource<Success> {
-        TODO("Not yet implemented")
+    ): Resource<String> {
+        return try {
+            val response = apiDao.getStatsViaEmail(sessionManagement.getBearerToken(), csv, pdf)
+            if (response.isSuccessful) {
+                Resource.Success("Email sent successfully!")
+            } else {
+                Resource.Error(response.message())
+            }
+        } catch (e: Exception) {
+            // Kezeld a hibát és indítsd újra az activity-t
+            restartMainActivity()
+            Resource.Error(e.message ?: "An unknown error occurred")
+        }
     }
 
 

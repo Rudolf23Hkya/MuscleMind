@@ -38,6 +38,6 @@ interface MuscleMindRepository {
 
     suspend fun getStats(year: Int, month: Int, day: Int): Resource<WeekStats>
 
-    suspend fun getStatsViaEmail(csv: Boolean, pdf: Boolean): Resource<Success>
+    suspend fun getStatsViaEmail(csv: Boolean, pdf: Boolean): Resource<String>
 
 }
