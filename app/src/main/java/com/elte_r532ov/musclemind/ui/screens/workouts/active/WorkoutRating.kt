@@ -11,7 +11,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -40,30 +47,36 @@ fun WorkoutRating(
     //Handle UiEvent:
     val snackBarHostState = handleUiEvent(viewModel.uiEvent, onNavigate)
 
-    val selectedExercises = viewModel.selectedExercises.observeAsState(initial = emptyList())
+    val exercises = viewModel.selectedExercises.observeAsState(initial = emptyList())
+    //val ratings by viewModel.ratings.observeAsState(initial = emptyList())
 
     Scaffold(
-        bottomBar = {
-            onNavigate.currentDestination?.route?.let {
-                BottomNavBar(it, onNavigate)
-            }
-        },
-        snackbarHost = { SnackbarHost(snackBarHostState) },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { /// viewModel.startWorkout
-                },
-                containerColor = MaterialTheme.colorScheme.inversePrimary
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 24.dp),
+                horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    "Start",
-                    fontSize = 22.sp,
-                    fontFamily = myFontFamily,
+                    text = "Rate Your Workout",
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(8.dp)
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             }
-        }
+        },
+        bottomBar = {
+            Button(
+                onClick = { /* Save action here */ },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            ) {
+                Text("Save")
+            }
+        },
+        snackbarHost = { SnackbarHost(snackBarHostState) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -71,28 +84,47 @@ fun WorkoutRating(
                 .padding(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 54.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    "Exercises",
-                    fontSize = 32.sp,
-                    fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Spacer(modifier = Modifier.height(32.dp))
-
+            /*
             LazyColumn {
-                items(selectedExercises.value) { ex ->
-                    ExerciseItemItem(exercise = ex)
+                itemsIndexed(exercises) { index, exercise ->
+                    RatingItem(
+                        exerciseName = exercise,
+                        rating = ratings[index],
+                        onRatingChange = { newRating ->
+                            viewModel.updateRating(index, newRating)
+                        }
+                    )
+                }
+
+            }
+             */
+        }
+    }
+}
+
+@Composable
+fun RatingItem(
+    exerciseName: String,
+    rating: Int,
+    onRatingChange: (Int) -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        Text(text = exerciseName, style = MaterialTheme.typography.bodyMedium)
+        Row {
+            (1..5).forEach { index ->
+                IconButton(
+                    onClick = { onRatingChange(index) }
+                ) {
+                    Icon(
+                        imageVector = if (index <= rating) Icons.Default.Star else Icons.Default.StarBorder,
+                        contentDescription = null
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }

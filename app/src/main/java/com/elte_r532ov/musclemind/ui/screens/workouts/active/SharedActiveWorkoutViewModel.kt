@@ -1,5 +1,7 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
+import android.os.CountDownTimer
+import androidx.collection.emptyLongSet
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +11,7 @@ import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.api.Resource
 import com.elte_r532ov.musclemind.data.api.responses.Exercise
+import com.elte_r532ov.musclemind.data.api.responses.ExerciseDone
 import com.elte_r532ov.musclemind.data.api.responses.UserWorkout
 import com.elte_r532ov.musclemind.data.api.responses.Workout
 import com.elte_r532ov.musclemind.ui.util.Routes
@@ -58,8 +61,25 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     private val _imageUrl = MutableLiveData("")
     val imageUrl: LiveData<String> = _imageUrl
 
+    private val _isNextButtonEnabled = MutableLiveData(false)
+    val isNextButtonEnabled: LiveData<Boolean> = _isNextButtonEnabled
+
+    // TIMER
     private val _remainingTime = MutableLiveData(0)
     val remainingTime: LiveData<Int> = _remainingTime
+
+    private val _maxTime = MutableLiveData(1) // Default to 1 to avoid division by zero
+    val maxTime: LiveData<Int> = _maxTime
+
+    private val _progress = MutableLiveData(1f)
+    val progress: LiveData<Float> = _progress
+
+    private var timer: CountDownTimer? = null
+
+
+    // For collecting data to post after the exercise
+    private val _exercisesDone = MutableLiveData<MutableList<ExerciseDone>>(mutableListOf())
+    val exercisesDone: LiveData<MutableList<ExerciseDone>> get() = _exercisesDone
 
 
     init {
@@ -104,13 +124,23 @@ class SharedActiveWorkoutViewModel @Inject constructor(
         }
     }
 
+    private fun addExerciseDone(exercise: Exercise, skipped: Boolean) {
+        val exerciseDone = ExerciseDone(
+            skipped = skipped,
+            duration = exercise.duration - (_remainingTime.value ?: 0),
+            rating = 3,
+            cal = exercise.caloriesburnt
+        )
+        _exercisesDone.value?.add(exerciseDone)
+    }
 
     fun onExerciseNext() {
         val exerciseOrder = _selectedExerciseOrdered.value
         if (!exerciseOrder.isNullOrEmpty()) {
-            exerciseOrder.removeFirst()
+            val currentExercise = exerciseOrder.removeFirst()
+            addExerciseDone(currentExercise, skipped = false)
             if (exerciseOrder.isNotEmpty()) {
-                val nextExercise = exerciseOrder.first
+                val nextExercise = exerciseOrder.first()
                 updateCurrentExercise(nextExercise)
             } else {
                 completeWorkout()
@@ -121,19 +151,23 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     fun onExerciseSkipped() {
         val exerciseOrder = _selectedExerciseOrdered.value
         if (!exerciseOrder.isNullOrEmpty()) {
-            exerciseOrder.removeFirst()
+            val currentExercise = exerciseOrder.removeFirst()
+            addExerciseDone(currentExercise, skipped = true)
             if (exerciseOrder.isNotEmpty()) {
-                val nextExercise = exerciseOrder.first
+                val nextExercise = exerciseOrder.first()
                 updateCurrentExercise(nextExercise)
             } else {
                 completeWorkout()
             }
         }
     }
+
     private fun completeWorkout() {
         _exerciseName.value = "Completed"
         _imageUrl.value = ""
         _remainingTime.value = 0
+        _progress.value = 1f
+        _isNextButtonEnabled.value = true
         sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_RATING))
     }
 
@@ -142,8 +176,39 @@ class SharedActiveWorkoutViewModel @Inject constructor(
             _exerciseName.value = exercise.name
             _imageUrl.value = exercise.drawablepicname
             _remainingTime.value = exercise.duration
+            _maxTime.value = exercise.duration
+            _isNextButtonEnabled.value = false
+            startTimer(exercise.duration)
         }
     }
+
+    private fun startTimer(duration: Int) {
+        timer?.cancel()
+        _maxTime.value = duration
+        _progress.value = 1f
+        timer = object : CountDownTimer(duration.toLong() * 1000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = (millisUntilFinished / 1000).toInt()
+                _remainingTime.value = secondsRemaining
+                _progress.value = secondsRemaining.toFloat() / _maxTime.value!!.toFloat()
+                _isNextButtonEnabled.value = _progress.value == 0f
+            }
+
+            override fun onFinish() {
+                _remainingTime.value = 0
+                _progress.value = 0f
+                _isNextButtonEnabled.value = true
+            }
+        }.start()
+    }
+
+    private fun resetTimer() {
+        timer?.cancel()
+        _remainingTime.value = 0
+        _progress.value = 1f
+        _isNextButtonEnabled.value = true
+    }
+
 
     private suspend fun getActiveWorkouts() {
         try {

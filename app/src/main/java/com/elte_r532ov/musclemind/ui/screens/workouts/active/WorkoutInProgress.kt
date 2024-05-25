@@ -63,6 +63,8 @@ fun WorkoutInProgress(
     val exerciseName by viewModel.exerciseName.observeAsState("default_exercise")
     val imageUrl by viewModel.imageUrl.observeAsState("")
     val remainingTime by viewModel.remainingTime.observeAsState(0)
+    val progress by viewModel.progress.observeAsState(1f)
+    val isNextButtonEnabled by viewModel.isNextButtonEnabled.observeAsState(false)
 
     val context = LocalContext.current
     val imageResId = context.resources.getIdentifier(imageUrl, "drawable", context.packageName)
@@ -115,6 +117,7 @@ fun WorkoutInProgress(
                 }
                 Button(
                     onClick = { viewModel.onExerciseNext() },
+                    enabled = isNextButtonEnabled,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary),
                     modifier = Modifier
@@ -174,7 +177,7 @@ fun WorkoutInProgress(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 LinearProgressIndicator(
-                    progress = remainingTime / 10f,
+                    progress = progress,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 32.dp)
