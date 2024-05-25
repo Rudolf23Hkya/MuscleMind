@@ -1,8 +1,12 @@
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -80,11 +84,41 @@ fun StatsMainScreen(
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = "Today is: $currentDate",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+                Row( modifier = Modifier
+                    .padding(6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                    Column {
+                        Button(
+                            onClick = { viewModel.previousWeek() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary),
+                            modifier = Modifier
+                                .height(36.dp)
+                        ) {
+                            Icon(Icons.Filled.ChevronLeft, "Arrow")
+                        }
+                    }
+
+                    Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                        Text(
+                            text = "$currentDate s week",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                    Column {
+                        Button(
+                            onClick = { viewModel.nextWeek() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary),
+                            modifier = Modifier
+                                .height(36.dp)
+                        ) {
+                            Icon(Icons.Filled.ChevronRight, "Arrow")
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
