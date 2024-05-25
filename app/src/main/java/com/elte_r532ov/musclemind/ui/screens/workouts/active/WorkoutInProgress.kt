@@ -1,10 +1,10 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -37,8 +39,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.toLowerCase
-import androidx.core.content.res.TypedArrayUtils.getResourceId
 import com.elte_r532ov.musclemind.ui.util.Routes
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 
@@ -55,20 +55,24 @@ fun WorkoutInProgress(
     val exerciseName by viewModel.exerciseName.observeAsState("default_exercise")
     val imageUrl by viewModel.imageUrl.observeAsState("")
     val remainingTime by viewModel.remainingTime.observeAsState(0)
-    
+
     val context = LocalContext.current
     val imageResId = context.resources.getIdentifier(imageUrl, "drawable", context.packageName)
 
 
     Scaffold(
         topBar = {
-            Text(
-                text = exerciseName,
-                fontWeight = FontWeight.Bold,
-                fontSize = 24.sp,
-                modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = exerciseName,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
         bottomBar = {
@@ -80,35 +84,61 @@ fun WorkoutInProgress(
             ) {
                 Button(
                     onClick = { viewModel.onExerciseSkipped() },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary),
+                    modifier = Modifier
+                        .height(56.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
-                    Text(text = "Skip")
+                    Text(
+                        text = "Skip",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
                 Button(
                     onClick = { viewModel.onExerciseNext() },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary),
+                    modifier = Modifier
+                        .height(56.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
-                    Text(text = "Next →")
+                    Text(
+                        text = "Next",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Icon(Icons.Filled.ChevronRight, "Arrow")
                 }
             }
         }
     ) { paddingValues ->
         Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
         ) {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically) {
-                if (imageUrl.isNotEmpty()) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            )  {
+                if (imageUrl.isNotEmpty() && imageResId != 0) {
                     Image(
                         painter = painterResource(id = imageResId),
-                        contentDescription = null,
-                        modifier = Modifier.size(200.dp)
+                        contentDescription = exerciseName,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(22.dp))
+                            .fillMaxWidth()
                     )
                 } else {
                     Text(text = "Image not found", color = MaterialTheme.colorScheme.onError)
