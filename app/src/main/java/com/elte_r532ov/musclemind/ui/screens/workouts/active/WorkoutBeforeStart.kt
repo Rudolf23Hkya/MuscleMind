@@ -51,7 +51,8 @@ fun WorkoutBeforeStart(
         snackbarHost = { SnackbarHost(snackBarHostState) },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /// viewModel.startWorkout
+                onClick = {
+                    viewModel.onWorkoutStarted()
                      },
                 containerColor = MaterialTheme.colorScheme.inversePrimary
             ) {

@@ -1,6 +1,5 @@
 package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,15 +16,22 @@ import com.elte_r532ov.musclemind.ui.util.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.LinkedList
 
 @HiltViewModel
 class SharedActiveWorkoutViewModel @Inject constructor(
     private val repository: MuscleMindRepository
 ) : ViewModel() {
+    private fun sendUiEvent(event: UiEvent){
+        viewModelScope.launch {
+            _uiEvent.send(event)
+        }
+    }
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
+    //// Data for the views////
     private val _userName = MutableLiveData<String>()
     val userNameLiveData: LiveData<String> = _userName
 
@@ -42,6 +48,19 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     // Selected exercises
     private val _selectedExercises = MutableLiveData<List<Exercise>>()
     val selectedExercises: LiveData<List<Exercise>> = _selectedExercises
+
+    private val _selectedExerciseOrdered = MutableLiveData<LinkedList<Exercise>>()
+
+    /// Exercise in progress ///
+    private val _exerciseName = MutableLiveData("")
+    val exerciseName: LiveData<String> = _exerciseName
+
+    private val _imageUrl = MutableLiveData("")
+    val imageUrl: LiveData<String> = _imageUrl
+
+    private val _remainingTime = MutableLiveData(0)
+    val remainingTime: LiveData<Int> = _remainingTime
+
 
     init {
         viewModelScope.launch {
@@ -64,12 +83,67 @@ class SharedActiveWorkoutViewModel @Inject constructor(
         _selectedWorkout.value = workout
         _selectedExercises.value = workout.exercises
     }
+    fun onWorkoutStarted() {
+        val exerciseOrder = _selectedWorkout.value?.exercise_order ?: listOf()
+        val exercises = _selectedExercises.value ?: listOf()
+        val orderedExercises = LinkedList<Exercise>()
 
-    private fun sendUiEvent(event: UiEvent){
-        viewModelScope.launch {
-            _uiEvent.send(event)
+        for (orderIndex in exerciseOrder) {
+            val exercise = exercises.find { it.exerciseid == orderIndex }
+            if (exercise != null) {
+                orderedExercises.add(exercise)
+            }
+        }
+
+        _selectedExerciseOrdered.value = orderedExercises
+
+        if (orderedExercises.isNotEmpty()) {
+            val firstExercise = orderedExercises.first
+            updateCurrentExercise(firstExercise)
+            sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_IN_PROGRESS))
         }
     }
+
+
+    fun onExerciseNext() {
+        val exerciseOrder = _selectedExerciseOrdered.value
+        if (!exerciseOrder.isNullOrEmpty()) {
+            exerciseOrder.removeFirst()
+            if (exerciseOrder.isNotEmpty()) {
+                val nextExercise = exerciseOrder.first
+                updateCurrentExercise(nextExercise)
+            } else {
+                completeWorkout()
+            }
+        }
+    }
+
+    fun onExerciseSkipped() {
+        val exerciseOrder = _selectedExerciseOrdered.value
+        if (!exerciseOrder.isNullOrEmpty()) {
+            exerciseOrder.removeFirst()
+            if (exerciseOrder.isNotEmpty()) {
+                val nextExercise = exerciseOrder.first
+                updateCurrentExercise(nextExercise)
+            } else {
+                completeWorkout()
+            }
+        }
+    }
+    private fun completeWorkout() {
+        _exerciseName.value = "Completed"
+        _imageUrl.value = ""
+        _remainingTime.value = 0
+    }
+
+    private fun updateCurrentExercise(exercise: Exercise?) {
+        if (exercise != null) {
+            _exerciseName.value = exercise.name
+            _imageUrl.value = exercise.drawablepicname
+            _remainingTime.value = exercise.duration
+        }
+    }
+
     private suspend fun getActiveWorkouts() {
         try {
             when (val result = repository.getUserWorkout()) {
@@ -95,6 +169,7 @@ class SharedActiveWorkoutViewModel @Inject constructor(
             sendUiEvent(UiEvent.ErrorOccured(e.message ?: "An unexpected error occurred"))
         }
     }
+
 
     // Applying custom weights for and Exercises
     private fun processWorkouts(listOfWorkouts: List<UserWorkout>) : List<Workout>{

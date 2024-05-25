@@ -24,6 +24,8 @@ import com.elte_r532ov.musclemind.ui.screens.calories.CalorieCounterScreen
 import com.elte_r532ov.musclemind.ui.screens.register.DiseaseSelectionScreen
 import com.elte_r532ov.musclemind.ui.screens.settings.MainSettingsScreen
 import com.elte_r532ov.musclemind.ui.screens.workouts.active.WorkoutBeforeStart
+import com.elte_r532ov.musclemind.ui.screens.workouts.active.WorkoutInProgress
+import com.elte_r532ov.musclemind.ui.screens.workouts.active.WorkoutRating
 import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutData
 import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutDetail
 import com.elte_r532ov.musclemind.ui.screens.workouts.create.CreateWorkoutSelect
@@ -116,10 +118,10 @@ fun MyApp(sessionManagement: SessionManagement) {
                 WorkoutBeforeStart(navController)
             }
             composable(Routes.WORKOUT_IN_PROGRESS) {
-                //ActiveWorkouts(navController)
+                WorkoutInProgress(navController)
             }
             composable(Routes.WORKOUT_RATING) {
-                //ActiveWorkouts(navController)
+                WorkoutRating(navController)
             }
         }
 
