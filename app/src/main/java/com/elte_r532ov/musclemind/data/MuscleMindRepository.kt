@@ -18,6 +18,7 @@ interface MuscleMindRepository {
     suspend fun registerUser(ud : UserData,d : Disease): Resource<FullAutUserData>
 
     suspend fun loginAttempt(email: String, password: String): Resource<FullAutUserData>
+    suspend fun googleTokenAuth(oAuthToken : String): Resource<FullAutUserData>
 
     suspend fun getUserData(): Resource<UserData>
 

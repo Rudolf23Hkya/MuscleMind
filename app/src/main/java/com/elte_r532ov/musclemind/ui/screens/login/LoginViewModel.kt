@@ -45,8 +45,25 @@ class LoginViewModel @Inject constructor(
     fun sendTokenToServer(idToken: String) {
         sendUiEvent(UiEvent.ShowSnackbar(idToken))
         viewModelScope.launch {
-            // Küldje el a token-t a szervernek
-            // Példa HTTP kéréssel (Retrofit vagy más HTTP kliens használatával)
+            // Sending the token to the server for validation
+            when (val result = repository.googleTokenAuth(idToken)) {
+                is Resource.Success -> {
+                    val fullAutUserData = result.data
+                    if (fullAutUserData != null) {
+                        if (fullAutUserData.userData.username != "EMAIL NOT FOUND") {
+                            // If the Google account's email matches a registered email, the login is successful
+                            sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_ACTIVE_ROUTE))
+                        } else {
+                            // If the username is "USER NOT FOUND", the user has no account with the user's Google account.
+                            // Registration process begins with the fixed Google e-mail
+                            //TODO
+                        }
+                    }
+                }
+                is Resource.Error -> {
+                    sendUiEvent(UiEvent.ShowSnackbar(result.message ?: "Unknown error occurred"))
+                }
+            }
         }
     }
 

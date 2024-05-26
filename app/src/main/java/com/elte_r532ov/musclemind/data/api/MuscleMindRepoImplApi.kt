@@ -105,6 +105,37 @@ class MuscleMindRepoImplApi(
         }
     }
 
+    override suspend fun googleTokenAuth(oAuthToken : String): Resource<FullAutUserData>{
+        return try {
+            val loginResponse = apiDao.googleTokenAuth(oAuthToken)
+            handleApiResponse(loginResponse, { fullAutUserData ->
+                if(fullAutUserData.userData.username != "USER NOT FOUND"){
+                    // If the Google account s email matches a registered e-mail the login is successful
+                    sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
+                    sessionManagement.storeUserData(fullAutUserData.userData)
+                    Resource.Success(fullAutUserData)
+                }
+                else{
+                    // If the username is USER NOT FOUND which is an invalid username during
+                    // the registration process the user has no account with the user s Google account.
+                    // The registration process begins, and no Auth data is saved!
+
+                    Resource.Success(fullAutUserData)
+                }
+            }, { errorMessage ->
+                Resource.Error(errorMessage, null)
+            })
+        } catch (e: IOException) {
+            // Handle network exceptions
+            Resource.Error("Network connection issue. Please check your internet connection!", null)
+        } catch (e: Exception) {
+            // Handle other exceptions
+            Resource.Error(e.message ?: "Unknown error!", null)
+        }
+    }
+
+
+
     override suspend fun updateAccessToken(): Resource<Tokens> {
         return try {
             //Getting the stored token

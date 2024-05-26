@@ -22,6 +22,9 @@ interface ApiDao {
     @POST("loginUser/")
     suspend fun login(@Body loginRequest: LoginData): Response<FullAutUserData>
 
+    @POST("handle_oAuth_google_token/")
+    suspend fun googleTokenAuth(@Body oAuthToken: String): Response<FullAutUserData>
+
     @POST("regUser/")
     suspend fun register(@Body regUserData: RegisterUser): Response<FullAutUserData>
 
