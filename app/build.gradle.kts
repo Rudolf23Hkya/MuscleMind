@@ -126,7 +126,8 @@ dependencies {
     implementation ("androidx.security:security-crypto:1.0.0")
 
     //Google Authentication
-    implementation("androidx.credentials:credentials:1.3.0-alpha04")
+    implementation ("com.google.android.gms:play-services-auth:20.0.0")
+    implementation ("androidx.credentials:credentials:1.0.0-beta01")
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
 }
 

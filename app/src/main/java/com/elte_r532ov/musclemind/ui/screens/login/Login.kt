@@ -1,4 +1,6 @@
 package com.elte_r532ov.musclemind.ui.screens.login
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,9 +32,21 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.elte_r532ov.musclemind.myFontFamily
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
-
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.rememberCoroutineScope
+import com.elte_r532ov.musclemind.R
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 
 @Composable
 fun LoginScreen(
@@ -183,21 +197,72 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(
-                onClick = { viewModel.onEvent(LoginEvent.onSignUpClicked) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primaryContainer
-                )
-            ) {
-                Text(
-                    "Continue with Google",
-                    fontFamily = myFontFamily,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            GoogleSignInButton(viewModel)
+
             Spacer(modifier = Modifier.height(10.dp))
             SnackbarHost(hostState = snackBarHostState)
         }
     }
+
+@SuppressLint("ResourceType")
+@Composable
+fun GoogleSignInButton(viewModel: LoginViewModel) {
+
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+
+    val clientId = "1078166345846-pkuc1hn3m5tp4q2lsbh5a1able65q796.apps.googleusercontent.com"
+
+    // Configure Google Sign-In
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(clientId)
+        .requestEmail()
+        .build()
+
+    val googleSignInClient = GoogleSignIn.getClient(context, gso)
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        handleSignInResult(task, viewModel)
+    }
+
+    Button(
+        onClick = { signIn(googleSignInClient, launcher) },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.primaryContainer
+        )
+    ) {
+        Text(
+            "Continue with Google",
+            fontFamily = myFontFamily,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onPrimary
+        )
+    }
+}
+
+private fun signIn(
+    googleSignInClient: GoogleSignInClient,
+    launcher: ManagedActivityResultLauncher<Intent, ActivityResult>) {
+    val signInIntent = googleSignInClient.signInIntent
+    launcher.launch(signInIntent)
+}
+
+private fun handleSignInResult(
+    completedTask: Task<GoogleSignInAccount>,
+    viewModel: LoginViewModel
+) {
+    try {
+        val account = completedTask.getResult(ApiException::class.java)
+        val idToken = account?.idToken
+        if (idToken != null) {
+            viewModel.sendTokenToServer(idToken)
+        }
+    } catch (e: ApiException) {
+        // Handle the exception
+        viewModel.onError(e)
+    }
+}
