@@ -43,20 +43,22 @@ class LoginViewModel @Inject constructor(
     }
 
     fun sendTokenToServer(idToken: String) {
-        sendUiEvent(UiEvent.ShowSnackbar(idToken))
         viewModelScope.launch {
             // Sending the token to the server for validation
             when (val result = repository.googleTokenAuth(idToken)) {
                 is Resource.Success -> {
                     val fullAutUserData = result.data
                     if (fullAutUserData != null) {
-                        if (fullAutUserData.userData.username != "EMAIL NOT FOUND") {
+                        if (fullAutUserData.userData.username != "EMAIL_NOT_FOUND") {
                             // If the Google account's email matches a registered email, the login is successful
                             sendUiEvent(UiEvent.Navigate(Routes.WORKOUT_ACTIVE_ROUTE))
                         } else {
-                            // If the username is "USER NOT FOUND", the user has no account with the user's Google account.
-                            // Registration process begins with the fixed Google e-mail
-                            //TODO
+                            // If the username is "USER NOT FOUND", the user has no account
+                            // with the Google account s e-mail address.
+                            // The user needs to create an account with the e-mail address.
+                            sendUiEvent(UiEvent.ShowSnackbar(
+                                    "No account found with this Google account t s e-mail address." +
+                                    "Please create an account first!"))
                         }
                     }
                 }

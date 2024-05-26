@@ -276,7 +276,7 @@ class SharedActiveWorkoutViewModel @Inject constructor(
                 is Resource.Success -> {
                     val workouts = result.data ?: emptyList()
                     if (workouts.isEmpty()) {
-                        sendUiEvent(UiEvent.ErrorOccured("Network Error!"))
+                        sendUiEvent(UiEvent.ErrorOccured("You have no active Workouts."))
                     }
                     else{
                         try {

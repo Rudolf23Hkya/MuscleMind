@@ -109,17 +109,16 @@ class MuscleMindRepoImplApi(
         return try {
             val loginResponse = apiDao.googleTokenAuth(oAuthToken)
             handleApiResponse(loginResponse, { fullAutUserData ->
-                if(fullAutUserData.userData.username != "USER NOT FOUND"){
+                if(fullAutUserData.userData.username != "EMAIL_NOT_FOUND"){
                     // If the Google account s email matches a registered e-mail the login is successful
                     sessionManagement.saveTokens(fullAutUserData.tokens.access, fullAutUserData.tokens.refresh)
                     sessionManagement.storeUserData(fullAutUserData.userData)
                     Resource.Success(fullAutUserData)
                 }
                 else{
-                    // If the username is USER NOT FOUND which is an invalid username during
-                    // the registration process the user has no account with the user s Google account.
-                    // The registration process begins, and no Auth data is saved!
-
+                    // If the username is "USER NOT FOUND", the user has no account registered
+                    // with the user's Google e-mail.
+                    // The user needs to create an account with the e-mail address.
                     Resource.Success(fullAutUserData)
                 }
             }, { errorMessage ->
