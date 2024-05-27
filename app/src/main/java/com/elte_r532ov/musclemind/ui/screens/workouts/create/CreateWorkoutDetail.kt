@@ -83,6 +83,12 @@ fun CreateWorkoutDetail(
                     fontFamily = myFontFamily,
                     fontWeight = FontWeight.Bold
                 )
+                Text(
+                    "(Preview)",
+                    fontSize = 20.sp,
+                    fontFamily = myFontFamily,
+                    fontWeight = FontWeight.Bold
+                )
             }
             Spacer(modifier = Modifier.height(32.dp))
             LazyColumn {

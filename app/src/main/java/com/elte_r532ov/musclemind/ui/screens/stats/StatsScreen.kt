@@ -163,7 +163,7 @@ fun StatsMainScreen(
 }
 
 @Composable
-fun BarGraph(scaledValues: List<Int>, realValues: List<Int>) {
+fun <T : Number> BarGraph(scaledValues: List<Int>, realValues: List<T>) {
     val barColors = listOf(
         Color(MaterialTheme.colorScheme.onSurface.value),
         Color(MaterialTheme.colorScheme.onSurface.value),

@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import java.math.RoundingMode
 import java.time.LocalDate
 import javax.inject.Inject
+import kotlin.math.round
 
 
 @HiltViewModel
@@ -40,8 +41,8 @@ class StatsViewModel @Inject constructor(
     private val _scaledTimeStats = MutableStateFlow<List<Int>>(listOf(0, 0, 0, 0, 0, 0, 0))
     val scaledTimeStats: StateFlow<List<Int>> = _scaledTimeStats
 
-    private val _realTimeStats = MutableStateFlow<List<Int>>(listOf(0, 0, 0, 0, 0, 0, 0))
-    val realTimeStats: StateFlow<List<Int>> = _realTimeStats
+    private val _realTimeStats = MutableStateFlow<List<Double>>(listOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+    val realTimeStats: StateFlow<List<Double>> = _realTimeStats
 
     private val _selectedMode = MutableStateFlow(StatsMode.KCAL)
     val selectedMode: StateFlow<StatsMode> = _selectedMode
@@ -98,7 +99,7 @@ class StatsViewModel @Inject constructor(
         _realKcalStats.value = kcalStats
 
         _scaledTimeStats.value = normalizedTimeStats
-        _realTimeStats.value = timeStats
+        _realTimeStats.value = convertSecondsToMinutes(timeStats)
     }
 
     fun setMode(mode: StatsMode) {
@@ -114,6 +115,12 @@ class StatsViewModel @Inject constructor(
                 repository.getStatsViaEmail(csv = false, pdf = true)
         }
         sendUiEvent(UiEvent.ShowSnackbar("Your e-mail will arrive soon!"))
+    }
+    // Converting seconds to minutes, rounded to 1 decimal place
+    private fun convertSecondsToMinutes(secondsList: List<Int>): List<Double> {
+        return secondsList.map { seconds ->
+            round((seconds / 60.0) * 10) / 10
+        }
     }
 
     private fun sendUiEvent(event: UiEvent) {

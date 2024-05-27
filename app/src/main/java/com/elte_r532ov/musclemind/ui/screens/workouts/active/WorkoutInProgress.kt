@@ -176,7 +176,7 @@ fun WorkoutInProgress(
                 if(isRepsZero) {
                     // If reps is zero it means it s a duration Exercise
                     Text(
-                        text = "${remainingTime}s",
+                        text = "$remainingTime s",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
