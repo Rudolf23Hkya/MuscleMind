@@ -124,7 +124,7 @@ class SharedRegisterViewModel @Inject constructor(
     // User data
     private fun handleUserDataChosen(fstPassword: String, sndPassword: String, email: String, name: String) {
         when {
-            fstPassword != sndPassword -> sendUiEvent(UiEvent.ErrorOccured("Not Matching Passwords!"))
+            fstPassword != sndPassword -> sendUiEvent(UiEvent.ErrorOccured("Passwords do not match!"))
             fstPassword.length < 6 -> sendUiEvent(UiEvent.ErrorOccured("Password is too short!"))
             !email.isValidEmail() -> sendUiEvent(UiEvent.ErrorOccured("Invalid E-mail address!"))
             name.length < 2 -> sendUiEvent(UiEvent.ErrorOccured("Username must be at least 2 characters long!"))

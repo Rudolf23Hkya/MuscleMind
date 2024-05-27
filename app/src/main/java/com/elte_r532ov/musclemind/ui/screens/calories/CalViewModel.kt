@@ -31,19 +31,25 @@ class CalViewModel @Inject constructor(
         }
     }
 
-    fun addCal(kcal: String){
+    fun addCal(kcal: String) {
         viewModelScope.launch {
             refreshCal()
 
-            when (val result = repository.addCalories(
-                CaloriesData(kcal.toInt())
-            )) {
-                is Resource.Success -> {
-                    refreshCal()
+            try {
+                val kcalInt = kcal.toInt()
+                when (val result = repository.addCalories(
+                    CaloriesData(kcalInt)
+                )) {
+                    is Resource.Success -> {
+                        refreshCal()
+                    }
+                    is Resource.Error -> {
+                        result.message?.let { UiEvent.ErrorOccured(it) }?.let { _uiEvent.send(it) }
+                    }
                 }
-                is Resource.Error -> {
-                    result.message?.let { UiEvent.ErrorOccured(it) }?.let { _uiEvent.send(it) }
-                }
+            } catch (e: NumberFormatException) {
+                val errorMessage = "Invalid kcal value. Please enter a valid number."
+                _uiEvent.send(UiEvent.ErrorOccured(errorMessage))
             }
         }
     }
@@ -61,9 +67,4 @@ class CalViewModel @Inject constructor(
         }
     }
 
-    private fun sendUiEvent(event: UiEvent){
-        viewModelScope.launch {
-            _uiEvent.send(event)
-        }
-    }
 }

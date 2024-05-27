@@ -137,7 +137,7 @@ fun StatsMainScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Get your stats sent to you by mail. You can choose your preferred format",
+                text = "Get your stats sent to you by mail. You can choose your preferred format: ",
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(vertical = 16.dp)
             )

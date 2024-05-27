@@ -32,6 +32,7 @@ import com.elte_r532ov.musclemind.myFontFamily
 import androidx.compose.runtime.livedata.observeAsState
 import com.elte_r532ov.musclemind.ui.util.BottomNavBar
 import com.elte_r532ov.musclemind.ui.screens.workouts.shared.WorkoutItem
+import com.elte_r532ov.musclemind.ui.util.BottomNavMenu
 import com.elte_r532ov.musclemind.ui.util.handleUiEvent
 import com.elte_r532ov.musclemind.ui.util.Routes
 
@@ -51,7 +52,7 @@ fun ActiveWorkouts(
     Scaffold(
         bottomBar = {
             onNavigate.currentDestination?.route?.let {
-                BottomNavBar(it, onNavigate)
+                BottomNavBar(BottomNavMenu.WORKOUTS.toString(), onNavigate)
             }
         },
         snackbarHost = { SnackbarHost(snackBarHostState) },
