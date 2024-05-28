@@ -129,6 +129,13 @@ dependencies {
     implementation ("com.google.android.gms:play-services-auth:20.0.0")
     implementation ("androidx.credentials:credentials:1.0.0-beta01")
     implementation ("com.google.android.libraries.identity.googleid:googleid:1.1.0")
+
+    //Testing
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    testImplementation ("app.cash.turbine:turbine:0.5.2")
+    testImplementation ("net.bytebuddy:byte-buddy:1.12.2")
 }
 
 // Allow references to generated code

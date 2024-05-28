@@ -1,6 +1,5 @@
 package com.elte_r532ov.musclemind.ui.screens.register
 
-import android.util.Log
 import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -62,7 +61,6 @@ class SharedRegisterViewModel @Inject constructor(
             sendUiEvent(UiEvent.ErrorOccured("You need to select your gender!"))
         } else {
             this.gender = gender
-            Log.d("MyActivity", this.gender.toString())
             sendUiEvent(UiEvent.Navigate(Routes.REGISTER_FIZ_DATA))
         }
     }
@@ -153,7 +151,7 @@ class SharedRegisterViewModel @Inject constructor(
             try {
                 sendRegRequest()
             } catch (e: Exception) {
-                Log.e("MyActivity", e.toString())
+                sendUiEvent(UiEvent.ErrorOccured(e.toString()))
             }
         }
     }
