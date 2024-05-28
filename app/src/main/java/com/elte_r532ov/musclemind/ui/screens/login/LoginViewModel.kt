@@ -57,7 +57,7 @@ class LoginViewModel @Inject constructor(
                             // with the Google account s e-mail address.
                             // The user needs to create an account with the e-mail address.
                             sendUiEvent(UiEvent.ShowSnackbar(
-                                    "No account found with this Google account t s e-mail address." +
+                                    "No account found with this Google account e-mail address." +
                                     "Please create an account first!"))
                         }
                     }
