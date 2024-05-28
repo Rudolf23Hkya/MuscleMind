@@ -1,8 +1,5 @@
 package com.elte_r532ov.musclemind.ui.screens.login
 
-import android.credentials.CredentialManager
-import android.util.Log
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository

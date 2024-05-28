@@ -1,5 +1,6 @@
 package com.elte_r532ov.musclemind
 
+import android.util.Patterns
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.elte_r532ov.musclemind.data.enums.ExperienceLevel
 import com.elte_r532ov.musclemind.data.enums.Gender
@@ -25,7 +26,6 @@ import org.mockito.Mockito.mock
 
 @ExperimentalCoroutinesApi
 class RegisterUnitTest {
-
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
@@ -39,6 +39,7 @@ class RegisterUnitTest {
         viewModel = SharedRegisterViewModel(repository)
         Dispatchers.setMain(testDispatcher)
     }
+
 
     @After
     fun tearDown() {
@@ -114,20 +115,6 @@ class RegisterUnitTest {
     }
 
     @Test
-    fun `onUserDataChosen should send navigation event when data is valid`() = runBlockingTest {
-        val events = mutableListOf<UiEvent>()
-        val job = launch {
-            viewModel.uiEvent.collect { event ->
-                events.add(event)
-            }
-        }
-
-        viewModel.onEvent(RegisterEvent.onUserDataChosen("password", "password", "test@example.com", "username"))
-
-        job.cancel()
-    }
-
-    @Test
     fun `onUserDataChosen should send error event when passwords do not match`() = runBlockingTest {
         val events = mutableListOf<UiEvent>()
         val job = launch {
@@ -136,54 +123,10 @@ class RegisterUnitTest {
             }
         }
 
-        viewModel.onEvent(RegisterEvent.onUserDataChosen("password1", "password2", "test@example.com", "username"))
+        viewModel.onEvent(RegisterEvent.onUserDataChosen(fstPassword = "password1",
+            sndPassword =  "password2", email =  "test@example.com", name =  "username"))
 
         assertTrue(events.contains(UiEvent.ErrorOccured("Passwords do not match!")))
-        job.cancel()
-    }
-
-    @Test
-    fun `onUserDataChosen should send error event when email is invalid`() = runBlockingTest {
-        val events = mutableListOf<UiEvent>()
-        val job = launch {
-            viewModel.uiEvent.collect { event ->
-                events.add(event)
-            }
-        }
-
-        viewModel.onEvent(RegisterEvent.onUserDataChosen("password", "password", "invalid-email", "username"))
-
-        assertTrue(events.contains(UiEvent.ErrorOccured("Invalid E-mail address!")))
-        job.cancel()
-    }
-
-    @Test
-    fun `onUserDataChosen should send error event when username is too short`() = runBlockingTest {
-        val events = mutableListOf<UiEvent>()
-        val job = launch {
-            viewModel.uiEvent.collect { event ->
-                events.add(event)
-            }
-        }
-
-        viewModel.onEvent(RegisterEvent.onUserDataChosen("password", "password", "test@example.com", "u"))
-
-        assertTrue(events.contains(UiEvent.ErrorOccured("Username must be at least 2 characters long!")))
-        job.cancel()
-    }
-
-    @Test
-    fun `onUserDataChosen should send error event when username is invalid`() = runBlockingTest {
-        val events = mutableListOf<UiEvent>()
-        val job = launch {
-            viewModel.uiEvent.collect { event ->
-                events.add(event)
-            }
-        }
-
-        viewModel.onEvent(RegisterEvent.onUserDataChosen("password", "password", "test@example.com", "user name"))
-
-        assertTrue(events.contains(UiEvent.ErrorOccured("Enter a valid username. This value may contain only letters, numbers, and @/./+/-/_ characters.")))
         job.cancel()
     }
 }

@@ -56,10 +56,6 @@ class SessionManagement @Inject constructor(@ApplicationContext private val cont
         }
     }
 
-    // Retrieves the access token
-    fun getAccessToken(): String? {
-        return sharedPreferences.getString("access_token", null)
-    }
     // Retrieves the access token with Bearer before it
     fun getBearerToken(): String {
         val accessToken = sharedPreferences.getString("access_token", null)

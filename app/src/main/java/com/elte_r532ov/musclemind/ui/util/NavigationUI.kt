@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @Composable
-public fun BottomNavBar(currentNav: String, onNavigate: NavHostController) {
+fun BottomNavBar(currentNav: String, onNavigate: NavHostController) {
     val items = listOf(
         BottomNavMenu.WORKOUTS,
         BottomNavMenu.STATS,

@@ -39,8 +39,6 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.runtime.rememberCoroutineScope
-import com.elte_r532ov.musclemind.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -209,7 +207,6 @@ fun LoginScreen(
 fun GoogleSignInButton(viewModel: LoginViewModel) {
 
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     val clientId = "1078166345846-pkuc1hn3m5tp4q2lsbh5a1able65q796.apps.googleusercontent.com"
 

@@ -136,6 +136,9 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
     testImplementation ("app.cash.turbine:turbine:0.5.2")
     testImplementation ("net.bytebuddy:byte-buddy:1.12.2")
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.0.0")
+    testImplementation ("org.jetbrains.kotlin:kotlin-test:1.5.31")
 }
 
 // Allow references to generated code

@@ -42,8 +42,8 @@ class SharedRegisterViewModel @Inject constructor(
     private var height by mutableDoubleStateOf(0.0)
 
     private var asthma : Boolean = false
-    private var bad_knee : Boolean = false
-    private var cardiovascular_d : Boolean = false
+    private var badKnee : Boolean = false
+    private var cardiovascularD : Boolean = false
     private var osteoporosis : Boolean = false
 
     fun onEvent(event: RegisterEvent) {
@@ -112,8 +112,8 @@ class SharedRegisterViewModel @Inject constructor(
     // Disease
     private fun handleDiseasesChosen(diseaseList: List<OptiListElement>) {
             this.asthma = diseaseList.any { it.name == "Asthma" && it.isSelected }
-            this.bad_knee = diseaseList.any { it.name == "Bad Knee" && it.isSelected }
-            this.cardiovascular_d = diseaseList.any { it.name == "Cardiovascular Disease" && it.isSelected }
+            this.badKnee = diseaseList.any { it.name == "Bad Knee" && it.isSelected }
+            this.cardiovascularD = diseaseList.any { it.name == "Cardiovascular Disease" && it.isSelected }
             this.osteoporosis = diseaseList.any { it.name == "Osteoporosis" && it.isSelected }
         // No condition because it s optional
         sendUiEvent(UiEvent.Navigate(Routes.REGISTER_ACCOUNT_DATA))
@@ -169,8 +169,8 @@ class SharedRegisterViewModel @Inject constructor(
         )
         val disease = Disease(
             asthma=this.asthma,
-            bad_knee = this.bad_knee,
-            cardiovascular_d = this.cardiovascular_d,
+            bad_knee = this.badKnee,
+            cardiovascular_d = this.cardiovascularD,
             osteoporosis = this.osteoporosis)
 
         when (val result = repository.registerUser(newUser,disease)) {

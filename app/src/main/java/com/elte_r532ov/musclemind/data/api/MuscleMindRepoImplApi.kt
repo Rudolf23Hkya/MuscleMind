@@ -6,7 +6,6 @@ import com.elte_r532ov.musclemind.data.api.responses.UserData
 import com.elte_r532ov.musclemind.data.local.SessionManagement
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
 import com.elte_r532ov.musclemind.data.api.responses.CaloriesData
-import com.elte_r532ov.musclemind.data.api.responses.StatsDay
 import com.elte_r532ov.musclemind.data.api.responses.Disease
 import com.elte_r532ov.musclemind.data.api.responses.FullAutUserData
 import com.elte_r532ov.musclemind.data.api.responses.LoginData
@@ -177,7 +176,7 @@ class MuscleMindRepoImplApi(
                     val retryResponse = runBlocking {apiDao.getCalories(authToken = sessionManagement.getBearerToken())}
                     handleApiResponse(retryResponse, { retryData ->
                         Resource.Success(retryData)
-                    }) { retryError ->
+                    }) {
                         Resource.Error("Server error!", null)
                     }
                 } else {
@@ -195,14 +194,14 @@ class MuscleMindRepoImplApi(
             val response = apiDao.addCalories(authToken = sessionManagement.getBearerToken(),caloriesData = caloriesData)
             handleApiResponse(response, { responseData ->
                 Resource.Success(responseData)
-            }) { errorMessage ->
+            }) {
                 // If access token is invalid, try to update it and retry the request
                 val tokenUpdateResult = runBlocking { updateAccessToken() }
                 if (tokenUpdateResult is Resource.Success) {
                     val retryResponse = runBlocking {apiDao.addCalories(authToken = sessionManagement.getBearerToken(),caloriesData = caloriesData)}
                     handleApiResponse(retryResponse, { retryData ->
                         Resource.Success(retryData)
-                    }) { retryError ->
+                    }) {
                         Resource.Error("Server error!", null)
                     }
                 } else {

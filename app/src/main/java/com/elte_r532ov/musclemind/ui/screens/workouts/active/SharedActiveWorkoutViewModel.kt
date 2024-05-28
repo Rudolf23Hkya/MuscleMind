@@ -2,7 +2,6 @@ package com.elte_r532ov.musclemind.ui.screens.workouts.active
 
 import android.os.CountDownTimer
 import android.util.Log
-import androidx.collection.emptyLongSet
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,7 +26,7 @@ import java.util.LinkedList
 
 @HiltViewModel
 class SharedActiveWorkoutViewModel @Inject constructor(
-    private val repository: MuscleMindRepository
+    private val repository: MuscleMindRepository,
 ) : ViewModel() {
     private fun sendUiEvent(event: UiEvent){
         viewModelScope.launch {
@@ -47,7 +46,6 @@ class SharedActiveWorkoutViewModel @Inject constructor(
 
     // Selected workout
     private val _selectedWorkout = MutableLiveData<Workout?>()
-    val selectedWorkout: LiveData<Workout?> = _selectedWorkout
 
     // Selected exercises
     private val _selectedExercises = MutableLiveData<List<Exercise>>()
@@ -76,13 +74,11 @@ class SharedActiveWorkoutViewModel @Inject constructor(
     val remainingTime: LiveData<Int> = _remainingTime
 
     private val _maxTime = MutableLiveData(1) // Default to 1 to avoid division by zero
-    val maxTime: LiveData<Int> = _maxTime
 
     private val _progress = MutableLiveData(1f)
     val progress: LiveData<Float> = _progress
 
     private val _elapsedTime = MutableLiveData(0)
-    val elapsedTime: LiveData<Int> = _elapsedTime
 
     private var timer: CountDownTimer? = null
     private var countUpTimer: Job? = null

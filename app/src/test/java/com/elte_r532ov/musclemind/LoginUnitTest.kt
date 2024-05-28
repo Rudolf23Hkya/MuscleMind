@@ -22,11 +22,6 @@ import org.junit.Rule
 import org.mockito.Mockito.mock
 import kotlin.time.ExperimentalTime
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @ExperimentalCoroutinesApi
 @ExperimentalTime
 class LoginUnitTest {

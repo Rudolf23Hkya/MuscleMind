@@ -1,6 +1,5 @@
 package com.elte_r532ov.musclemind.ui.screens.stats
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.elte_r532ov.musclemind.data.MuscleMindRepository
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import java.math.RoundingMode
 import java.time.LocalDate
 import javax.inject.Inject
 import kotlin.math.round
@@ -30,18 +28,17 @@ class StatsViewModel @Inject constructor(
     val currentDate: StateFlow<LocalDate> = _currentDate
 
     private val _statsDayStats = MutableStateFlow<List<StatsDay>>(emptyList())
-    val statsDayStats: StateFlow<List<StatsDay>> = _statsDayStats
 
-    private val _scaledKcalStats = MutableStateFlow<List<Int>>(listOf(0, 0, 0, 0, 0, 0, 0))
+    private val _scaledKcalStats = MutableStateFlow(listOf(0, 0, 0, 0, 0, 0, 0))
     val scaledKcalStats: StateFlow<List<Int>> = _scaledKcalStats
 
-    private val _realKcalStats = MutableStateFlow<List<Int>>(listOf(0, 0, 0, 0, 0, 0, 0))
+    private val _realKcalStats = MutableStateFlow(listOf(0, 0, 0, 0, 0, 0, 0))
     val realKcalStats: StateFlow<List<Int>> = _realKcalStats
 
-    private val _scaledTimeStats = MutableStateFlow<List<Int>>(listOf(0, 0, 0, 0, 0, 0, 0))
+    private val _scaledTimeStats = MutableStateFlow(listOf(0, 0, 0, 0, 0, 0, 0))
     val scaledTimeStats: StateFlow<List<Int>> = _scaledTimeStats
 
-    private val _realTimeStats = MutableStateFlow<List<Double>>(listOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+    private val _realTimeStats = MutableStateFlow(listOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
     val realTimeStats: StateFlow<List<Double>> = _realTimeStats
 
     private val _selectedMode = MutableStateFlow(StatsMode.KCAL)

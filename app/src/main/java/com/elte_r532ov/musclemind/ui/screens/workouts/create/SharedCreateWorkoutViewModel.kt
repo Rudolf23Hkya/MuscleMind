@@ -36,17 +36,16 @@ class SharedCreateWorkoutViewModel @Inject constructor(
         }
     }
 
-    private var trx : Boolean = false
-    private var weightlifting : Boolean = false
+    var trx : Boolean = false
+    var weightlifting : Boolean = false
 
-    private var doWeekly by mutableIntStateOf(0)
+    var doWeekly by mutableIntStateOf(0)
 
     private val _recommendedWorkouts = MutableLiveData<List<Workout>>()
     val recommendedWorkouts: LiveData<List<Workout>> = _recommendedWorkouts
 
     // Selected workout
     private val _selectedWorkout = MutableLiveData<Workout?>()
-    val selectedWorkout: LiveData<Workout?> = _selectedWorkout
 
     // Selected exercises
     private val _selectedExercises = MutableLiveData<List<Exercise>>()
